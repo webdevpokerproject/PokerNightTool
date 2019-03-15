@@ -13,13 +13,25 @@
 
     <title>Hello, world!</title>
 </head>
-<body>
-    @RenderPage("~/Shared/_Header.cshtml")
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
+<body class="bg-light">
+    <!-- Header -->
+    @RenderPage("~/Shared/_Header_user.cshtml")
+
+    <!-- Actual Content -->
+    <div class="container-fluid">
+        <div class="row no-gutters">
+            <div class="col-1"> </div>
+            <div class="col-auto">
+                <h5 class=" font-weight-bold">Waardes fiches:</h5>
+                <div>
+
+                </div>
+            </div>
+            <div class="col-1"> </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
     @RenderPage("~/Shared/_Footer.cshtml")
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
