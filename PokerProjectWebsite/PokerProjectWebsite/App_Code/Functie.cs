@@ -49,4 +49,17 @@ public class Functie
         }
         return false; 
     }
+
+    /// <summary>
+    /// Haalt fiches op op basis van de eventnaam
+    /// </summary>
+    /// <param name="ReferencieCodeEvent"> ReferencieCode van het event</param>
+    /// <returns>De kleur en waarde van de gebruikte fiches, worden op pagina omgezet tot <img> </returns>
+    public static IEnumerable<dynamic> Fiches(string ReferencieCodeEvent)
+    {
+        Database db = Database.OpenConnectionString(Functie.connectionString, Functie.provider);
+        string QR_GetFiches = "SELECT Fiche.Kleur, Fiche.Waarde FROM ((Fiche INNER JOIN EventFiches ON EventFiches.FicheId = Fiche.FicheId) INNER JOIN Event ON EventFiches.ReferencieCode = Event.ReferencieCode) WHERE Fiche.FicheId = EventFiches.FicheId AND  EventFiches.ReferencieCode = @0";
+        var result = db.Query(QR_GetFiches, ReferencieCodeEvent);
+        return result; 
+    }
 }

@@ -1,5 +1,6 @@
 ﻿@{
     
+
 }
 <!doctype html>
 <html lang="en">
@@ -18,13 +19,30 @@
     @RenderPage("~/Shared/_Header_user.cshtml")
 
     <!-- Actual Content -->
+        <!-- Laad fiches in -->
     <div class="container-fluid">
         <div class="row no-gutters">
             <div class="col-1"> </div>
             <div class="col-auto">
                 <h5 class=" font-weight-bold">Waardes fiches:</h5>
                 <div>
-
+                    @foreach (var row in Functie.Fiches("test"))
+                    {
+                        <img height="100" width="100" src="~/Images/fiches/@(row.Kleur)/@(row.Waarde).png" alt="Alternate Text" />
+                    }
+                </div>
+            </div>
+            <div class="col-1"> </div>
+        </div>
+    </div>
+        <!--Laad tafelindeling in-->
+    <div class="container-fluid">
+        <div class="row no-gutters">
+            <div class="col-1"> </div>
+            <div class="col-auto">
+                <h5 class=" font-weight-bold">Indeling tafels:</h5>
+                <div>
+                    
                 </div>
             </div>
             <div class="col-1"> </div>
