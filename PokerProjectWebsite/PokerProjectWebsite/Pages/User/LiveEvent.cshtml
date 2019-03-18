@@ -1,5 +1,6 @@
 ﻿@{
     
+    int i = 0;
 
 }
 <!doctype html>
@@ -34,20 +35,41 @@
             </div>
             <div class="col-1"> </div>
         </div>
-    </div>
-        <!--Laad tafelindeling in-->
-    <div class="container-fluid">
+        
+        <!-- Laad spelers in -->
         <div class="row no-gutters">
             <div class="col-1"> </div>
             <div class="col-auto">
                 <h5 class=" font-weight-bold">Indeling tafels:</h5>
                 <div>
-                    
+                    @for (int x = 1; Functie.HoeveelheidTafels("test") >= x ; x++)
+                    {
+                    <h3>Tafel @x  </h3>
+                        <table class="table table-responsive">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Naam</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var row in Functie.Spelers("test", x))
+                                {
+                                    <tr>
+                                        <th scope="row">@{i++;} @i</th>
+                                        <td>@row.Voornaam @row.Achternaam </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+
                 </div>
             </div>
             <div class="col-1"> </div>
         </div>
     </div>
+
 
     <!-- Footer -->
     @RenderPage("~/Shared/_Footer.cshtml")

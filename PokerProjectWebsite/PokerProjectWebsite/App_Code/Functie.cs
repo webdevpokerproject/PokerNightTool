@@ -55,12 +55,44 @@ public class Functie
     /// Haalt fiches op op basis van de eventnaam
     /// </summary>
     /// <param name="ReferencieCodeEvent"> ReferencieCode van het event</param>
-    /// <returns>De kleur en waarde van de gebruikte fiches, worden op pagina omgezet tot <img> </returns>
+    /// <returns> De kleur en waarde van de gebruikte fiches, worden op pagina omgezet tot <img> </returns>
     public static IEnumerable<dynamic> Fiches(string ReferencieCodeEvent)
     {
         Database db = Database.OpenConnectionString(Functie.connectionString, Functie.provider);
-        string QR_GetFiches = "SELECT Fiche.Kleur, Fiche.Waarde FROM ((Fiche INNER JOIN EventFiches ON EventFiches.FicheId = Fiche.FicheId) INNER JOIN Event ON EventFiches.ReferencieCode = Event.ReferencieCode) WHERE Fiche.FicheId = EventFiches.FicheId AND  EventFiches.ReferencieCode = @0 ";
+        string QR_GetFiches = "SELECT Fiche.Kleur, Fiche.Waarde FROM (Fiche INNER JOIN EventFiches ON EventFiches.FicheId = Fiche.FicheId) WHERE EventFiches.ReferencieCode = @0 ORDER BY Fiche.Waarde ASC";
         var result = db.Query(QR_GetFiches, ReferencieCodeEvent);
         return result; 
+    }
+
+    /// <summary>
+    /// Haalt spelers op van het toebehorende event
+    /// </summary>
+    /// <param name="ReferencieCodeEvent"> ReferencieCode van het event </param>
+    /// <returns> De spelers worden opgehaald </returns>
+    public static IEnumerable<dynamic> Spelers(string ReferencieCodeEvent, int TafelNummer)
+    {
+        Database db = Database.OpenConnectionString(Functie.connectionString, Functie.provider);
+        string QR_GetSpelers;
+
+        if (TafelNummer == 0)
+        {
+            QR_GetSpelers = "SELECT Speler.Voornaam, Speler.Achternaam, SpelerEvent.TafelNummer FROM (Speler INNER JOIN SpelerEvent ON Speler.SpelerId = SpelerEvent.SpelerId) WHERE SpelerEvent.ReferencieCode = @0 ORDER BY TafelNummer DESC";
+            var result = db.Query(QR_GetSpelers, ReferencieCodeEvent);
+            return result;
+        }
+
+        QR_GetSpelers = "SELECT Speler.Voornaam, Speler.Achternaam, SpelerEvent.TafelNummer FROM (Speler INNER JOIN SpelerEvent ON Speler.SpelerId = SpelerEvent.SpelerId) WHERE SpelerEvent.ReferencieCode = @0 AND TafelNummer = @1 ORDER BY TafelNummer DESC";
+        var result2 = db.Query(QR_GetSpelers, ReferencieCodeEvent, TafelNummer);
+        return result2;
+    }
+
+    /// <summary>
+    /// Kijkt hoeveel tafels er zijn.
+    /// </summary>
+    /// <param name="ReferencieCodeEvent"></param>
+    /// <returns></returns>
+    public static int HoeveelheidTafels(string ReferencieCodeEvent)
+    {
+        return Spelers(ReferencieCodeEvent, 0).ElementAt(0).TafelNummer;
     }
 }
