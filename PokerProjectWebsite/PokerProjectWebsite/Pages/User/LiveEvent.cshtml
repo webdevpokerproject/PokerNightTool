@@ -2,36 +2,44 @@
     Layout = "~/Shared/_Layout.cshtml";
 
 }
-    <div class="container-fluid">
-        <div class="row no-gutters">
-            <div class="col-1"> </div>
-            <div class="col-auto">
-                <button type="button" class="btn btn-light" data-toggle="collapse" data-target="#WaardeFiches"><h5 class="font-weight-bold">Open Waarde Fiches</h5></button>
-                <div id="WaardeFiches" class="collapse">
-                    @foreach (var row in Functie.Fiches("test"))
-                    {
-                        <img height="100" width="100" src="~/Images/fiches/@(row.Kleur)/@(row.Waarde).png" alt="Alternate Text" />
-                    }
-                </div>
+<div class="container-fluid">
+    <div class="row no-gutters">
+        <div class="col-1"> </div>
+        <div class="col-auto">
+            <button type="button" class="btn btn-light" data-toggle="collapse" data-target="#WaardeFiches"><h5 class="font-weight-bold">Open Waarde Fiches</h5></button>
+            <div id="WaardeFiches" class="collapse">
+                @foreach (var row in Functie.Fiches("test"))
+                {
+                    <img height="100" width="100" src="~/Images/fiches/@(row.Kleur)/@(row.Waarde).png" alt="Alternate Text" />
+                }
             </div>
-            <div class="col-1"> </div>
         </div>
+        <div class="col-1"> </div>
     </div>
-    <!--Laad tafelindeling in-->
-    <div class="container-fluid">
-        <div class="row no-gutters">
-            <div class="col-1"> </div>
-            <div class="col-auto">
-                <button type="button" class="btn btn-light" data-toggle="collapse" data-target="#TafelIndeling"><h5 class="font-weight-bold">Open Tafelindeling</h5></button>
-                <div id="TafelIndeling" class="collapse">
-                    <p>Buurt vrij voor de hele pot.</p>
-                </div>
+</div>
+<!--Laad tafelindeling in-->
+<div class="container-fluid">
+    <div class="row no-gutters">
+        <div class="col-1"> </div>
+        <div class="col-auto">
+            <button type="button" class="btn btn-light" data-toggle="collapse" data-target="#TafelIndeling"><h5 class="font-weight-bold">Open Tafelindeling</h5></button>
+            <div id="TafelIndeling" class="collapse">
+                <p>Buurt vrij voor de hele pot.</p>
             </div>
-            <div class="col-1"> </div>
         </div>
+        <div class="col-1"> </div>
     </div>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</div>
+<div class="container-fluid">
+    <div class="row no-gutters">
+        <div class="col-1"> </div>
+        <div class="col-auto">
+            <button type="button" class="btn btn-light" data-toggle="collapse" data-target="#Cheatsheet"><h5 class="font-weight-bold">Open Cheatsheet</h5></button>
+            <div id="Cheatsheet" class="collapse">
+                <p>Als je geen van deze combinaties hebt zou ik gewoon stoppen man.</p>
+                <img src="~/Images/Cheatsheet/Handranking-1.jpg" alt="Cheat sheet" />
+            </div>
+        </div>
+        <div class="col-1"> </div>
+    </div>
+</div>
