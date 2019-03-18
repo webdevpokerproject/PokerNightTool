@@ -11,7 +11,8 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <!-- JQuery-->
+   
     <title>Hello, world!</title>
 </head>
 <body class="bg-light">
@@ -19,13 +20,13 @@
     @RenderPage("~/Shared/_Header_user.cshtml")
 
     <!-- Actual Content -->
-        <!-- Laad fiches in -->
+    <!-- Laad fiches in -->
     <div class="container-fluid">
         <div class="row no-gutters">
             <div class="col-1"> </div>
             <div class="col-auto">
-                <h5 class=" font-weight-bold">Waardes fiches:</h5>
-                <div>
+                <button type="button" class="btn btn-light" data-toggle="collapse" data-target="#WaardeFiches"><h5 class="font-weight-bold">Open Waarde Fiches</h5></button>
+                <div id="WaardeFiches" class="collapse">
                     @foreach (var row in Functie.Fiches("test"))
                     {
                         <img height="100" width="100" src="~/Images/fiches/@(row.Kleur)/@(row.Waarde).png" alt="Alternate Text" />
@@ -35,19 +36,35 @@
             <div class="col-1"> </div>
         </div>
     </div>
-        <!--Laad tafelindeling in-->
+    <!--Laad tafelindeling in-->
     <div class="container-fluid">
         <div class="row no-gutters">
             <div class="col-1"> </div>
             <div class="col-auto">
-                <h5 class=" font-weight-bold">Indeling tafels:</h5>
-                <div>
-                    
+                <button type="button" class="btn btn-light" data-toggle="collapse" data-target="#TafelIndeling"><h5 class="font-weight-bold">Open Tafelindeling</h5></button>
+                <div id="TafelIndeling" class="collapse">
+                    <p>Buurt vrij voor de hele pot.</p>
                 </div>
             </div>
             <div class="col-1"> </div>
         </div>
     </div>
+
+    <div class="container-fluid">
+        <div class="row no-gutters">
+            <div class="col-1"> </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-light" data-toggle="collapse" data-target="#Cheatsheet"><h5 class="font-weight-bold">Open Cheatsheet</h5></button>
+                    <div id="Cheatsheet" class="collapse">
+                        <p>Als je geen van deze combinaties hebt zou ik gewoon stoppen man.</p>
+                        <img src="~/Images/Cheatsheet/Handranking-1.jpg" alt="Cheat sheet" />
+                    </div>
+            </div>
+            <div class="col-1"> </div>
+        </div>
+    </div>
+
+
 
     <!-- Footer -->
     @RenderPage("~/Shared/_Footer.cshtml")
