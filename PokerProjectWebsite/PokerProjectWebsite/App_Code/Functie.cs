@@ -22,6 +22,7 @@ using WebMatrix.Data;
 /// ** QR_HaalUniekeCodeOp() ** 
 /// 
 /// </summary>
+
 public class Functie
 {
     /// <summary>
@@ -58,7 +59,7 @@ public class Functie
     public static IEnumerable<dynamic> Fiches(string ReferencieCodeEvent)
     {
         Database db = Database.OpenConnectionString(Functie.connectionString, Functie.provider);
-        string QR_GetFiches = "SELECT Fiche.Kleur, Fiche.Waarde FROM ((Fiche INNER JOIN EventFiches ON EventFiches.FicheId = Fiche.FicheId) INNER JOIN Event ON EventFiches.ReferencieCode = Event.ReferencieCode) WHERE Fiche.FicheId = EventFiches.FicheId AND  EventFiches.ReferencieCode = @0";
+        string QR_GetFiches = "SELECT Fiche.Kleur, Fiche.Waarde FROM ((Fiche INNER JOIN EventFiches ON EventFiches.FicheId = Fiche.FicheId) INNER JOIN Event ON EventFiches.ReferencieCode = Event.ReferencieCode) WHERE Fiche.FicheId = EventFiches.FicheId AND  EventFiches.ReferencieCode = @0 ";
         var result = db.Query(QR_GetFiches, ReferencieCodeEvent);
         return result; 
     }
