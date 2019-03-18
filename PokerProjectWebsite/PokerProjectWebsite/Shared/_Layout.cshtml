@@ -1,0 +1,39 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script defer src="~/Scripts/jquery-3.3.1.js"></script>
+    <script defer src="~/Scripts/popper.js"></script>
+    <script defer src="~/Scripts/bootstrap.js"></script>
+
+    
+
+    <title>@Page.Title</title>
+    @RenderSection("head", required: false)
+</head>
+
+<body class="bg-light">
+<div class="header">
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand">
+            <img src="~/Images/logos/LogoMakr_6emYM9.png" width="120" height="60" class="d-inline-block align-top" alt="Logo">
+        </a>
+    </nav>
+</div>
+@RenderBody()
+
+<div class="modal-footer bg-dark text-white">
+    <a target="_blank" rel="noopener noreferrer" href="https://tres.nl/">
+        <img class="rounded float-right" src="~/Images/logos/TRES.png" alt="Tres Logo">
+    </a>
+    <a target="_blank" rel="noopener noreferrer" href="https://www.nhlstenden.com/">
+        <img class="rounded float-right" height="80" width="95" src="~/Images/logos/nhl_stenden.png" alt="Tres Logo">
+    </a>
+</div>
+</body>
+</html>
