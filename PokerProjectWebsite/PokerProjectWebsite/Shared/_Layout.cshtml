@@ -11,29 +11,45 @@
     <script defer src="~/Scripts/popper.js"></script>
     <script defer src="~/Scripts/bootstrap.js"></script>
 
-    
-
     <title>@Page.Title</title>
     @RenderSection("head", required: false)
+
+    <style>
+        .bg {
+            background-image: url(/Images/aditya-chinchure-709017-unsplash2.jpg);
+            height: 100%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position:center;
+
+        }
+        .btn{
+            color:white;
+        }
+        .table{
+           
+            color:white;
+        }
+    </style>
 </head>
 
-<body class="bg-light">
-<div class="header">
-    <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand">
-            <img src="~/Images/logos/LogoMakr_6emYM9.png" width="120" height="60" class="d-inline-block align-top" alt="Logo">
-        </a>
-    </nav>
-</div>
-@RenderBody()
+<body class="bg">
+    <div class="header">
+        <nav class="navbar navbar-light bg-transparent">
+            <a class="navbar-brand">
+                <img src="~/Images/logos/LogoMakr_6emYM9.png" width="120" height="60" class="d-inline-block align-top" alt="Logo">
+            </a>
+        </nav>
+    </div>
+    @RenderBody()
 
-<div class="modal-footer bg-dark text-white">
-    <a target="_blank" rel="noopener noreferrer" href="https://tres.nl/">
-        <img class="rounded float-right" src="~/Images/logos/TRES.png" alt="Tres Logo">
-    </a>
-    <a target="_blank" rel="noopener noreferrer" href="https://www.nhlstenden.com/">
-        <img class="rounded float-right" height="80" width="95" src="~/Images/logos/nhl_stenden.png" alt="Tres Logo">
-    </a>
-</div>
+    <div class="modal-footer sticky-bottom bg-dark text-white">
+        <a target="_blank" rel="noopener noreferrer" href="https://tres.nl/">
+            <img class="rounded float-right" src="~/Images/logos/TRES.png" alt="Tres Logo">
+        </a>
+        <a target="_blank" rel="noopener noreferrer" href="https://www.nhlstenden.com/">
+            <img class="rounded float-right" height="80" width="95" src="~/Images/logos/nhl_stenden.png" alt="Tres Logo">
+        </a>
+    </div>
 </body>
 </html>

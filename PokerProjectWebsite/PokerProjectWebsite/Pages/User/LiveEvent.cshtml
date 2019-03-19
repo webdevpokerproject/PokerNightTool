@@ -1,72 +1,71 @@
 ﻿@{
     Layout = "~/Shared/_Layout.cshtml";
+    Page.Title = "PokerNight ~ Live Event ~";
+
+    string EventNaam = "test";
+    int smallBlind = 1;
+    int bigBlind = 2; 
 
 }
 <div class="container-fluid">
     <div class="row no-gutters">
         <div class="col-1"> </div>
         <div class="col-auto">
-            <button type="button" class="btn btn-light" data-toggle="collapse" data-target="#WaardeFiches"><h5 class="font-weight-bold">Open Waarde Fiches</h5></button>
-            <div id="WaardeFiches" class="collapse">
-                @foreach (var row in Functie.Fiches("test"))
-                {
-                    <img height="100" width="100" src="~/Images/fiches/@(row.Kleur)/@(row.Waarde).png" alt="Alternate Text" />
-                }
+            <button type="button" class="btn btn-transparent" data-toggle="collapse" data-target="#WaardeFiches"><h5 class="font-weight-bold">Open Waarde Fiches</h5></button>
+            <div id="WaardeFiches" class="collapse.show">
+                <div>
+                    @foreach (var row in Functie.Fiches("test"))
+                    {
+                        <img height="120" width="120" src="~/Images/fiches/@(row.Kleur)/@(row.Waarde).png" alt="Alternate Text" />
+                    }
+                </div>
+                <div>
+                    <!-- Blinds -->
+                </div>
             </div>
         </div>
-        
-        <!-- Laad spelers in -->
-        <div class="row no-gutters">
-            <div class="col-1"> </div>
-            <div class="col-auto">
-                <h5 class=" font-weight-bold">Indeling tafels:</h5>
-                <div>
-                    @for (int x = 1; Functie.HoeveelheidTafels("test") >= x ; x++)
-                    {
-                    <h3>Tafel @x  </h3>
-                        <table class="table table-responsive">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>#</th>
-                                    <th>Naam</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var row in Functie.Spelers("test", x))
-                                {
-                                    <tr>
-                                        <th scope="row">@{i++;} @i</th>
-                                        <td>@row.Voornaam @row.Achternaam </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    }
-
-                </div>
-        <div class="col-1"> </div>
     </div>
 </div>
+<br />
 <!--Laad tafelindeling in-->
 <div class="container-fluid">
     <div class="row no-gutters">
         <div class="col-1"> </div>
-        <div class="col-auto">
-            <button type="button" class="btn btn-light" data-toggle="collapse" data-target="#TafelIndeling"><h5 class="font-weight-bold">Open Tafelindeling</h5></button>
-            <div id="TafelIndeling" class="collapse">
-                <p>Buurt vrij voor de hele pot.</p>
+        <div class="col-10">
+            <button type="button" class="btn btn-transparent" data-toggle="collapse" data-target="#TafelIndeling"><h5 class="font-weight-bold">Open Tafelindeling</h5></button>
+            <div id="TafelIndeling" class="collapse.show">
+                <br />
+                @for (int x = 1; Functie.HoeveelheidTafels(EventNaam) >= x; x++)
+                {
+                    <table class="table table-active table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Tafel @x</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var row in Functie.Spelers(EventNaam, x))
+                            {
+                                <tr>
+                                    <td>@row.Voornaam @row.Achternaam </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
             </div>
         </div>
         <div class="col-1"> </div>
     </div>
 </div>
+
 <div class="container-fluid">
     <div class="row no-gutters">
         <div class="col-1"> </div>
         <div class="col-auto">
-            <button type="button" class="btn btn-light" data-toggle="collapse" data-target="#Cheatsheet"><h5 class="font-weight-bold">Open Cheatsheet</h5></button>
+            <button type="button" class="btn btn-transparent" data-toggle="collapse" data-target="#Cheatsheet"><h5 class="font-weight-bold">Open Cheatsheet</h5></button>
             <div id="Cheatsheet" class="collapse">
-                <p>Als je geen van deze combinaties hebt zou ik gewoon stoppen man.</p>
+                <p>Als je geen van deze combinaties hebt zou ik gewoon stoppen man. <a href="~/Pages/User/PokerRules.cshtml">De regels der poker</a></p>
                 <img src="~/Images/Cheatsheet/Handranking-1.jpg" alt="Cheat sheet" />
             </div>
         </div>
