@@ -7,37 +7,60 @@
     int bigBlind = 2;
 
 }
+<!--Card boven de fiches-->
 <div class="container-fluid">
     <div class="row no-gutters">
         <div class="col-1"> </div>
-        <div class="col-auto">
-            <button type="button" class="btn btn-transparent" data-toggle="collapse" data-target="#WaardeFiches"><h5 class="font-weight-bold">Open Waarde Fiches</h5></button>
-            <div id="WaardeFiches" class="collapse.show">
+        <div class="col-10">
+            <div class="card bg-dark">
+                <div class="card-title" data-toggle="collapse" data-target="#WaardeFiches">
+                    <h5 class="font-weight-bold">De huidige fiches: </h5>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-1"> </div>
+    </div>
+</div>
+<br />
+<!-- Hier worden de fiches weergeven + de blinds-->
+<div id="WaardeFiches" class="collapse.show">
+    <div class="container-fluid">
+        <div class="row no-gutters">
+            <div class="col-1"> </div>
+            <div class="col-auto">
                 <div>
                     @foreach (var row in Functie.Fiches("test"))
                     {
-                        <img height="120" width="120" src="~/Images/fiches/@(row.Kleur)/@(row.Waarde).png" alt="Alternate Text" />
+                        <img height="160" width="160" src="~/Images/fiches/@(row.Kleur)/@(row.Waarde).png" alt="Alternate Text" />
                     }
                 </div>
                 <div>
                     <!-- Blinds -->
                 </div>
+
             </div>
         </div>
     </div>
 </div>
 <br />
-<!--Laad tafelindeling in-->
+<!--Card boven de tabel-->
 <div class="container-fluid">
     <div class="row no-gutters">
         <div class="col-1"> </div>
         <div class="col-10">
-            <button type="button" class="btn btn-transparent" data-toggle="collapse" data-target="#TafelIndeling"><h5 class="font-weight-bold">Open Tafelindeling</h5></button>
+            <div class="card bg-dark">
+                <div class="card-title" data-toggle="collapse" data-target="#TafelIndeling">
+                    <h5 class="font-weight-bold">De huidige tafelindeling</h5>
+                </div>
+            </div>
+
         </div>
         <div class="col-1"> </div>
     </div>
 </div>
-
+<br />
+<!--Tabellen-->
 <div id="TafelIndeling" class="collapse.show">
     <div class="container">
         <div class="row ">
@@ -65,19 +88,31 @@
         </div>
     </div>
 </div>
-
-
-
+<br />
+<!--Card boven de cheatsheet-->
 <div class="container-fluid">
     <div class="row no-gutters">
         <div class="col-1"> </div>
-        <div class="col-auto">
-            <button type="button" class="btn btn-transparent" data-toggle="collapse" data-target="#Cheatsheet"><h5 class="font-weight-bold">Open Cheatsheet</h5></button>
-            <div id="Cheatsheet" class="collapse">
-                <p>Als je geen van deze combinaties hebt zou ik gewoon stoppen man. <a href="~/Pages/User/PokerRules.cshtml">De regels der poker</a></p>
-                <img src="~/Images/Cheatsheet/Handranking-1.jpg" alt="Cheat sheet" />
+        <div class="col-10">
+            <div class="card bg-dark">
+                <div class="card-title" data-toggle="collapse" data-target="#Cheatsheet">
+                    <h5 class="font-weight-bold">Kijk hier om te spieken</h5>
+                </div>
             </div>
         </div>
         <div class="col-1"> </div>
+    </div>
+</div>
+<br />
+<!--Cheatcheet content-->
+<div id="Cheatsheet" class="collapse">
+    <div class="container-fluid">
+        <div class="row no-gutters">
+            <div class="col-1"> </div>
+            <div class="col-auto">
+                <img src="~/Images/Cheatsheet/Handranking-1.jpg" alt="Cheat sheet" />
+            </div>
+            <div class="col-1"> </div>
+        </div>
     </div>
 </div>

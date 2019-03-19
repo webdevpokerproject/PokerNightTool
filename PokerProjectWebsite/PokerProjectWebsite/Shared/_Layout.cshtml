@@ -23,6 +23,9 @@
             background-position:center;
 
         }
+        .card{
+            color:white;
+        }
         .btn{
             color:white;
         }
@@ -34,21 +37,23 @@
 </head>
 
 <body class="bg">
+    <!-- Header-->
     <div class="header">
         <nav class="navbar navbar-light bg-transparent">
             <a class="navbar-brand">
-                <img src="~/Images/logos/LogoMakr_6emYM9.png" width="120" height="60" class="d-inline-block align-top" alt="Logo">
+                <img src="~/Images/logos/Pokernight.png" width="150" height="100" class="d-inline-block align-top" alt="Logo">
             </a>
         </nav>
     </div>
+    <!-- Niet aan zitten -->
     @RenderBody()
-
-    <div class="modal-footer sticky-bottom bg-dark text-white">
+    <!--Footer-->
+    <div class="modal-footer fixed-bottom bg-dark text-white">
         <a target="_blank" rel="noopener noreferrer" href="https://tres.nl/">
             <img class="rounded float-right" src="~/Images/logos/TRES.png" alt="Tres Logo">
         </a>
         <a target="_blank" rel="noopener noreferrer" href="https://www.nhlstenden.com/">
-            <img class="rounded float-right" height="80" width="95" src="~/Images/logos/nhl_stenden.png" alt="Tres Logo">
+            <img class="rounded float-right" height="80" width="120" src="~/Images/logos/nhl_stenden.png" alt="Tres Logo">
         </a>
     </div>
 </body>
