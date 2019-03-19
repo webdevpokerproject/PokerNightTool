@@ -4,7 +4,7 @@
 
     string EventNaam = "test";
     int smallBlind = 1;
-    int bigBlind = 2; 
+    int bigBlind = 2;
 
 }
 <div class="container-fluid">
@@ -33,11 +33,19 @@
         <div class="col-1"> </div>
         <div class="col-10">
             <button type="button" class="btn btn-transparent" data-toggle="collapse" data-target="#TafelIndeling"><h5 class="font-weight-bold">Open Tafelindeling</h5></button>
-            <div id="TafelIndeling" class="collapse.show">
-                <br />
-                @for (int x = 1; Functie.HoeveelheidTafels(EventNaam) >= x; x++)
-                {
-                    <table class="table table-active table-bordered">
+        </div>
+        <div class="col-1"> </div>
+    </div>
+</div>
+
+<div id="TafelIndeling" class="collapse.show">
+    <div class="container">
+        <div class="row ">
+            <br />
+            @for (int x = 1; Functie.HoeveelheidTafels(EventNaam) >= x; x++)
+            {
+                <div class="col-4">
+                    <table class="table table-light table-bordered">
                         <thead class="thead-dark">
                             <tr>
                                 <th>Tafel @x</th>
@@ -52,12 +60,13 @@
                             }
                         </tbody>
                     </table>
-                }
-            </div>
+                </div>
+            }
         </div>
-        <div class="col-1"> </div>
     </div>
 </div>
+
+
 
 <div class="container-fluid">
     <div class="row no-gutters">
