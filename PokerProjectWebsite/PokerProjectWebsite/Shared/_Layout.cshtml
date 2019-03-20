@@ -15,14 +15,30 @@
     @RenderSection("head", required: false)
 
     <style>
-        .bg {
+        body {
+            background-color: #3d4449;
+            color: white;
+            width: 75%;
+            margin: auto;
+            min-height: 100%;
+            margin-bottom: 130px; /*Prevents footer from covering content*/
+        }
+        html {
             background-image: url(/Images/aditya-chinchure-709017-unsplash4.jpg);
             height: 100%;
             background-repeat: no-repeat;
             background-size: cover;
-            background-position:center;
-
+            background-attachment: fixed;
+            background-position:center center;
         }
+
+        /*col-10 centering is unnecessary, very hacky and should be fixed in the html*/
+        .col-1 {flex: 0 0 0}
+        .col-10 { 
+            flex: 0 0 100%;
+            max-width: 100%
+        }
+
         .card{
             color:white;
         }
@@ -39,7 +55,7 @@
 <body class="bg">
     <!-- Header-->
     <div class="header">
-        <nav class="navbar navbar-light bg-transparent">
+        <nav class="navbar bg-dark text-white">
             <a class="navbar-brand">
                 <img src="~/Images/logos/Pokernight.png" width="150" height="100" class="d-inline-block align-top" alt="Logo">
             </a>
