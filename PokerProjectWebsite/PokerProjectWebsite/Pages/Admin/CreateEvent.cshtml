@@ -1,5 +1,121 @@
 ﻿@{
+    #region Nodige layout
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "PokerNight ~ Event aanmaken";
+    #endregion
+
+    #region 
+    Validation.RequireField("inVoornaam");
+    Validation.RequireField("Achternaam");
+    #endregion
+
+    var Voornaam = Request["inVoornaam"];
+    var Achternaam = Request["inAchternaam"];
+    var refcode = Functie.MaakReferencieCode();
 }
-    <h1>Hello, world!</h1>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-lg-10">
+            <div class="accordion" id="accordionExample">
+                <div class="card border-dark">
+                    <!-- HEADER VAN DE EERSTE CARD-->
+                    <div class="card-header bg-dark" id="headingOne">
+                        <h5 style=" color:white;">
+                            Spelers Toevoegen
+                        </h5>
+                    </div>
+                    <!-- BODY VAN DE EERSTE CARD-->
+                    <div id="SpelersToevoegen" aria-labelledby="headingOne">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Hier is het mogelijk om spelers toe te voegen.</h5>
+                                    <br />
+                                    @Voornaam
+                                    @Achternaam
+                                    @refcode
+                                    <br />
+                                    <form method="post">
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" placeholder="Voornaam speler" name="inVoornaam" aria-label="Voornaam-speler" aria-describedby="basic-addon2" required>
+                                            <input type="text" class="form-control" placeholder="Achternaam speler" name="inAchternaam" aria-label="Achternaam-speler" aria-describedby="basic-addon2" required>
+                                            <div class="input-group-append">
+                                                <button class="btn btn-dark" type="submit" id="button-addon2">Voeg speler toe!</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-md-6">
+                                    <table class="table table-bordered">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <td>#</td>
+                                                <td>Voornaam</td>
+                                                <td>Achternaam</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody >
+                                            @foreach(var row in Functie.Spelers("",0))
+                                            {
+                                                <tr>
+                                                    <th scope="row">1</th>
+                                                    <td>@Voornaam</td>
+                                                    <td>@Achternaam</td>
+                                                </tr>
+                                            }   
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-dark">
+                    <!--HEADER VAN DE TWEEDE CARD-->
+                    <div class="card-header bg-dark" id="headingTwo">
+                        <h5 style=" color:white;">
+                            Fiches toevoegen
+                        </h5>
+                    </div>
+                    <!-- BODY VAN DE TWEEDE CARD-->
+                    <div id="TafelIndeling" aria-labelledby="headingTwo">
+                        <div class="card-body">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-dark">
+                    <!--HEADER VAN DE DERDE CARD-->
+                    <div class="card-header bg-dark" id="headingThree">
+                        <h5 style=" color:white;">
+                            Spelers Toevoegen
+                        </h5>
+                    </div>
+                    <!-- BODY VAN DE DERDE CARD-->
+                    <div id="Pauzes" aria-labelledby="headingThree">
+                        <div class="card-body">
+                            Volgende pauze begint over 10 minuten
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-dark">
+                    <!--HEADER VAN DE VIERDE CARD-->
+                    <div class="card-header bg-dark" id="headingFour">
+                        <h5 style=" color:white;">
+                            Spelers Toevoegen
+                        </h5>
+                    </div>
+                    <!-- BODY VAN DE VIERDE CARD-->
+                    <div id="CheatCheet"  aria-labelledby="headingFour">
+                        <div class="card-body">
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
+using System.Timers;
 using System.Web;
 using WebMatrix.Data;
 
@@ -50,7 +52,7 @@ public class Functie
         }
         return false; 
     }
-
+    
     /// <summary>
     /// Haalt fiches op op basis van de eventnaam
     /// </summary>
@@ -61,7 +63,7 @@ public class Functie
         Database db = Database.OpenConnectionString(Functie.connectionString, Functie.provider);
         string QR_GetFiches = "SELECT Fiche.Kleur, Fiche.Waarde FROM (Fiche INNER JOIN EventFiches ON EventFiches.FicheId = Fiche.FicheId) WHERE EventFiches.ReferencieCode = @0 ORDER BY Fiche.Waarde ASC";
         var result = db.Query(QR_GetFiches, ReferencieCodeEvent);
-        return result; 
+        return result;
     }
 
     /// <summary>
@@ -86,6 +88,8 @@ public class Functie
         return result2;
     }
 
+
+
     /// <summary>
     /// Kijkt hoeveel tafels er zijn.
     /// </summary>
@@ -94,5 +98,30 @@ public class Functie
     public static int HoeveelheidTafels(string ReferencieCodeEvent)
     {
         return Spelers(ReferencieCodeEvent, 0).ElementAt(0).TafelNummer;
+    }
+
+    /// <summary>
+    /// Maakt een unieke code aan voor het event.
+    /// Lengte varieert per code. 
+    /// Geld als Forgein Key in de Event tabel. 
+    /// </summary>
+    /// <param name="size"></param>
+    /// <returns>Een unieke code</return
+    public static string MaakReferencieCode()
+    {
+        Random rnd = new Random();
+        int size = rnd.Next(3, 11);
+        var chars = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
+        var data = new Byte[size];
+        using (var crypto = new RNGCryptoServiceProvider())
+        {
+            crypto.GetBytes(data);
+        }
+        var result = new StringBuilder(size);
+        foreach (var b in data)
+        {
+            result.Append(chars[b % (chars.Length)]);
+        }
+        return result.ToString();
     }
 }

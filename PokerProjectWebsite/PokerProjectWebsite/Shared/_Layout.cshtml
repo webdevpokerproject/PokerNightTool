@@ -14,24 +14,35 @@
     <title>@Page.Title</title>
     @RenderSection("head", required: false)
 
+
     <style>
+        .body {
+            margin-bottom: 130px; /*Prevents footer from covering content*/
+        }
+        .card-body {
+            background: rgba(0, 0, 0,0.2);
+        }
+
         .bg {
             background-image: url(/Images/aditya-chinchure-709017-unsplash4.jpg);
             height: 100%;
             background-repeat: no-repeat;
             background-size: cover;
-            background-position:center;
+            background-position: center;
+        }
 
+        .card {
+            color: black;
         }
-        .card{
-            color:white;
+
+        .btn {
+            color: white;
+            font-style: oblique;
+            font-size: large;
         }
-        .btn{
-            color:white;
-        }
-        .table{
-           
-            color:black;
+
+        .table {
+            color: black;
         }
     </style>
 </head>
@@ -48,7 +59,18 @@
     <!-- Niet aan zitten -->
     @RenderBody()
     <!--Footer-->
-    <div class="modal-footer fixed-bottom bg-dark text-white">
+    <div class="modal-footer sticky-bottom bg-dark text-white">
+
+        <!-- Temporary links to admin and back-->
+        <a href="~/Pages/Admin/Login.cshtml">Admin login</a>
+        <a href="~/Pages/Admin/CreateEvent.cshtml">Spel aanmaken</a>
+        <a href="~/Pages/Admin/ConfirmEvent.cshtml">Preview spel aanmaken</a>
+        <a href="~/Pages/Admin/AanmakenEventSucces.cshtml">Event aanmaken succes</a>
+        <a href="~/Pages/Admin/LiveEventAanpassen.cshtml">Live event aanpassen</a>
+        <a href="~/Pages/User/LiveEvent.cshtml">Live event</a>
+        <a href="~/Pages/User/PokerRules.cshtml"></a>
+
+
         <a target="_blank" rel="noopener noreferrer" href="https://tres.nl/">
             <img class="rounded float-right" src="~/Images/logos/TRES.png" alt="Tres Logo">
         </a>
