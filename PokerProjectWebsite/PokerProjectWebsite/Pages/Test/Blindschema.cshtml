@@ -1,0 +1,72 @@
+﻿@{
+    Layout = "~/Shared/_Layout.cshtml";
+    Page.Title = "PokerNight ~ Live Event ~";
+
+}
+
+
+<div class="row">
+    <div class="col-4">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <h2>Blind instellingen</h2>
+            </div>
+
+            <div class="input-group-prepend">
+                <input type="text" class="form-control" placeholder="Small blind start waarde" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            </div>
+
+            <div class="input-group-prepend">
+                <input type="text" class="form-control" placeholder="Big blind start waarde" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            </div>
+
+            <div class="input-group-prepend">
+                <input type="text" class="form-control" placeholder="Blind duratie in minuten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            </div>
+
+            <div class="input-group-prepend">
+                <input type="text" class="form-control" placeholder="Blind verhogingsfactor" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            </div>
+
+            <div class="input-group-prepend">
+                <input type="text" class="form-control" placeholder="Pauze duratie in minuten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            </div>
+
+            <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary" style="width: 100%;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Add blind</button>
+                <button class="btn btn-outline-secondary" style="width: 100%;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Add pauze</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-8">
+
+        <table class="table table-light table-bordered">
+            <thead>
+                <tr>
+                    <th>Blind/Pauze</th>
+                    <th>Small blind</th>
+                    <th>Big blind</th>
+                    <th>Duratie (mins)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Blind</td>
+                    <td>10</td>
+                    <td>20</td>
+                    <td>15</td>
+                </tr>
+                <tr>
+                    <td>Blind</td>
+                    <td>20</td>
+                    <td>40</td>
+                    <td>15</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+
+</div>
