@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Timers;
-using System.Web;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using WebMatrix.Data;
 
 /// <summary>
@@ -45,14 +46,14 @@ public class Functie
     {
         Database db = Database.OpenConnectionString(Functie.connectionString, Functie.provider);
         string QR_GetLogin = "SELECT Gebruikersnaam, Wachtwoord FROM Beheerder WHERE Gebruikersnaam = @0 AND Wachtwoord = @1";
-        dynamic Output = db.QuerySingle(QR_GetLogin, naam, wachtwoord); 
-        if(Output != null)
+        dynamic Output = db.QuerySingle(QR_GetLogin, naam, wachtwoord);
+        if (Output != null)
         {
             return true;
         }
-        return false; 
+        return false;
     }
-    
+
     /// <summary>
     /// Haalt fiches op op basis van de eventnaam
     /// </summary>
@@ -73,7 +74,7 @@ public class Functie
     /// <returns> De spelers worden opgehaald </returns>
     public static IEnumerable<dynamic> Spelers(string ReferencieCodeEvent, int TafelNummer)
     {
-        Database db = Database.OpenConnectionString(Functie.connectionString, Functie.provider);
+        Database db = Database.OpenConnectionString(connectionString, provider);
         string QR_GetSpelers;
 
         if (TafelNummer == 0)
@@ -87,8 +88,6 @@ public class Functie
         var result2 = db.Query(QR_GetSpelers, ReferencieCodeEvent, TafelNummer);
         return result2;
     }
-
-
 
     /// <summary>
     /// Kijkt hoeveel tafels er zijn.
@@ -124,4 +123,86 @@ public class Functie
         }
         return result.ToString();
     }
+
+    /// <summary>
+    /// Maakt van de JSON string een DataTable
+    /// </summary>
+    /// <param name="json"></param>
+    /// <returns></returns>
+    public static DataTable ConvertJSON(string json, string var)
+    {
+        DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(json);
+        DataTable dataTable = dataSet.Tables[var];
+
+        return dataTable;
+    }
+
+    /// <summary>
+    /// Voert de query uit op de db om spelerID op te halen op basis van voor en achternaam
+    /// </summary>
+    /// <param name="voornaam"></param>
+    /// <param name="achternaam"></param>
+    /// <returns> SpelerID as int </returns>
+    public static int GetSpelerID(string voornaam, string achternaam)
+    {
+        Database db = Database.OpenConnectionString(connectionString, provider);
+        string QR_GetID = "SELECT SpelerId FROM Speler WHERE Voornaam = @0 AND Achternaam = @1";
+        var result = db.QuerySingle(QR_GetID, voornaam, achternaam);
+        return result[0];
+    }
+
+    /// <summary>
+    /// Haalt de SpelerIDs uit de json string 
+    /// </summary>
+    /// <param name="json"></param>
+    /// <returns>List met spelerIDs </returns>
+    public static List<int> GetSpelerIDList(string json)
+    {
+        List<int> SpelerIDs = new List<int>();
+        DataTable dataTable = ConvertJSON(json, "Spelers");
+        Database db = Database.OpenConnectionString(connectionString, provider);
+        string QR_CheckDB = "SELECT SpelerId, Voornaam, Achternaam FROM Speler WHERE Voornaam = @0 AND Achternaam = @1";
+        string QR_VoegSpelerToe = "INSERT INTO Speler(Voornaam, Achternaam) VALUES(@0, @1)";
+        
+        foreach (DataRow row in dataTable.Rows)
+        {
+            string voornaam = Convert.ToString(row["Voornaam"]);
+            string achternaam = Convert.ToString(row["Achternaam"]); 
+            var result = db.QuerySingle(QR_CheckDB, voornaam, achternaam);
+
+            if (result == null)
+            { 
+                db.Execute(QR_VoegSpelerToe, voornaam, achternaam);
+                SpelerIDs.Add(GetSpelerID(voornaam, achternaam));
+            }
+            SpelerIDs.Add(result[0]);
+        }
+        return SpelerIDs;
+    }
+
+    /// <summary>
+    /// WIP
+    /// Haalt de FicheIDs uit de json string 
+    /// </summary>
+    /// <param name="json"></param>
+    /// <returns> List met FicheIds</returns>
+    public static List<int> GetFicheIDList(string json)
+    {
+        List<int> FicheIDs = new List<int>();
+        DataTable dataTable = ConvertJSON(json, "Fiche");
+        Database db = Database.OpenConnectionString(connectionString, provider);
+
+        string QR_GetFicheID = "SELECT FicheId FROM Fiche WHERE Waarde = @0 AND Kleur = @1";
+
+        foreach (DataRow row in dataTable.Rows)
+        {
+            var kleur = row["Kleur"];
+            int waarde = Convert.ToInt32(row["Waarde"]);
+            var result = db.QuerySingle(QR_GetFicheID, waarde, kleur) ;
+            FicheIDs.Add(result[0]);
+        }
+        return FicheIDs;
+    }
+
+
 }

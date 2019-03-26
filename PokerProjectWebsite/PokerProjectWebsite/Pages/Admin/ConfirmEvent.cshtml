@@ -1,5 +1,36 @@
-﻿@{
-    Layout = "~/Shared/_Layout.cshtml";
-    Page.Title = "PokerNight ~ Event aanmaken";
+﻿@*@using System.Data;
+
+@{
+
+    //Layout = "~/Shared/_Layout.cshtml";
+    //Page.Title = "PokerNight ~ Event aanmaken";
+
+
+    string json_example = @"{
+    'Spelers':[ 
+	    {'Voornaam':'Maurice','Achternaam':'Ponte'},
+	    {'Voornaam':'Geert','Achternaam':'Hagema'}, 
+	    {'Voornaam':'Tjeerd','Achternaam': 'van Gelder'}, 
+	    {'Voornaam':'Jan-Sietze','Achternaam': 'Hoekstra'}]
+	}";
+
+    string json93284 = @"{
+    'Fiche':[
+	{'Kleur':'blue','Waarde':'10'},	
+	{'Kleur':'white','Waarde':'20'},	
+	{'Kleur':'green','Waarde':'100'},	
+	{'Kleur':'red','Waarde':'200'},	
+	{'Kleur':'black','Waarde':'500'}]
+	}";
+
+
+    var Fiches = Functie.GetFicheIDList(json93284);
 }
-    <h1>Hello, world!</h1>
+
+<p>
+    @foreach(int i in Fiches)
+    {
+        @i
+    }
+
+</p>*@
