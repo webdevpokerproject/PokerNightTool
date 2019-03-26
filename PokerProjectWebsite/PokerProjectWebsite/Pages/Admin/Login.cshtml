@@ -1,6 +1,58 @@
 ﻿@{
+    #region Nodige layout
     Layout = "~/Shared/_Layout.cshtml";
-    Page.Title = "PokerNight ~ Admin login"; 
+    Page.Title = "PokerNight ~ Admin login";
+    #endregion
+
+    if (IsPost)
+    {
+        var naam = Request.Form["Login"];
+        var wachtwoord = Request.Form["Password"];
+
+        if (Functie.Login(naam, wachtwoord))
+        {
+            Response.Redirect($"~/Pages/Admin/CreateEvent.cshtml");
+        }
+        else
+        {
+            Validation.AddFormError("Gebruikersnaam of wachtwoord is onjuist");
+        }
+
+    }
 }
 
-    <h1>Hello, world!</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-5">
+            <div class="accordion" id="accordionExample">
+                <div class="card-body">
+                    <div class="card-header bg-dark" id="headingOne">
+                        <h2 style="color:white">Inloggen</h2>
+                        <!--FORM VOOR INLOGGEN BEHEERDER-->
+                        <form method="post">
+                            <p style="color:white">Gebruikersnaam</p><input type="text" class="form-control" name="Login" placeholder="Voer uw gebruikersnaam in" />
+                            <br />
+                            <p style="color:white">Wachtwoord</p><input type="password" class="form-control" name="Password" placeholder="Voer uw wachtwoord in" />
+                            <br />
+                            <div style="color:red"><b> @Html.ValidationSummary()</b></div>
+                            <button class="btn btn-primary" type="submit" name="Submit" value="LoginButton">Inloggen!</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="accordion" id="accordionExample">
+                <div class="card-body">
+                    <div class="card-header bg-dark" id="headingOne">
+                        <h2 style="color: white;  text-align: center">
+                            If you can't beat them, bluff them!
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</div>
