@@ -8,8 +8,9 @@
         var rijcel2;
         var rijcel3;
         var count = Number(document.getElementById("Rowcounter").value);
-
-        if (count == 0) {
+        var rows = document.getElementById(tableID).getElementsByTagName("tr").length;
+        
+        if (rows == 0) {
 
             waarde2 = document.getElementById("SmallBlind").value;
             waarde3 = document.getElementById("BigBlind").value;
