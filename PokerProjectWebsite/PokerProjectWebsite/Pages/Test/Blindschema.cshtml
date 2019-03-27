@@ -1,52 +1,53 @@
-﻿@{
+﻿@*@{
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "PokerNight ~ Live Event ~";
+}
+<script> 
+    let Duratie;
+    var waarde2;
+    var waarde3;
+    var blindfactor;
+    var rijcel2;
+    var rijcel3;
+    var count = Number(document.getElementById("Rowcounter").value);
+    var rows = document.getElementById(tableID).getElementsByTagName("tr").length;
 
-        let Duratie;
-        var waarde2;
-        var waarde3;
-        var blindfactor;
-        var rijcel2;
-        var rijcel3;
-        var count = Number(document.getElementById("Rowcounter").value);
-        var rows = document.getElementById(tableID).getElementsByTagName("tr").length;
+
+    if (rows == 0) {
+
+        waarde2 = document.getElementById("SmallBlind").value;
+        waarde3 = document.getElementById("BigBlind").value;
+        Duratie = document.getElementById("BlindDuratie").value;
+
+        addRow(tableID, pauzeblind, waarde2, waarde3, Duratie, count);
+    }
+    else
+    {
+        rijcel2 = Number(document.getElementById("Smallblindwaarde" + count).value);
+        rijcel3 = Number(document.getElementById("Bigblindwaarde" + count).value);
 
 
-        if (rows == 0) {
-
-            waarde2 = document.getElementById("SmallBlind").value;
-            waarde3 = document.getElementById("BigBlind").value;
-            Duratie = document.getElementById("BlindDuratie").value;
-
-            addRow(tableID, pauzeblind, waarde2, waarde3, Duratie,count)
+        if (pauzeblind == "Pauze") {
+            waarde2 = rijcel2;
+            waarde3 = rijcel3;
+            Duratie = document.getElementById("PauzeDuratie").value;
         }
-        else
-        {
-            rijcel2 = Number(document.getElementById("Smallblindwaarde" + count).value);
-            rijcel3 = Number(document.getElementById("Bigblindwaarde" + count).value);
-
-
-            if (pauzeblind == "Pauze") {
-                waarde2 = rijcel2;
-                waarde3 = rijcel3;
-                Duratie = document.getElementById("PauzeDuratie").value;
+        else {
+            if (document.getElementById("BlindFactor").value == 0) {
+                blindfactor = 1;
             }
             else {
-                if (document.getElementById("BlindFactor").value == 0) {
-                    blindfactor = 1;
-                }
-                else {
-                    blindfactor = document.getElementById("BlindFactor").value;
-                }
-
-                waarde2 = (rijcel2 * blindfactor);
-                waarde3 = (rijcel3 * blindfactor);
-                Duratie = document.getElementById("BlindDuratie").value;
+                blindfactor = document.getElementById("BlindFactor").value;
             }
 
-            addRow(tableID, pauzeblind, waarde2, waarde3, Duratie, count)
+            waarde2 = (rijcel2 * blindfactor);
+            waarde3 = (rijcel3 * blindfactor);
+            Duratie = document.getElementById("BlindDuratie").value;
         }
-    }
+
+        addRow(tableID, pauzeblind, waarde2, waarde3, Duratie, count)
+        }
+    } 
 
     function addRow(tableID,pauzeblind,SBwaarde,BBwaarde,Duratie,teller) {
         // Get a reference to the table
@@ -93,7 +94,7 @@
         p.parentNode.removeChild(p);
     }
 
-</script>
+</script>*@
 
 <div class="row">
     <div class="col-4">

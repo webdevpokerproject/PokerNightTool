@@ -59,7 +59,7 @@ public class Functie
     /// </summary>
     /// <param name="ReferencieCodeEvent"> ReferencieCode van het event</param>
     /// <returns> De kleur en waarde van de gebruikte fiches, worden op pagina omgezet tot <img> </returns>
-    public static IEnumerable<dynamic> Fiches(string ReferencieCodeEvent)
+    public static IEnumerable<dynamic> FichesLive(string ReferencieCodeEvent)
     {
         Database db = Database.OpenConnectionString(Functie.connectionString, Functie.provider);
         string QR_GetFiches = "SELECT Fiche.Kleur, Fiche.Waarde FROM (Fiche INNER JOIN EventFiches ON EventFiches.FicheId = Fiche.FicheId) WHERE EventFiches.ReferencieCode = @0 ORDER BY Fiche.Waarde ASC";
@@ -72,7 +72,7 @@ public class Functie
     /// </summary>
     /// <param name="ReferencieCodeEvent"> ReferencieCode van het event </param>
     /// <returns> De spelers worden opgehaald </returns>
-    public static IEnumerable<dynamic> Spelers(string ReferencieCodeEvent, int TafelNummer)
+    public static IEnumerable<dynamic> SpelersLive(string ReferencieCodeEvent, int TafelNummer)
     {
         Database db = Database.OpenConnectionString(connectionString, provider);
         string QR_GetSpelers;
@@ -96,32 +96,7 @@ public class Functie
     /// <returns></returns>
     public static int HoeveelheidTafels(string ReferencieCodeEvent)
     {
-        return Spelers(ReferencieCodeEvent, 0).ElementAt(0).TafelNummer;
-    }
-
-    /// <summary>
-    /// Maakt een unieke code aan voor het event.
-    /// Lengte varieert per code. 
-    /// Geld als Forgein Key in de Event tabel. 
-    /// </summary>
-    /// <param name="size"></param>
-    /// <returns>Een unieke code</return
-    public static string MaakReferencieCode()
-    {
-        Random rnd = new Random();
-        int size = rnd.Next(3, 11);
-        var chars = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
-        var data = new Byte[size];
-        using (var crypto = new RNGCryptoServiceProvider())
-        {
-            crypto.GetBytes(data);
-        }
-        var result = new StringBuilder(size);
-        foreach (var b in data)
-        {
-            result.Append(chars[b % (chars.Length)]);
-        }
-        return result.ToString();
+        return SpelersLive(ReferencieCodeEvent, 0).ElementAt(0).TafelNummer;
     }
 
     /// <summary>
@@ -204,9 +179,6 @@ public class Functie
         return FicheIDs;
     }
 
-<<<<<<< Updated upstream
-
-=======
     /// <summary>
     /// Haalt de BlindsData op en stopt het in een array
     /// Array krijgt de lengte van de hoeveelheid Rows in de dataTable
@@ -230,9 +202,7 @@ public class Functie
         }
         return arrayOfBlindTable; 
     }
-    #endregion
 
-    #region Methodes voor de ConfirmEventPagina
     /// <summary>
     /// Maakt een unieke code aan voor het event.
     /// Lengte varieert per code. 
@@ -341,6 +311,6 @@ public class Functie
         return refcode; 
 
     }
-    #endregion
->>>>>>> Stashed changes
+
+
 }

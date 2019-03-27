@@ -45,7 +45,7 @@
                                         @for (int x = 1; Functie.HoeveelheidTafels(EventNaam) >= x; x++)
                                         {
                                             <tr>
-                                                @foreach (var row in Functie.Spelers(EventNaam, x))
+                                                @foreach (var row in Functie.SpelersLive(EventNaam, x))
                                                 {
                                                     <td>@row.Voornaam @row.Achternaam <button class=" btn DelBtn btn-dark float-right" ><i class="fas fa-trash-alt float-right"></i></button></td>
                                                 }
