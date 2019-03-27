@@ -28,7 +28,6 @@ using WebMatrix.Data;
 
 public class Functie
 {
-    #region Strings voor connectie met database
     /// <summary>
     /// Deze 2 strings vertegenwoordigen de connectie string en database provider. 
     /// Deze hiermee kan de database connectie op onderstaande manier worden aangeroepen:
@@ -36,9 +35,7 @@ public class Functie
     /// </summary>
     public const string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\data.mdf;Integrated Security=True";
     public const string provider = "System.Data.SqlClient";
-    #endregion
 
-    #region Methode voor de Admin/loginPagina
     /// <summary>
     /// Zorgt voor inlogfunctionaliteit voor de beheerder. 
     /// </summary>
@@ -56,15 +53,13 @@ public class Functie
         }
         return false;
     }
-    #endregion
 
-    #region Methodes voor LiveEventPagina
     /// <summary>
     /// Haalt fiches op op basis van de eventnaam
     /// </summary>
     /// <param name="ReferencieCodeEvent"> ReferencieCode van het event</param>
     /// <returns> De kleur en waarde van de gebruikte fiches, worden op pagina omgezet tot <img> </returns>
-    public static IEnumerable<dynamic> FichesLive(string ReferencieCodeEvent)
+    public static IEnumerable<dynamic> Fiches(string ReferencieCodeEvent)
     {
         Database db = Database.OpenConnectionString(Functie.connectionString, Functie.provider);
         string QR_GetFiches = "SELECT Fiche.Kleur, Fiche.Waarde FROM (Fiche INNER JOIN EventFiches ON EventFiches.FicheId = Fiche.FicheId) WHERE EventFiches.ReferencieCode = @0 ORDER BY Fiche.Waarde ASC";
@@ -77,7 +72,7 @@ public class Functie
     /// </summary>
     /// <param name="ReferencieCodeEvent"> ReferencieCode van het event </param>
     /// <returns> De spelers worden opgehaald </returns>
-    public static IEnumerable<dynamic> SpelersLive(string ReferencieCodeEvent, int TafelNummer)
+    public static IEnumerable<dynamic> Spelers(string ReferencieCodeEvent, int TafelNummer)
     {
         Database db = Database.OpenConnectionString(connectionString, provider);
         string QR_GetSpelers;
@@ -101,11 +96,34 @@ public class Functie
     /// <returns></returns>
     public static int HoeveelheidTafels(string ReferencieCodeEvent)
     {
-        return SpelersLive(ReferencieCodeEvent, 0).ElementAt(0).TafelNummer;
+        return Spelers(ReferencieCodeEvent, 0).ElementAt(0).TafelNummer;
     }
-    #endregion
 
-    #region Methodes voor EventAanmakenPagina
+    /// <summary>
+    /// Maakt een unieke code aan voor het event.
+    /// Lengte varieert per code. 
+    /// Geld als Forgein Key in de Event tabel. 
+    /// </summary>
+    /// <param name="size"></param>
+    /// <returns>Een unieke code</return
+    public static string MaakReferencieCode()
+    {
+        Random rnd = new Random();
+        int size = rnd.Next(3, 11);
+        var chars = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
+        var data = new Byte[size];
+        using (var crypto = new RNGCryptoServiceProvider())
+        {
+            crypto.GetBytes(data);
+        }
+        var result = new StringBuilder(size);
+        foreach (var b in data)
+        {
+            result.Append(chars[b % (chars.Length)]);
+        }
+        return result.ToString();
+    }
+
     /// <summary>
     /// Maakt van de JSON string een DataTable
     /// </summary>
@@ -145,15 +163,15 @@ public class Functie
         Database db = Database.OpenConnectionString(connectionString, provider);
         string QR_CheckDB = "SELECT SpelerId, Voornaam, Achternaam FROM Speler WHERE Voornaam = @0 AND Achternaam = @1";
         string QR_VoegSpelerToe = "INSERT INTO Speler(Voornaam, Achternaam) VALUES(@0, @1)";
-
+        
         foreach (DataRow row in dataTable.Rows)
         {
             string voornaam = Convert.ToString(row["Voornaam"]);
-            string achternaam = Convert.ToString(row["Achternaam"]);
+            string achternaam = Convert.ToString(row["Achternaam"]); 
             var result = db.QuerySingle(QR_CheckDB, voornaam, achternaam);
 
             if (result == null)
-            {
+            { 
                 db.Execute(QR_VoegSpelerToe, voornaam, achternaam);
                 SpelerIDs.Add(GetSpelerID(voornaam, achternaam));
             }
@@ -163,6 +181,7 @@ public class Functie
     }
 
     /// <summary>
+    /// WIP
     /// Haalt de FicheIDs uit de json string 
     /// </summary>
     /// <param name="json"></param>
@@ -173,143 +192,17 @@ public class Functie
         DataTable dataTable = ConvertJSON(json, "Fiche");
         Database db = Database.OpenConnectionString(connectionString, provider);
 
-        string QR_GetFicheID = "SELECT FicheId FROM Fiche WHERE Kleur = @0 AND Waarde = @1";
+        string QR_GetFicheID = "SELECT FicheId FROM Fiche WHERE Waarde = @0 AND Kleur = @1";
 
         foreach (DataRow row in dataTable.Rows)
         {
-            string kleur = Convert.ToString(row["Kleur"]);
+            var kleur = row["Kleur"];
             int waarde = Convert.ToInt32(row["Waarde"]);
-
-            var result = db.QuerySingle(QR_GetFicheID, kleur, waarde);
+            var result = db.QuerySingle(QR_GetFicheID, waarde, kleur) ;
             FicheIDs.Add(result[0]);
         }
         return FicheIDs;
     }
 
-    /// <summary>
-    /// Haalt de BlindsData op en stopt het in een array
-    /// Array krijgt de lengte van de hoeveelheid Rows in de dataTable
-    /// </summary>
-    /// <param name="json"></param>
-    /// <returns></returns>
-    public static Array GetBlinds(string json)
-    {
-        DataTable dataTable = ConvertJSON(json, "Blinds");
-        Database db = Database.OpenConnectionString(connectionString, provider);
-        int numberOfRows = dataTable.Rows.Count; 
-        string[,] arrayOfBlindTable = new string[numberOfRows, 5];
 
-        for(int i = 0; numberOfRows > i; i++)
-        {
-            arrayOfBlindTable[i, 0] = Convert.ToString(dataTable.Rows[i]["Ronde"]);
-            arrayOfBlindTable[i, 1] = Convert.ToString(dataTable.Rows[i]["Pauze"]);
-            arrayOfBlindTable[i, 2] = Convert.ToString(dataTable.Rows[i]["BigBlind"]);
-            arrayOfBlindTable[i, 3] = Convert.ToString(dataTable.Rows[i]["SmallBlind"]);
-            arrayOfBlindTable[i, 4] = Convert.ToString(dataTable.Rows[i]["Duratie"]); 
-        }
-        return arrayOfBlindTable; 
-    }
-    #endregion
-
-    #region Methodes voor de ConfirmEventPagina
-    /// <summary>
-    /// Maakt een unieke code aan voor het event.
-    /// Lengte varieert per code. 
-    /// Geld als Forgein Key in de Event tabel. 
-    /// </summary>
-    /// <param name="size"></param>
-    /// <returns>Een unieke code</return
-    public static string MaakReferencieCode()
-    {
-        Random rnd = new Random();
-        int size = rnd.Next(3, 11);
-        var chars = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
-        var data = new Byte[size];
-        using (var crypto = new RNGCryptoServiceProvider())
-        {
-            crypto.GetBytes(data);
-        }
-        var result = new StringBuilder(size);
-        foreach (var b in data)
-        {
-            result.Append(chars[b % (chars.Length)]);
-        }
-        return result.ToString();
-    }
-
-    /// <summary>
-    /// Haalt spelernamen op vanuit de JSON en haalt preview op 
-    /// </summary>
-    /// <param name="SpelerIDs"></param>
-    /// <returns>Lijst met namen van de spelers die eerder zijn ingevoerd</returns>
-    public static List<string> SpelersPreview(List<int> SpelerIDs)
-    {
-        Database db = Database.OpenConnectionString(connectionString, provider);
-        string QR_GetSpelerNamen = "SELECT Voornaam, Achternaam FROM Speler WHERE SpelerId = @0";
-        List<string> SpelerLijst = new List<string>();
-
-        foreach (int n in SpelerIDs)
-        {
-            var result = db.QuerySingle(QR_GetSpelerNamen, n);
-            string speler = result[0] + " " + result[1];
-            SpelerLijst.Add(speler);
-        }
-        return SpelerLijst;
-    }
-
-    /// <summary>
-    /// Haalt Fiches op vanuit JSON en haalt preview in 
-    /// </summary>
-    /// <param name="FicheIDs"></param>
-    /// <returns></returns>
-    public static Dictionary<string, int> FichesPreview(List<int> FicheIDs)
-    {
-        Database db = Database.OpenConnectionString(connectionString, provider);
-        string QR_GetFiches = "SELECT Kleur, Waarde FROM Fiche WHERE FicheId = @0";
-        Dictionary<string, int> FicheLijst = new Dictionary<string, int>();
-
-        foreach(int n in FicheIDs)
-        {
-            var result = db.QuerySingle(QR_GetFiches, n);
-            FicheLijst.Add(result[0],result[1]);
-        }
-        return FicheLijst;
-    }
-
-    /// <summary>
-    /// WIP
-    /// </summary>
-    /// <param name="Spelers"></param>
-    /// <param name="Fiches"></param>
-    /// <returns></returns>
-    public static string EventAanmaken(List<int>Spelers,List<int> Fiches,string refcode)
-    {   
-        Database db = Database.OpenConnectionString(connectionString, provider);
-        /////Maak referencieCode en zet hem in de Event tabel
-        //string refcode = MaakReferencieCode();
-        //string QR_InsertRefcode = "INSERT INTO Event(ReferencieCode) VALUES(@0)";
-        //db.Execute(QR_InsertRefcode, refcode); 
-
-        /// Voeg de spelers toe op basis van de IDLijst
-        string QR_SpelersInvoeren = "INSERT INTO SpelerEvent(SpelerId,ReferencieCode) VALUES(@0,@1)";
-        foreach (int n in Spelers)
-        {
-            db.Execute(QR_SpelersInvoeren, n, refcode); 
-        }
-
-        /// Voeg de fiches toe op basis van de IDLijst
-        string QR_FichesInvoeren = "INSERT INTO EventFiches(FicheId,ReferencieCode) VALUES(@0,@1)";
-        foreach(int i in Fiches)
-        {
-            db.Execute(QR_FichesInvoeren, i, refcode); 
-        }
-
-        /// Hier moet het blinds-schema ingevoerd worden. 
-
-
-        /// Return de RefCode zodat de admin deze kan gebruiken.
-        return refcode; 
-
-    }
-    #endregion
 }

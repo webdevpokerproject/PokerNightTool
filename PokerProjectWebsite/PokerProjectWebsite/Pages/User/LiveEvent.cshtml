@@ -26,9 +26,9 @@
                     <div id="WaardeFiches" class="collapse show" aria-labelledby="headingOne">
                         <div class="card-body">
                             <div>
-                                @foreach (var row in Functie.FichesLive("test"))
+                                @foreach (var row in Functie.Fiches("test"))
                                 {
-                                    <img height="140" width="140" src="~/Images/fiches/@(row.Kleur)/@(row.Waarde).png" alt="Fiches zijn niet ingeladen" />
+                                    <img height="140" width="140" src="~/Images/fiches/@(row.Kleur)/@(row.Waarde).png" alt="Alternate Text" />
                                 }
                             </div>
                             <div class="row">
@@ -69,7 +69,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach (var row in Functie.SpelersLive(EventNaam, x))
+                                                @foreach (var row in Functie.Spelers(EventNaam, x))
                                                 {
                                                     <tr>
                                                         <td>@row.Voornaam @row.Achternaam </td>
