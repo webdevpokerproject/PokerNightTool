@@ -11,7 +11,6 @@
 
     var Voornaam = Request["inVoornaam"];
     var Achternaam = Request["inAchternaam"];
-    var refcode = Functie.MaakReferencieCode();
 }
 
 
@@ -36,7 +35,6 @@
                                     <br />
                                     @Voornaam
                                     @Achternaam
-                                    @refcode
                                     <br />
                                     <form method="post">
                                         <div class="input-group mb-3">
@@ -58,7 +56,7 @@
                                             </tr>
                                         </thead>
                                         <tbody >
-                                            @foreach(var row in Functie.Spelers("",0))
+                                            @foreach(var row in Functie.SpelersLive("",0))
                                             {
                                                 <tr>
                                                     <th scope="row">1</th>
@@ -91,13 +89,13 @@
                     <!--HEADER VAN DE DERDE CARD-->
                     <div class="card-header bg-dark" id="headingThree">
                         <h5 style=" color:white;">
-                            Spelers Toevoegen
+                            Blind Schema aanmaken
                         </h5>
                     </div>
                     <!-- BODY VAN DE DERDE CARD-->
-                    <div id="Pauzes" aria-labelledby="headingThree">
+                    <div id="BlindSchema" aria-labelledby="headingThree">
                         <div class="card-body">
-                            Volgende pauze begint over 10 minuten
+                            Hiermoet het blind-schema komen
                         </div>
                     </div>
                 </div>
@@ -105,13 +103,13 @@
                     <!--HEADER VAN DE VIERDE CARD-->
                     <div class="card-header bg-dark" id="headingFour">
                         <h5 style=" color:white;">
-                            Spelers Toevoegen
+                            Door naar de preview
                         </h5>
                     </div>
                     <!-- BODY VAN DE VIERDE CARD-->
-                    <div id="CheatCheet"  aria-labelledby="headingFour">
+                    <div id="NextPage"  aria-labelledby="headingFour">
                         <div class="card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            Hier moeten 2 buttons komen die verwijzen naar de volgende pagina 
                         </div>
                     </div>
                 </div>

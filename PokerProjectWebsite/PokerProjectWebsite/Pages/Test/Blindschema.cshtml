@@ -1,9 +1,96 @@
-﻿@{
-    Layout = "~/Shared/_Layout.cshtml";
-    Page.Title = "PokerNight ~ Live Event ~";
+<script>
+    function getlastrowdata(tableID,pauzeblind) {
 
-}
+        let Duratie;
+        var waarde2;
+        var waarde3;
+        var blindfactor;
+        var rijcel2;
+        var rijcel3;
+        var count = Number(document.getElementById("Rowcounter").value);
 
+        if (count == 0) {
+
+            waarde2 = document.getElementById("SmallBlind").value;
+            waarde3 = document.getElementById("BigBlind").value;
+            Duratie = document.getElementById("BlindDuratie").value;
+
+            addRow(tableID, pauzeblind, waarde2, waarde3, Duratie,count)
+        }
+        else
+        {
+            rijcel2 = Number(document.getElementById("Smallblindwaarde" + count).value);
+            rijcel3 = Number(document.getElementById("Bigblindwaarde" + count).value);
+
+
+            if (pauzeblind == "Pauze") {
+                waarde2 = rijcel2;
+                waarde3 = rijcel3;
+                Duratie = document.getElementById("PauzeDuratie").value;
+            }
+            else {
+                if (document.getElementById("BlindFactor").value == 0) {
+                    blindfactor = 1;
+                }
+                else {
+                    blindfactor = document.getElementById("BlindFactor").value;
+                }
+
+                waarde2 = (rijcel2 * blindfactor);
+                waarde3 = (rijcel3 * blindfactor);
+                Duratie = document.getElementById("BlindDuratie").value;
+            }
+
+            addRow(tableID, pauzeblind, waarde2, waarde3, Duratie, count)
+        }
+    }
+
+    function addRow(tableID,pauzeblind,SBwaarde,BBwaarde,Duratie,teller) {
+        // Get a reference to the table
+        let tableRef = document.getElementById(tableID);
+
+        // Insert a row at the end of the table
+        let newRow = tableRef.insertRow(-1);
+
+        var newCell1 = newRow.insertCell(0);
+        var t1 = document.createElement("input");
+        t1.value = pauzeblind;
+        newCell1.appendChild(t1);
+
+        let newCell2 = newRow.insertCell(1)
+        var t2 = document.createElement("input");
+        t2.id = "Smallblindwaarde" + Number(teller + 1);
+        t2.value = SBwaarde;
+        newCell2.appendChild(t2);
+
+        let newCell3 = newRow.insertCell(2)
+        var t3 = document.createElement("input");
+        t3.id = "Bigblindwaarde" + Number(teller + 1);
+        t3.value = BBwaarde;
+        newCell3.appendChild(t3);
+
+        let newCell4 = newRow.insertCell(3)
+        var t4 = document.createElement("input");
+        t4.value = Duratie;
+        newCell4.appendChild(t4);
+
+        let newCell5 = newRow.insertCell(4)
+        var t5 = document.createElement("input");
+        t5.type = "button";
+        t5.value = "Delete";
+        t5.onclick = function() { SomeDeleteRowFunction(this); };
+        newCell5.appendChild(t5);
+
+        document.getElementById("Rowcounter").value = Number(teller + 1)
+    }
+
+    function SomeDeleteRowFunction(o) {
+        //no clue what to put here?
+        var p = o.parentNode.parentNode;
+        p.parentNode.removeChild(p);
+    }
+
+</script>
 
 <div class="row">
     <div class="col-4">
@@ -11,62 +98,45 @@
             <div class="input-group-prepend">
                 <h2>Blind instellingen</h2>
             </div>
-
+            
             <div class="input-group-prepend">
-                <input type="text" class="form-control" placeholder="Small blind start waarde" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                <input type="hidden" id="Rowcounter" value="0" />
+                <input type="number" class="form-control" id="SmallBlind" placeholder="Small blind start waarde" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            </div>
+            <div class="input-group-prepend">
+                <input type="number" class="form-control" id="BigBlind" placeholder="Big blind start waarde" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
             </div>
 
             <div class="input-group-prepend">
-                <input type="text" class="form-control" placeholder="Big blind start waarde" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                <input type="number" class="form-control" id="BlindDuratie" placeholder="Blind duratie in minuten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
             </div>
 
             <div class="input-group-prepend">
-                <input type="text" class="form-control" placeholder="Blind duratie in minuten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                <input type="number" class="form-control" id="BlindFactor" placeholder="Blind verhogingsfactor" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            </div>
+            <div class="input-group-prepend">
+                <input type="number" class="form-control" id="PauzeDuratie" placeholder="Pauze duratie in minuten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
             </div>
 
             <div class="input-group-prepend">
-                <input type="text" class="form-control" placeholder="Blind verhogingsfactor" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-            </div>
-
-            <div class="input-group-prepend">
-                <input type="text" class="form-control" placeholder="Pauze duratie in minuten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-            </div>
-
-            <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary" style="width: 100%;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Add blind</button>
-                <button class="btn btn-outline-secondary" style="width: 100%;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Add pauze</button>
+                <button class="btn btn-outline-secondary" onclick="getlastrowdata('blindtable','Blind');" style="width: 100%;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Add blind</button>
+                <button class="btn btn-outline-secondary" onclick="getlastrowdata('blindtable','Pauze');" style="width: 100%;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Add pauze</button>
             </div>
         </div>
     </div>
-
     <div class="col-8">
-
-        <table class="table table-light table-bordered">
+        <table class="table table-bordered" id="mytable">
             <thead>
                 <tr>
                     <th>Blind/Pauze</th>
                     <th>Small blind</th>
                     <th>Big blind</th>
                     <th>Duratie (mins)</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>Blind</td>
-                    <td>10</td>
-                    <td>20</td>
-                    <td>15</td>
-                </tr>
-                <tr>
-                    <td>Blind</td>
-                    <td>20</td>
-                    <td>40</td>
-                    <td>15</td>
-                </tr>
+            <tbody id="blindtable">
             </tbody>
         </table>
-
-
     </div>
-
 </div>
