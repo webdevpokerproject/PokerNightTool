@@ -1,5 +1,32 @@
 ﻿@{
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "PokerNight ~ Event aanmaken";
+
 }
 
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-lg-10">
+            <div class="accordion" id="accordionExample">
+                <div class="card border-dark">
+                    <!-- HEADER VAN DE EERSTE CARD-->
+                    <div class="card-header bg-dark" id="headingOne">
+                        <h5 style=" color:white;">
+                            Het event aanmaken is gelukt! 
+                        </h5>
+                    </div>
+                    <!-- BODY VAN DE EERSTE CARD-->
+                    <div id="TafelIndeling" aria-labelledby="headingOne">
+                        <div class="card-body">
+                            <h1>
+                                Het event aanmaken is gelukt!                           
+                            </h1>
+                            <p>De code om mensen uit te nodigen is: <b>@Session["ReferentieCode"]</b></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

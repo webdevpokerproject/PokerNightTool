@@ -204,5 +204,143 @@ public class Functie
         return FicheIDs;
     }
 
+<<<<<<< Updated upstream
 
+=======
+    /// <summary>
+    /// Haalt de BlindsData op en stopt het in een array
+    /// Array krijgt de lengte van de hoeveelheid Rows in de dataTable
+    /// </summary>
+    /// <param name="json"></param>
+    /// <returns></returns>
+    public static string[,] GetBlinds(string json)
+    {
+        DataTable dataTable = ConvertJSON(json, "Blinds");
+        Database db = Database.OpenConnectionString(connectionString, provider);
+        int numberOfRows = dataTable.Rows.Count; 
+        string[,] arrayOfBlindTable = new string[numberOfRows, 5];
+
+        for(int i = 0; numberOfRows > i; i++)
+        {
+            arrayOfBlindTable[i, 0] = Convert.ToString(dataTable.Rows[i]["Ronde"]);
+            arrayOfBlindTable[i, 1] = Convert.ToString(dataTable.Rows[i]["Pauze"]);
+            arrayOfBlindTable[i, 2] = Convert.ToString(dataTable.Rows[i]["BigBlind"]);
+            arrayOfBlindTable[i, 3] = Convert.ToString(dataTable.Rows[i]["SmallBlind"]);
+            arrayOfBlindTable[i, 4] = Convert.ToString(dataTable.Rows[i]["Duratie"]); 
+        }
+        return arrayOfBlindTable; 
+    }
+    #endregion
+
+    #region Methodes voor de ConfirmEventPagina
+    /// <summary>
+    /// Maakt een unieke code aan voor het event.
+    /// Lengte varieert per code. 
+    /// Geld als Forgein Key in de Event tabel. 
+    /// </summary>
+    /// <param name="size"></param>
+    /// <returns>Een unieke code</return
+    public static string MaakReferencieCode()
+    {
+        Random rnd = new Random();
+        int size = rnd.Next(3, 11);
+        var chars = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
+        var data = new Byte[size];
+        using (var crypto = new RNGCryptoServiceProvider())
+        {
+            crypto.GetBytes(data);
+        }
+        var result = new StringBuilder(size);
+        foreach (var b in data)
+        {
+            result.Append(chars[b % (chars.Length)]);
+        }
+        return result.ToString();
+    }
+
+    /// <summary>
+    /// Haalt spelernamen op vanuit de JSON en haalt preview op 
+    /// </summary>
+    /// <param name="SpelerIDs"></param>
+    /// <returns>Lijst met namen van de spelers die eerder zijn ingevoerd</returns>
+    public static List<string> SpelersPreview(List<int> SpelerIDs)
+    {
+        Database db = Database.OpenConnectionString(connectionString, provider);
+        string QR_GetSpelerNamen = "SELECT Voornaam, Achternaam FROM Speler WHERE SpelerId = @0";
+        List<string> SpelerLijst = new List<string>();
+
+        foreach (int n in SpelerIDs)
+        {
+            var result = db.QuerySingle(QR_GetSpelerNamen, n);
+            string speler = result[0] + " " + result[1];
+            SpelerLijst.Add(speler);
+        }
+        return SpelerLijst;
+    }
+
+    /// <summary>
+    /// Haalt Fiches op vanuit JSON en haalt preview in 
+    /// </summary>
+    /// <param name="FicheIDs"></param>
+    /// <returns></returns>
+    public static Dictionary<string, int> FichesPreview(List<int> FicheIDs)
+    {
+        Database db = Database.OpenConnectionString(connectionString, provider);
+        string QR_GetFiches = "SELECT Kleur, Waarde FROM Fiche WHERE FicheId = @0";
+        Dictionary<string, int> FicheLijst = new Dictionary<string, int>();
+
+        foreach(int n in FicheIDs)
+        {
+            var result = db.QuerySingle(QR_GetFiches, n);
+            FicheLijst.Add(result[0],result[1]);
+        }
+        return FicheLijst;
+    }
+
+    /// <summary>
+    /// WIP
+    /// </summary>
+    /// <param name="Spelers"></param>
+    /// <param name="Fiches"></param>
+    /// <returns></returns>
+    public static string EventAanmaken(List<int>Spelers,List<int> Fiches,string[,] Blinds,string refcode)
+    {   
+        Database db = Database.OpenConnectionString(connectionString, provider);
+        /////Maak referencieCode en zet hem in de Event tabel
+        //string refcode = MaakReferencieCode();
+        //string QR_InsertRefcode = "INSERT INTO Event(ReferencieCode) VALUES(@0)";
+        //db.Execute(QR_InsertRefcode, refcode); 
+
+        /// Voeg de spelers toe op basis van de IDLijst
+        string QR_SpelersInvoeren = "INSERT INTO SpelerEvent(SpelerId,ReferencieCode) VALUES(@0,@1)";
+        foreach (int n in Spelers)
+        {
+            db.Execute(QR_SpelersInvoeren, n, refcode); 
+        }
+        
+        /// Voeg de fiches toe op basis van de IDLijst
+        string QR_FichesInvoeren = "INSERT INTO EventFiches(FicheId,ReferencieCode) VALUES(@0,@1)";
+        foreach(int i in Fiches)
+        {
+            db.Execute(QR_FichesInvoeren, i, refcode); 
+        }
+
+        /// Hier moet het blinds-schema ingevoerd worden. 
+        string QR_BlindsInvoeren = "INSERT INTO Blinds(Ronde, Pauze, SmallBlind, BigBlind, Duratie) VALUES(@0,@1,@2,@3,@4)";
+        for (int i = 0; i < Blinds.GetLength(1); i++)
+        {
+            string ronde = Blinds[i, 0];
+            string pauze = Blinds[i, 0];
+            string BigBlind = Blinds[i, 0];
+            string SmallBlind = Blinds[i, 0];
+            string Duratie = Blinds[i, 0];
+            db.Execute(QR_BlindsInvoeren, ronde, pauze, BigBlind, SmallBlind, Duratie); 
+        }
+        
+        /// Return de RefCode zodat de admin deze kan gebruiken.
+        return refcode; 
+
+    }
+    #endregion
+>>>>>>> Stashed changes
 }
