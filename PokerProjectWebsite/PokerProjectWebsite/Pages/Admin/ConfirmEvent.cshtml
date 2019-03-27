@@ -1,36 +1,129 @@
-﻿@*@using System.Data;
+﻿@using System.Data;
 
 @{
 
     //Layout = "~/Shared/_Layout.cshtml";
-    //Page.Title = "PokerNight ~ Event aanmaken";
+    Page.Title = "PokerNight ~ Event aanmaken";
 
-
-    string json_example = @"{
-    'Spelers':[ 
-	    {'Voornaam':'Maurice','Achternaam':'Ponte'},
-	    {'Voornaam':'Geert','Achternaam':'Hagema'}, 
-	    {'Voornaam':'Tjeerd','Achternaam': 'van Gelder'}, 
-	    {'Voornaam':'Jan-Sietze','Achternaam': 'Hoekstra'}]
-	}";
-
-    string json93284 = @"{
+    string json = @"{
+    'Spelers':[
+           {'Voornaam':'Maurice','Achternaam':'Ponte'},
+           {'Voornaam':'Geert','Achternaam':'Hagema'}, 
+           {'Voornaam':'Tjeerd','Achternaam': 'van Gelder'}, 
+           {'Voornaam':'Jan-Sietze','Achternaam': 'Hoekstra'}],
     'Fiche':[
-	{'Kleur':'blue','Waarde':'10'},	
-	{'Kleur':'white','Waarde':'20'},	
-	{'Kleur':'green','Waarde':'100'},	
-	{'Kleur':'red','Waarde':'200'},	
-	{'Kleur':'black','Waarde':'500'}]
-	}";
+           {'Kleur':'blue','Waarde':'10'},    
+           {'Kleur':'white','Waarde':'20'},    
+           {'Kleur':'green','Waarde':'100'},    
+           {'Kleur':'red','Waarde':'200'},    
+           {'Kleur':'black','Waarde':'500'}],
+    'Blinds':[
+           {'Ronde':'1','Pauze':'False','BigBlind':'10','SmallBlind':'10','Duratie':'10'},
+           {'Ronde':'2','Pauze':'False','BigBlind':'20','SmallBlind':'30','Duratie':'10'},
+           {'Ronde':'3','Pauze':'False','BigBlind':'30','SmallBlind':'40','Duratie':'10'},
+           {'Ronde':'4','Pauze':'True','BigBlind':'30','SmallBlind':'40','Duratie':'20'},
+           {'Ronde':'5','Pauze':'False','BigBlind':'40','SmallBlind':'50','Duratie':'10'},
+           {'Ronde':'6','Pauze':'False','BigBlind':'50','SmallBlind':'60','Duratie':'10'}]
+                  }";
+
+    var lijstMetFicheIDs = Functie.GetFicheIDList(json);
+    var lijstMetSpelerIDs = Functie.GetSpelerIDList(json);
 
 
-    var Fiches = Functie.GetFicheIDList(json93284);
+
+
 }
 
-<p>
-    @foreach(int i in Fiches)
-    {
-        @i
-    }
+@foreach(string s in Functie.GetBlinds(json))
+{
+    <p>@s</p>
+}
 
-</p>*@
+@*<div class="container-fluid">
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-lg-10">
+            <div class="accordion" id="accordionExample">
+                <div class="card border-dark">
+                    <!-- HEADER VAN DE EERSTE CARD-->
+                    <div class="card-header bg-dark" id="headingOne">
+                        <h5 style=" color:white;">
+                           Preview van de tafel indeling: 
+                        </h5>
+                    </div>
+                    <!-- BODY VAN DE EERSTE CARD-->
+                    <div id="TafelIndeling" aria-labelledby="headingOne">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <table class="table table-light table-bordered">
+                                        <thead class="thead-dark">
+                                            <!-- Kijk hoeveel tafels zijn-->
+                                            <tr>
+                                                <th>Tafel x </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (string x in Functie.SpelersPreview(lijstMetSpelerIDs))
+                                            {
+                                                <tr>
+                                                    <td>@x</td>
+                                                   
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-dark">
+                    <!--HEADER VAN DE TWEEDE CARD-->
+                    <div class="card-header bg-dark" id="headingTwo">
+                        <h5 style=" color:white;">
+                            Preview van de fiches
+                        </h5>
+                    </div>
+                    <!-- BODY VAN DE TWEEDE CARD-->
+                    <div id="Fiches" aria-labelledby="headingTwo">
+                        <div class="card-body">
+                            @foreach(var entry in Functie.FichesPreview(lijstMetFicheIDs))
+                                {
+                                    <img height="140" width="140" src="~/Images/fiches/@(entry.Key)/@(entry.Value).png" alt="Alternate Text" />
+                                }
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-dark">
+                    <!--HEADER VAN DE DERDE CARD-->
+                    <div class="card-header bg-dark" id="headingThree">
+                        <h5 style=" color:white;">
+                            Preview van het blinds-schema:
+                        </h5>
+                    </div>
+                    <!-- BODY VAN DE DERDE CARD-->
+                    <div id="BlindSchema" aria-labelledby="headingThree">
+                        <div class="card-body">
+                            Hier moet het blindschema komen
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-dark">
+                    <!--HEADER VAN DE VIERDE CARD-->
+                    <div class="card-header bg-dark" id="headingFour">
+                        <h5 style=" color:white;">
+                            Confirm event: 
+                        </h5>
+                    </div>
+                    <!-- BODY VAN DE VIERDE CARD-->
+                    <div id="Confirm" aria-labelledby="headingFour">
+                        <div class="card-body">
+                            Hier moeten 2 buttons komen waarbij het event kan worden bevestigd of terug te gaan om het aan te passen. 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@
