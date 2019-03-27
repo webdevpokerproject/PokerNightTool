@@ -3,8 +3,42 @@
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "PokerNight ~ Admin login succes";
     #endregion
+
 }
 
-<div>
-    <h1>Welkom!</h1>
+<div class="col-sm-12">
+    <div class="jumbotron">
+        <h2>Welkom beheerder,</h2> 
+        <p>maak hieronder uw keuze</p>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div class="accordion" id="accordionExample">
+                    <form action="~/Pages/Admin/CreateEvent.cshtml" method="post">
+                            <button id="btnEvent" class="btnSucces" type="submit" value="NieuwEvent">Maak een nieuw event aan!</button>
+                    </form>
+            </div>
+        </div>
+        <div class="col-sm-3"></div>
+    </div>
+</div>
+
+<br /><br />
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div class="accordion" id="accordionExample">
+                <form action="~/Pages/Admin/ConfirmEvent.cshtml" method="post">
+                    <button id="btnEvent" class="btnSucces" type="submit" value="NieuwEvent">Gebruik dezelfde instellingen als de vorige sessie!</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-sm-3"></div>
+    </div>
 </div>

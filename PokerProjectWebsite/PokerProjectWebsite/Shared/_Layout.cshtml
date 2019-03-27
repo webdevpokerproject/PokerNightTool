@@ -19,8 +19,34 @@
         .body {
             margin-bottom: 130px; /*Prevents footer from covering content*/
         }
+
         .card-body {
             background: rgba(0, 0, 0,0.2);
+        }
+
+        .row.is-flex {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+            .row.is-flex > [class*='col-'] {
+                display: flex;
+                flex-direction: column;
+            }
+
+
+        .is-flex .box {
+            background-color: blue;
+            position: static;
+        }
+
+        .is-flex [class*="col-"] {
+            background: rgb(52, 58, 64);
+            padding: 2%;
+        }
+        .row {
+            background: rgb(52, 58, 64);
+            padding-left: 5%;
         }
 
         .bg {
@@ -44,6 +70,29 @@
         .table {
             color: black;
         }
+
+        #btnEvent{
+            width: 100%;
+            height: 100px;
+        }
+
+        .jumbotron {
+            width: 100%;
+            height: 125px;
+            padding: 1%;
+            color: white;
+            background-color: #343a40eb;
+        }
+
+        .btnSucces {
+            background-color: #0e4ed6;
+            border-color: #0e4ed6;
+            font-family: Courier New, Courier, monospace
+            font-style: oblique;
+            font-size: large;
+            color:white;
+        }
+
     </style>
 </head>
 
