@@ -1,11 +1,8 @@
 ﻿@{
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "PokerNight ~ Live Event ~";
-
-    string EventNaam = "test";
-    int smallBlind = 1;
-    int bigBlind = 2;
-
+  
+    string EventNaam = Request.QueryString["refcode"] ; 
 
 }
 <div class="container-fluid">
@@ -17,18 +14,18 @@
                     <!-- HEADER VAN DE EERSTE CARD-->
                     <div class="card-header bg-dark" id="headingOne">
                         <h5>
-                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#WaardeFiches" aria-expanded="false" aria-controls="WaardeFiches">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#WaardeFiches" aria-expanded="true" aria-controls="WaardeFiches">
                                 Fiches & Blinds
                             </button>
                         </h5>
                     </div>
                     <!-- BODY VAN DE EERSTE CARD-->
-                    <div id="WaardeFiches" class="collapse.show" aria-labelledby="headingOne">
+                    <div id="WaardeFiches" class="collapse show" aria-labelledby="headingOne">
                         <div class="card-body">
                             <div>
-                                @foreach (var row in Functie.FichesLive("test"))
+                                @foreach (var row in Functie.FichesLive(EventNaam))
                                 {
-                                    <img height="140" width="140" src="~/Images/fiches/@(row.Kleur)/@(row.Waarde).png" alt="Fiches zijn niet ingeladen" />
+                                    <img height="140" width="140" src="~/Images/fiches/@(row.Kleur)/@(row.Waarde).png" alt="Alternate Text" />
                                 }
                             </div>
                             <div class="row">
@@ -55,7 +52,7 @@
                         </h2>
                     </div>
                     <!-- BODY VAN DE TWEEDE CARD-->
-                    <div id="TafelIndeling" class="collapse.show" aria-labelledby="headingTwo">
+                    <div id="TafelIndeling" class="collapse show" aria-labelledby="headingTwo">
                         <div class="card-body">
                             <div class="row">
                                 @for (int x = 1; Functie.HoeveelheidTafels(EventNaam) >= x; x++)
@@ -87,18 +84,18 @@
                     <!--HEADER VAN DE DERDE CARD-->
                     <div class="card-header bg-dark" id="headingThree">
                         <h2 class="mb-0">
-                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#Pauzes" aria-expanded="false" aria-controls="Pauzes">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#Pauzes" aria-expanded="false aria-controls="Pauzes">
                                 Pauzes
                             </button>
                         </h2>
                     </div>
                     <!-- BODY VAN DE DERDE CARD-->
-                    <div id="Pauzes" class="collapse.show" aria-labelledby="headingThree">
+                    <div id="Pauzes" class="collapse show" aria-labelledby="headingThree">
                         <div class="card-body">
-                            Volgende pauze begint over 10 minuten 
+                            Volgende pauze begint over 10 minuten
                         </div>
                     </div>
-                </div>                
+                </div>
                 <div class="card border-dark">
                     <!--HEADER VAN DE VIERDE CARD-->
                     <div class="card-header bg-dark" id="headingFour">
@@ -111,7 +108,115 @@
                     <!-- BODY VAN DE VIERDE CARD-->
                     <div id="CheatCheet" class="collapse" aria-labelledby="headingFour">
                         <div class="card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            <div class="row">
+                                <div class="col-sm">
+                                   <h2>Royal Flush</h2>
+                                   <h5>649.739:1</h5>
+                                   <p>Aas, koning, koningin, boer en 10 van dezelfde kleur. </p>
+                                </div>
+                                <div class="col-sm">
+                                   <img src="~/Images/Cheatsheet/Combies/Royal Flush.jpg" width="500" height="250" class="img-fluid" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h2>Straight Flush</h2>
+                                    <h5>72.192:1</h5>
+                                    <p>Vijf achtereenvolgende kaarten van dezelfde kleur.</p>
+                                    
+                                </div>
+                                <div class="col-sm">
+                                    <img src="~/Images/Cheatsheet/Combies/Straight Flush.jpg" width="500" height="250" class="img-fluid" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h2>Four of a Kind</h2>
+                                    <h5>4.164:1</h5>
+                                    <p>Vier kaarten met dezelfde waarde.</p>
+                                </div>
+                                <div class="col-sm">
+                                    <img src="~/Images/Cheatsheet/Combies/4 of a Kind.jpg" width="500" height="250" class="img-fluid" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h2>Full House</h2>
+                                    <h5>693:1</h5>
+                                    <p>Drie kaarten met dezelfde waarde plus twee kaarten met dezelfde waarde.</p>
+                                </div>
+                                <div class="col-sm">
+                                    <img src="~/Images/Cheatsheet/Combies/Full House.jpg" width="500" height="250" class="img-fluid" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h2>Flush</h2>
+                                    <h5>508:1</h5>
+                                    <p>Vijf kaarten van dezelfde kleur.</p>
+                                </div>
+                                <div class="col-sm">
+                                    <img src="~/Images/Cheatsheet/Combies/Flush.jpg" width="500" height="250" class="img-fluid" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h2>Straight</h2>
+                                    <h5>254:1</h5>
+                                    <p>Vijf opeenvolgende kaarten, los van de kleur.</p>
+                                </div>
+                                <div class="col-sm">
+                                    <img src="~/Images/Cheatsheet/Combies/Straight.jpg" width="500" height="250" class="img-fluid" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h2>Three of a Kind</h2>
+                                    <h5>46:1</h5>
+                                    <p>Drie kaarten met dezelfde waarde.</p>
+                                </div>
+                                <div class="col-sm">
+                                    <img src="~/Images/Cheatsheet/Combies/3 of a Kind.jpg" width="500" height="250" class="img-fluid" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h2>Two pair</h2>
+                                    <h5>20:1</h5>
+                                    <p>Twee sets van twee kaarten met dezelfde waarde.</p>
+                                </div>
+                                <div class="col-sm">
+                                    <img src="~/Images/Cheatsheet/Combies/2 Pairs.jpg" width="500" height="250" class="img-fluid" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h2>One Pair</h2>
+                                    <h5>1,37</h5>
+                                    <p>Twee kaarten met dezelfde waarde.</p>
+                                </div>
+                                <div class="col-sm">
+                                    <img src="~/Images/Cheatsheet/Combies/1 Pair.jpg" width="500" height="250" class="img-fluid" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h2>High card</h2>
+                                    <p>De hoogste kaart (ofwel geen van bovenstaande combinaties).</p>
+                                </div>
+                                <div class="col-sm">
+                                    <img src="~/Images/Cheatsheet/Combies/High Card.jpg" width="500" height="250" class="img-fluid" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

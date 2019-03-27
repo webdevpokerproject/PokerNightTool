@@ -1,0 +1,90 @@
+﻿@{
+
+}
+
+<script>
+
+    function addfiche() {
+        var kleur = document.getElementById("kleurkeuze");
+        var selectedkleur = kleur.options[kleur.selectedIndex].value;
+
+        var waarde = document.getElementById("waardekeuze");
+        var selectedwaarde = waarde.options[waarde.selectedIndex].value;
+
+        displayFiche(selectedkleur, selectedwaarde);
+    }
+
+    function displayFiche(kleur, waarde) {
+
+        var rows = document.getElementById("fiches").getElementsByTagName("tr").length;
+
+        if (rows == 0) {
+            document.getElementById("fiches").insertRow(-1);
+        }
+
+        var firstRow = document.getElementById("fiches").rows[0];
+
+        var x = firstRow.insertCell(-1);
+
+        var source = "/Images/fiches/" + kleur + "/" + waarde + ".png";
+        var img = document.createElement('img');
+        img.width = 140;
+        img.height = 140;
+        img.src = source;
+        img.onclick = function () { DL1(this); };
+        x.appendChild(img);
+    }
+
+    function DL1(td) {
+        td.parentNode.removeChild(td);
+    }
+
+</script>
+
+
+<div class="row">
+    <div class="col-4">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <h2>Fiches toevoegen</h2>
+            </div>
+
+            <select id="kleurkeuze">
+                <option value="kleurkiezen">Kies een kleur</option>
+                <option value="black">Zwart</option>
+                <option value="blue">Blauw</option>
+                <option value="green">Groen</option>
+                <option value="orange">Oranje</option>
+                <option value="purple">Paars</option>
+                <option value="red">Rood</option>
+                <option value="white">Wit</option>
+                <option value="yellow">Geel</option>
+            </select>
+
+            <select id="waardekeuze">
+                <option value="waardekiezen">Kies een waarde</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+                <option value="500">500</option>
+            </select>
+
+            <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary" onclick="addfiche();" style="width: 20%;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Fiche toevoegen</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-8">
+        <table class="table table-bordered" id="mytable">
+            <thead>
+                <tr>
+                    <th>Fiches</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="fiches"></tbody>
+        </table>
+    </div>
+</div>

@@ -2,7 +2,8 @@
 
 @{
 
-    //Layout = "~/Shared/_Layout.cshtml";
+    #region MyRegion
+    Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "PokerNight ~ Event aanmaken";
 
     string json = @"{
@@ -18,28 +19,29 @@
            {'Kleur':'red','Waarde':'200'},    
            {'Kleur':'black','Waarde':'500'}],
     'Blinds':[
-           {'Ronde':'1','Pauze':'False','BigBlind':'10','SmallBlind':'10','Duratie':'10'},
-           {'Ronde':'2','Pauze':'False','BigBlind':'20','SmallBlind':'30','Duratie':'10'},
-           {'Ronde':'3','Pauze':'False','BigBlind':'30','SmallBlind':'40','Duratie':'10'},
-           {'Ronde':'4','Pauze':'True','BigBlind':'30','SmallBlind':'40','Duratie':'20'},
-           {'Ronde':'5','Pauze':'False','BigBlind':'40','SmallBlind':'50','Duratie':'10'},
-           {'Ronde':'6','Pauze':'False','BigBlind':'50','SmallBlind':'60','Duratie':'10'}]
+           {'Ronde':'1','Pauze':'False','BigBlind':10,'SmallBlind':10,'Duratie':10},
+           {'Ronde':'2','Pauze':'False','BigBlind':20,'SmallBlind':30,'Duratie':10},
+           {'Ronde':'3','Pauze':'False','BigBlind':30,'SmallBlind':40,'Duratie':10},
+           {'Ronde':'4','Pauze':'True','BigBlind':30,'SmallBlind':40,'Duratie':20},
+           {'Ronde':'5','Pauze':'False','BigBlind':40,'SmallBlind':50,'Duratie':10},
+           {'Ronde':'6','Pauze':'False','BigBlind':50,'SmallBlind':60,'Duratie':10}]
                   }";
 
     var lijstMetFicheIDs = Functie.GetFicheIDList(json);
     var lijstMetSpelerIDs = Functie.GetSpelerIDList(json);
+    var lijstMetBlinds = Functie.GetBlinds(json);
+    #endregion
 
-
-
+    if (IsPost)
+    {
+        string refcode = Functie.MaakReferencieCode();
+        Session["ReferentieCode"] = refcode;
+        Response.Redirect("~/Pages/Admin/AanmakenEventSucces.cshtml");
+    }
 
 }
 
-@foreach(string s in Functie.GetBlinds(json))
-{
-    <p>@s</p>
-}
-
-@*<div class="container-fluid">
+<div class="container-fluid">
     <div class="row">
         <div class="col-1"></div>
         <div class="col-lg-10">
@@ -64,10 +66,10 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (string x in Functie.SpelersPreview(lijstMetSpelerIDs))
+                                            @foreach (string Speler in Functie.SpelersPreview(lijstMetSpelerIDs))
                                             {
                                                 <tr>
-                                                    <td>@x</td>
+                                                    <td>@Speler</td>
                                                    
                                                 </tr>
                                             }
@@ -105,7 +107,30 @@
                     <!-- BODY VAN DE DERDE CARD-->
                     <div id="BlindSchema" aria-labelledby="headingThree">
                         <div class="card-body">
-                            Hier moet het blindschema komen
+                            <table class="table table-light table-bordered">
+                                <thead class="thead-dark">
+                                    <!-- Kijk hoeveel tafels zijn-->
+                                    <tr>
+                                        <th>Ronde</th>
+                                        <th>Blind of Pauze</th>
+                                        <th>SmallBlind</th>
+                                        <th>BigBlind</th>
+                                        <th>Duratie</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < lijstMetBlinds.GetLength(1); i++)
+                                    {                                 
+                                        <tr>
+                                            <td>@lijstMetBlinds[i,0]</td>
+                                            <td>@lijstMetBlinds[i,1]</td>
+                                            <td>@lijstMetBlinds[i,2]</td>
+                                            <td>@lijstMetBlinds[i,3]</td>
+                                            <td>@lijstMetBlinds[i,4]</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -119,11 +144,14 @@
                     <!-- BODY VAN DE VIERDE CARD-->
                     <div id="Confirm" aria-labelledby="headingFour">
                         <div class="card-body">
-                            Hier moeten 2 buttons komen waarbij het event kan worden bevestigd of terug te gaan om het aan te passen. 
+                            <a class="btn btn-danger" href="~/Pages/Admin/CreateEvent.cshtml" role="button">Ga terug om aan te passen</a>
+                            <form method="post">
+                                <button type="submit" class="btn btn-success">Maak event aan!</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>*@
+</div>
