@@ -23,11 +23,7 @@
                     <div id="WaardeFiches" class="collapse show" aria-labelledby="headingOne">
                         <div class="card-body">
                             <div>
-<<<<<<< Updated upstream
-                                @foreach (var row in Functie.Fiches("test"))
-=======
                                 @foreach (var row in Functie.FichesLive(EventNaam))
->>>>>>> Stashed changes
                                 {
                                     <img height="140" width="140" src="~/Images/fiches/@(row.Kleur)/@(row.Waarde).png" alt="Alternate Text" />
                                 }
