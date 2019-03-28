@@ -1,10 +1,117 @@
 ﻿@{
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "PokerNight ~ De regels der poker";
-}
 
+
+}
 <div class="container-fluid">
-    <div class="row no-gutters">
-        <p>Joo ga hier maar heen https://www.hetpokerspel.nl/spelregels</p>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-lg-10">
+            <div class="accordion" id="accordionExample">
+                <div class="card border-dark">
+                    <!-- HEADER VAN DE EERSTE CARD-->
+                    <div class="card-header bg-dark" id="headingOne">
+                        <h5 style="color:white;">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#RegelsVanPoker" aria-expanded="true" aria-controls="WaardeFiches">
+                                De regels der poker:
+                            </button>
+                        </h5>
+                    </div>
+                    <!-- BODY VAN DE EERSTE CARD-->
+                    <div id="RegelsVanPoker" class="collapse show" aria-labelledby="headingOne">
+                        <div class="card-body">
+                            <div class="row no-gutters">
+                                <div class="col-sm">
+                                    <h4>Welkom!</h4>
+                                    Je bent beginnend pokerspeler en je weet nog niet hoe alles precies werkt, om je op weg te helpen krijg je zoveel mogelijk informatie over het spelen van poker en zaken die daar mee te maken hebben.
+                                    Uiteraard moet je de spelregels kennen, om te beginnen die van de populairste variant Texas hold’em.
+                                </div>
+                                <div class="col-sm">
+                                    Er wordt gespeeld met 2 tot 10 mensen en een deck van 52 kaarten. Elke ronde krijgt je net als de andere spelers 2 kaarten die alleen voor jezelf zichtbaar zijn.
+                                    In de loop van de spelronde worden er 5 kaarten open op tafel gelegd die voor iedereen zichtbaar zijn, de speler die overblijft met de beste hand wint.
+                                </div>
+                                <div class="col-sm">
+                                    Laat na de uitleg van de pokerregels alles rustig op je inwerken en probeer niet alles meteen te begrijpen.
+                                    Pak een spel kaarten om de verschillende combinaties die we in het artikel hieronder noemen uit te proberen.
+                                    Zodra je denk dat je de poker spelregels volledig hebt begrepen kan je beginnen met spelen.
+                                </div>
+                            </div>
+                            <div class="row no-gutters" style="margin-top: 30px">
+                                <div class="col-auto" style="width: 50%; padding: 10px;">
+                                    <h4>Spelverloop</h4>
+                                    <p>
+                                        Een zogenaamde dealer button geeft aan wie dat spel de dealer is; dit fiche schuift telkens een plaats op. Het inzetten begint met een small blind en een big blind.
+                                        Dat zijn inzetten die de spelers verplicht moeten links van hem doet de big blind. Vervolgens zet iedereen in de gebruikelijke volgorde in.
+                                        Als je op internet speelt wordt het delen zelf voor je gedaan, maar ook dan wordt de dealer button getoond aan tafel.
+                                    </p>
+                                    <h4>De blinds</h4>
+                                    <p>
+                                        Voordat we echt beginnen te spelen is de eerste speler links van de dealer verplicht om blind een vooraf afgesproken bedrag in te zetten (small blind),
+                                        waarna de speler links van deze small blind op zijn beurt de big blind zet, die in de meeste gevallen twee keer zo hoog is als de small blind. De hoogte hangt af van de gespeelde limiet.
+                                        Bij online poker gaat het allemaal automatisch.
+                                    </p>
+                                    <h4>Eerste inzetronde</h4>
+                                    <p>
+                                        De speler aan de linkerkant van de Big Blind is als eerste aan de beurt. Hij heeft drie opties: Call, Raise of Fold. Bij Call zet de speler het zelfde bedrag in als de Big Blind,
+                                        bij Raise zet deze pokerspeler een extra bedrag in. Bij Fold is deze ronde voor hem ten einde, je speelt niet meer mee om de pot, maar het kost hem ook geen inzet.
+                                        Bijkomende optie is Re-raise, een extra verhoging na een Raise.
+                                    </p>
+                                    <h4>Nogmaals de drie opties:</h4>
+                                    <p>
+                                        <ul>
+                                            <li>Fold. Je kaarten zijn te slecht om te spelen. Je gooit ze weg. (Mucken)</li>
+                                            <li>Call. Je gaat mee met de inzet van de big blind en legt hetzelfde aantal fiches in.</li>
+                                            <li>Raise. Je verhoogt de inzet en legt dus meer in dan de big blind.</li>
+                                            <li>De Flop en de 2e inzetronde</li>
+                                        </ul>
+                                        Er komen 3 kaarten op tafel die voor iedereen zichtbaar zijn. Deze drie kaarten vormen de Flop en elke speler gebruikt ze om samen met z’n handkaarten een combinatie van vijf kaarten te maken.
+                                        Behalve Call, Raise of ReRaise kun je ook Checken. Je mag gratis doorspelen tot de volgende beurt. Als er een inzet voor je is gedaan, kun je Callen voor dat bedrag of het bedrag verhogen (Raise).
+                                    </p>
+                                </div>
+                                <div class="col-auto" style="width: 50%; padding: 10px;">
+                                    <h4>De Turn en de 3e inzetronde</h4>
+                                    <p>
+                                        Na de tweede inzetronde, wordt de volgende kaart open gelegd. Dit is de Turn kaart. Deze kaart is weer een aanvulling op de handkaarten van de spelers om een pokerhand van vijf kaarten te maken.
+                                        Spelers kunnen weer checken, betten, callen, raisen en natuurlijk folden.
+                                    </p>
+                                    <h4>De River en de laatste inzetronde</h4>
+                                    <p>
+                                        Na de derde inzetronde wordt de vijfde en laatste gemeenschappelijke kaart open gelegd. Dit is de River kaart. Nu volgt de laatste inzetronde. Deze gaat vooraf aan de Showdown.
+                                        Dat is het moment dat iedereen die nog in het spel zit de kaarten moeten openleggen. Winnaar is degene met de hoogste kaart, hij krijgt de pot. Bij gelijke kaarten wordt er gedeeld.
+                                    </p>
+                                    <h4>Split pot</h4>
+                                    <p>
+                                        Wanneer er twee dezelfde winnende handen zijn, is het split pot. Kan de pot niet precies worden verdeeld en is er sprake van een overblijvende chip,
+                                        dan gaat deze naar de speler die de laatste inzet of verhoging heeft gedaan. Is dat ook onbeslist dan gaat de chip naar de speler links van de dealer.
+                                    </p>
+                                </div>
+                                <div class="col-auto" style="width: 50%; padding: 10px;">
+                                    <form method="post">
+                                        <button type="submit" class="btn btn-success">Terug naar het event</button>
+                                    </form>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <div class="card border-dark">
+                    <!-- HEADER VAN DE TWEEDE CARD-->
+                    <div class="card-header bg-dark" id="headingOne">
+                        <h5 style="color:white;">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#Video" aria-expanded="true" aria-controls="WaardeFiches">
+                                Hier nog een video:
+                            </button>
+                        </h5>
+                    </div>
+                    <!-- BODY VAN DE EERSTE CARD-->
+                    <div id="Video" class="collapse" aria-labelledby="headingOne">
+                        <div class="card-body justify-content-center">
+                            <iframe class="youtube-player" type="text/html" width="640" height="385"
+                                    src="http://www.youtube.com/embed/zEgfZMGpOYE" frameborder="0"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
