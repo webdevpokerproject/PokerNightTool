@@ -107,8 +107,9 @@ public class Functie
     public static DataTable ConvertJSON(string json, string var)
     {
         DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(json);
-        DataTable dataTable = dataSet.Tables[var];
-
+        DataTable dataTable = new DataTable();
+        if (dataSet != null)
+            dataTable = dataSet.Tables[var];
         return dataTable;
     }
 
@@ -192,14 +193,15 @@ public class Functie
         int numberOfRows = dataTable.Rows.Count; 
         string[,] arrayOfBlindTable = new string[numberOfRows, 5];
 
-        for(int i = 0; numberOfRows >= i; i++)
-        {
-            arrayOfBlindTable[i, 0] = Convert.ToString(dataTable.Rows[i]["Ronde"]);
-            arrayOfBlindTable[i, 1] = Convert.ToString(dataTable.Rows[i]["Pauze"]);
-            arrayOfBlindTable[i, 2] = Convert.ToString(dataTable.Rows[i]["BigBlind"]);
-            arrayOfBlindTable[i, 3] = Convert.ToString(dataTable.Rows[i]["SmallBlind"]);
-            arrayOfBlindTable[i, 4] = Convert.ToString(dataTable.Rows[i]["Duratie"]); 
-        }
+            for (int i = 0; i < numberOfRows; i++)
+            {
+                arrayOfBlindTable[i, 0] = dataTable.Rows[i]["Ronde"].ToString();
+                arrayOfBlindTable[i, 1] = dataTable.Rows[i]["Pauze"].ToString();
+                arrayOfBlindTable[i, 2] = dataTable.Rows[i]["BigBlind"].ToString();
+                arrayOfBlindTable[i, 3] = dataTable.Rows[i]["SmallBlind"].ToString();
+                arrayOfBlindTable[i, 4] = dataTable.Rows[i]["Duratie"].ToString();
+            }
+
         return arrayOfBlindTable; 
     }
 
