@@ -60,6 +60,17 @@ const _Collect = function () {
 
     let collected = {}
     collected.Blinds = _CollectBlindData();
+    collected.Spelers = [
+           {'Voornaam':'Maurice','Achternaam':'Ponte'},
+           {'Voornaam':'Geert','Achternaam':'Hagema'}, 
+           {'Voornaam':'Tjeerd','Achternaam': 'van Gelder'}, 
+           {'Voornaam':'Jan-Sietze','Achternaam': 'Hoekstra'}]
+    collected.Fiche = [
+           {'Kleur':'blue','Waarde':'10'},    
+           {'Kleur':'white','Waarde':'20'},    
+           {'Kleur':'green','Waarde':'100'},    
+           {'Kleur':'red','Waarde':'200'},    
+           {'Kleur':'black','Waarde':'500'}]
     return collected;
 }
 

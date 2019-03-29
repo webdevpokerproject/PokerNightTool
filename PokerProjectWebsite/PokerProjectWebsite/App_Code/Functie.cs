@@ -192,7 +192,7 @@ public class Functie
         int numberOfRows = dataTable.Rows.Count; 
         string[,] arrayOfBlindTable = new string[numberOfRows, 5];
 
-        for(int i = 0; numberOfRows > i; i++)
+        for(int i = 0; numberOfRows >= i; i++)
         {
             arrayOfBlindTable[i, 0] = Convert.ToString(dataTable.Rows[i]["Ronde"]);
             arrayOfBlindTable[i, 1] = Convert.ToString(dataTable.Rows[i]["Pauze"]);
