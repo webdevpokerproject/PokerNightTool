@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+#Prevent database log from carrying over. This prevents lots of database errors.
+data_log.ldf
+
 # User-specific files
 *.suo
 *.user
