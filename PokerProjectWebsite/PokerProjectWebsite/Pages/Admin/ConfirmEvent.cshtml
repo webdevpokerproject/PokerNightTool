@@ -31,6 +31,8 @@
 
 }
 
+
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-1"></div>
@@ -47,6 +49,13 @@
                     <div id="TafelIndeling" aria-labelledby="headingOne">
                         <div class="card-body">
                             <div class="row">
+
+                                <div>@foreach (var key in Functie.TafelNummers(lijstMetSpelerIDs, 3))
+                                        {
+                                        <p>@(key.Key) @(key.Value)</p>
+                                        <p> </p>
+                                        }
+                                </div>
                                 <div class="col-md-4">
                                     <table class="table table-light table-bordered">
                                         <thead class="thead-dark">
@@ -60,7 +69,7 @@
                                                 {
                                                 <tr>
                                                     <td>@Speler</td>
-                                                   
+
                                                 </tr>
                                             }
                                         </tbody>
