@@ -25,10 +25,9 @@
            {'Ronde':'6','Pauze':'False','BigBlind':50,'SmallBlind':60,'Duratie':10}]
                   }";
 
-    if (IsPost && Request.Form["submit"] == "submit")
+    if (IsPost)
     {
-
-        Session["json"] = json;
+        Session["json"] = Request.Form["data"];
         Response.Redirect("~/Pages/Admin/ConfirmEvent.cshtml");
     }
 
@@ -196,8 +195,9 @@
                         <div class="card-body">
                             <div id="CheatCheet"  aria-labelledby="headingFour">
                                 <div class="card-body">
-                                    <form method="post">
-                                        <button type="submit" name="submit" value="submit" class="btn btn-success btn-lg btn-block"> Maak preview aan! </button>
+                                    <form method="post" id="dataForm">
+                                        <input id="dataInput" type="hidden" name="data" value="a">
+                                        <button class="btn btn-success btn-lg btn-block" onsubmit="_PostData()">Maak preview aan!</button>
                                     </form>
                                 </div>
                             </div>

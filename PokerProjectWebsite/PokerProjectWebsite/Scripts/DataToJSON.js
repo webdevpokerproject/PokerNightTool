@@ -1,6 +1,6 @@
-﻿"use strict";
+﻿const _CollectSettings = function () {
+    "use strict";
 
-const _CollectSettings = function () {
     let dict = {};
     let elements = document.querySelectorAll('.stored');
     for (let e of elements) {
@@ -12,6 +12,8 @@ const _CollectSettings = function () {
 }
 
 const _CollectBlindData = function () {
+    "use strict";
+
     let blindTable = document.getElementById('blindtable');
     
     let l = []; // list
@@ -54,11 +56,25 @@ const _CollectBlindData = function () {
 }
 
 const _Collect = function () {
-    let z =_CollectBlindData();
-    console.log(z);
-    console.log(JSON.stringify(z));
+    "use strict";
+
+    let collected = {}
+    collected.Blinds = _CollectBlindData();
+    return collected;
 }
 
+const _CollectData = function () {
+    "use strict";
+    console.log("Click!");
+    let newestData = _Collect();
+    let json = JSON.stringify(newestData)
+    return json
+}
+
+$('#dataForm').submit(function() {
+  document.getElementById('dataInput').value = _CollectData();
+  return true;
+});
 
 
 function getlastrowdata(tableID, pauzeblind) {
