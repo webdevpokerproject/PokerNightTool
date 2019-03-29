@@ -267,6 +267,33 @@ public class Functie
         return FicheLijst;
     }
 
+    public static Dictionary<int, int>  TafelNummers(List<int> SpelerIds, int maxAanTafel)
+    {
+        Random rnd = new Random();
+        /// Uiteindelijke lijst met speler verbonden aan tafel
+        Dictionary<int, int> result = new Dictionary<int, int>();
+        /// berekening voor tafels 
+        float aantalTafel = (float)SpelerIds.Count / (float)maxAanTafel;
+        int aantalTafels = (int)Math.Ceiling(aantalTafel);
+        for (int x = 1; x<= aantalTafels; x++)
+        {
+            for(int y = 0; y<maxAanTafel; y++)
+            {
+                if (SpelerIds.Count > 0)
+                {
+                    int randomID = rnd.Next(SpelerIds.Count);
+                    result.Add(SpelerIds[randomID], x);
+                    SpelerIds.RemoveAt(randomID);
+                }
+
+                
+            }
+        }
+
+        return result; 
+
+    }
+
     /// <summary>
     /// WIP
     /// </summary>
