@@ -151,7 +151,12 @@ public class Functie
                 db.Execute(QR_VoegSpelerToe, voornaam, achternaam);
                 SpelerIDs.Add(GetSpelerID(voornaam, achternaam));
             }
-            SpelerIDs.Add(result[0]);
+            else {
+                var r = result[0];
+                SpelerIDs.Add(r);
+
+            }
+            
         }
         return SpelerIDs;
     }
@@ -269,26 +274,36 @@ public class Functie
         return FicheLijst;
     }
 
-    public static Dictionary<int, int>  TafelNummers(List<int> SpelerIds, int maxAanTafel)
+    private static List<int> ShuffleIntList(List<int> list)
     {
-        Random rnd = new Random();
+        var l = list;
+        var rnd = new Random();
+        for (var i = l.Count; i > 1; i--) {
+            var pos = rnd.Next(i);
+            var x = l[i - 1];
+            l[i - 1] = l[pos];
+            l[pos] = x;
+        }
+
+        return list;
+    }
+
+
+    public static Dictionary<int, int> TafelNummers(List<int> SpelerIds, int maxAanTafel)
+    {
         /// Uiteindelijke lijst met speler verbonden aan tafel
         Dictionary<int, int> result = new Dictionary<int, int>();
         /// berekening voor tafels 
         float aantalTafel = (float)SpelerIds.Count / (float)maxAanTafel;
         int aantalTafels = (int)Math.Ceiling(aantalTafel);
-        for (int x = 1; x<= aantalTafels; x++)
+        for (int x = 1; x< aantalTafels; x++)
         {
             for(int y = 0; y<maxAanTafel; y++)
             {
-                if (SpelerIds.Count > 0)
+                foreach(var s in ShuffleIntList(SpelerIds))
                 {
-                    int randomID = rnd.Next(SpelerIds.Count);
-                    result.Add(SpelerIds[randomID], x);
-                    SpelerIds.RemoveAt(randomID);
+                    result.Add(s, x);
                 }
-
-                
             }
         }
 
