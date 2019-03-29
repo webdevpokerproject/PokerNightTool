@@ -2,12 +2,17 @@
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "PokerNight ~ De regels der poker";
 
+    if (IsPost)
+    {
+        Response.Redirect("~/Pages/AdminLiveEvent.cshtml?refcode=" + Session["refcode"]) ;
+    }
+
 
 }
 <div class="container-fluid">
-    <div class="row">
+    <div class="row no-gutters ">
         <div class="col-1"></div>
-        <div class="col-lg-10">
+        <div class="col-10">
             <div class="accordion" id="accordionExample">
                 <div class="card border-dark">
                     <!-- HEADER VAN DE EERSTE CARD-->
@@ -92,26 +97,26 @@
                                     </form>
                                 </div>
                             </div>
+                        </div>
                     </div>
-                </div>
-                <div class="card border-dark">
-                    <!-- HEADER VAN DE TWEEDE CARD-->
-                    <div class="card-header bg-dark" id="headingOne">
-                        <h5 style="color:white;">
-                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#Video" aria-expanded="true" aria-controls="WaardeFiches">
-                                Hier nog een video:
-                            </button>
-                        </h5>
-                    </div>
-                    <!-- BODY VAN DE EERSTE CARD-->
-                    <div id="Video" class="collapse" aria-labelledby="headingOne">
-                        <div class="card-body justify-content-center">
-                            <iframe class="youtube-player" type="text/html" width="640" height="385"
-                                    src="http://www.youtube.com/embed/zEgfZMGpOYE" frameborder="0"></iframe>
+                    <div class="card border-dark">
+                        <!-- HEADER VAN DE TWEEDE CARD-->
+                        <div class="card-header bg-dark" id="headingOne">
+                            <h5 style="color:white;">
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#Video" aria-expanded="true" aria-controls="WaardeFiches">
+                                    Hier nog een video:
+                                </button>
+                            </h5>
+                        </div>
+                        <!-- BODY VAN DE EERSTE CARD-->
+                        <div id="Video" class="collapse" aria-labelledby="headingOne">
+                            <div class="card-body justify-content-center">
+                                <iframe class="youtube-player" type="text/html" width="640" height="385"
+                                        src="http://www.youtube.com/embed/zEgfZMGpOYE" frameborder="0"></iframe>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>

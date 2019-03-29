@@ -1,9 +1,9 @@
 ﻿@{
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "PokerNight ~ Live Event ~";
-  
-    string EventNaam = Request.QueryString["refcode"] ; 
-
+    Session["refcode"] = Request.QueryString["refcode"]; 
+    string EventNaam = Request.QueryString["refcode"];
+    
 }
 <div class="container-fluid">
     <div class="row">

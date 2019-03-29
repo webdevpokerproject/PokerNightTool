@@ -6,26 +6,7 @@
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "PokerNight ~ Event aanmaken";
 
-    string json = @"{
-    'Spelers':[
-           {'Voornaam':'Maurice','Achternaam':'Ponte'},
-           {'Voornaam':'Geert','Achternaam':'Hagema'}, 
-           {'Voornaam':'Tjeerd','Achternaam': 'van Gelder'}, 
-           {'Voornaam':'Jan-Sietze','Achternaam': 'Hoekstra'}],
-    'Fiche':[
-           {'Kleur':'blue','Waarde':'10'},    
-           {'Kleur':'white','Waarde':'20'},    
-           {'Kleur':'green','Waarde':'100'},    
-           {'Kleur':'red','Waarde':'200'},    
-           {'Kleur':'black','Waarde':'500'}],
-    'Blinds':[
-           {'Ronde':'1','Pauze':'False','BigBlind':10,'SmallBlind':10,'Duratie':10},
-           {'Ronde':'2','Pauze':'False','BigBlind':20,'SmallBlind':30,'Duratie':10},
-           {'Ronde':'3','Pauze':'False','BigBlind':30,'SmallBlind':40,'Duratie':10},
-           {'Ronde':'4','Pauze':'True','BigBlind':30,'SmallBlind':40,'Duratie':20},
-           {'Ronde':'5','Pauze':'False','BigBlind':40,'SmallBlind':50,'Duratie':10},
-           {'Ronde':'6','Pauze':'False','BigBlind':50,'SmallBlind':60,'Duratie':10}]
-                  }";
+    string json = Convert.ToString(Session["json"]);
 
     var lijstMetFicheIDs = Functie.GetFicheIDList(json);
     var lijstMetSpelerIDs = Functie.GetSpelerIDList(json);
@@ -36,6 +17,7 @@
     {
         string refcode = Functie.MaakReferencieCode();
         Session["ReferentieCode"] = refcode;
+        //Functie.EventAanmaken(lijstMetSpelerIDs, lijstMetFicheIDs, lijstMetBlinds, refcode); 
         Response.Redirect("~/Pages/Admin/AanmakenEventSucces.cshtml");
     }
 
@@ -144,9 +126,9 @@
                     <!-- BODY VAN DE VIERDE CARD-->
                     <div id="Confirm" aria-labelledby="headingFour">
                         <div class="card-body">
-                            <a class="btn btn-danger" href="~/Pages/Admin/CreateEvent.cshtml" role="button">Ga terug om aan te passen</a>
+                            <a class="btn btn-danger btn-lg btn-block" href="~/Pages/Admin/CreateEvent.cshtml" role="button">Ga terug om aan te passen</a>
                             <form method="post">
-                                <button type="submit" class="btn btn-success">Maak event aan!</button>
+                                <button type="submit" class="btn btn-success btn-lg btn-block">Maak event aan!</button>
                             </form>
                         </div>
                     </div>
