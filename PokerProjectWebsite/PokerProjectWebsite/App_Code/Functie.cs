@@ -55,6 +55,64 @@ public class Functie
     }
 
     /// <summary>
+    /// Zorgt voor het valideren van de refcode voor de preset van een event. 
+    /// </summary>
+    /// <param name="refcode"></param>
+    /// <returns> true als output niet null is (en dus de record bestaat), false als dit niet het geval is </returns>
+    public static bool CheckRefcode(string refcode)
+    {
+        Database db = Database.OpenConnectionString(Functie.connectionString, Functie.provider);
+        string QR_GetRefcode = "SELECT ReferencieCode FROM Event WHERE ReferencieCode = @0;";
+        dynamic Output = db.QuerySingle(QR_GetRefcode, refcode);
+        if (Output != null)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Zorgt voor het valideren van de refcode voor de preset van een event. 
+    /// </summary>
+    /// <param name="voornaam"></param>
+    /// <param name="achternaam"></param>
+    /// <param name="refcode"></param>
+    /// <returns> true als output niet null is (en dus de record bestaat), false als dit niet het geval is </returns>
+    public static void LiveEventAddSpeler(string voornaam, string achternaam, string refcode)
+    {
+        Database db = Database.OpenConnectionString(Functie.connectionString, Functie.provider);
+        string QR_GetSpelersNaam = "SELECT SpelerId,Voornaam, Achternaam FROM Speler WHERE Voornaam = @0 AND Achternaam = @1;";
+        dynamic Output = db.QuerySingle(QR_GetSpelersNaam, voornaam, achternaam);
+        int SpelerID;
+        if (Output == null)
+        {
+            string QR_VoegSpelerToe = "INSERT INTO Speler(Voornaam, Achternaam) VALUES(@0, @1)";
+            db.Execute(QR_VoegSpelerToe, voornaam, achternaam);
+            SpelerID = GetSpelerID(voornaam, achternaam);
+        }
+        else
+        {
+            SpelerID = Output[0];
+        }
+
+        string QR_InsertEvent = "INSERT INTO SpelerEvent (SpelerId, ReferencieCode, TafelNummer) VALUES (@0, @1, @2)";
+        db.Execute(QR_InsertEvent, SpelerID, refcode);
+
+    }
+
+    /// <summary>
+    /// Zorgt ervoor dat de geselecteerde speler uit het liveEvent wordt verwijderd 
+    /// </summary>
+    public static void LiveEventDeleteSpeler(string voornaam, string achternaam)
+    {
+        Database db = Database.OpenConnectionString(Functie.connectionString, Functie.provider);
+        string QR_DeleteSpelersNaam = "DELETE FROM SpelerEvent WHERE SpelerId = @0";
+        db.Execute(QR_DeleteSpelersNaam, GetSpelerID(voornaam, achternaam));
+    }
+
+
+
+    /// <summary>
     /// Haalt fiches op op basis van de eventnaam
     /// </summary>
     /// <param name="ReferencieCodeEvent"> ReferencieCode van het event</param>

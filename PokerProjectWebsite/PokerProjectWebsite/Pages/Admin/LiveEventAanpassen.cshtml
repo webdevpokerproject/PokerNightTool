@@ -2,8 +2,23 @@
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "PokerNight ~ Event aanpassen";
 
-    string EventNaam = "test";
-    var refcode = Functie.MaakReferencieCode();
+    var refcode = Convert.ToString(Session["refcode"]);
+
+    string EventNaam = refcode;
+
+    if (IsPost && Request.Form["submit"] == "AddSpeler")
+    {
+        var voornaam = Request.Form["inVoornaam"];
+        var achternaam = Request.Form["inAchternaam"];
+        Functie.LiveEventAddSpeler(voornaam, achternaam, refcode);
+    }
+
+    if (IsPost && Request.Form["submit"] == "DeleteSpeler")
+    {
+        var voornaam = Request.Form["Voornaam"];
+        var achternaam = Request.Form["Achternaam"];
+        Functie.LiveEventDeleteSpeler(voornaam, achternaam);
+    }
 
 }
 
@@ -16,10 +31,25 @@
                     <!-- HEADER VAN DE EERSTE CARD-->
                     <div class="card-header bg-dark" id="headingOne">
                         <h5 style=" color:white;">
-                            Aanpassen huidige sessie: @refcode
+                            Starten/stoppen huidige sessie: @refcode
                         </h5>
                     </div>
                     <!-- BODY VAN DE EERSTE CARD-->
+                    <div id="SpelersAanpassen" aria-labelledby="headingOne">
+                        <div class="card-body">
+                            <button class="btn btn-success btn-lg" type="submit" name="submit" value="StartEvent">Start het evenement</button>
+                            <button class="btn btn-danger btn-lg" type="submit" name="submit" value="StopEvent">Stop het evenement</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-dark">
+                    <!-- HEADER VAN DE TWEEDE CARD-->
+                    <div class="card-header bg-dark" id="headingOne">
+                        <h5 style=" color:white;">
+                            Aanpassen huidige sessie: @refcode
+                        </h5>
+                    </div>
+                    <!-- BODY VAN DE TWEEDE CARD-->
                     <div id="SpelersAanpassen" aria-labelledby="headingOne">
                         <div class="card-body">
                             <div class="row">
@@ -29,7 +59,7 @@
                                             <input type="text" class="form-control" placeholder="Voornaam speler" name="inVoornaam" aria-label="Voornaam-speler" aria-describedby="basic-addon2" required>
                                             <input type="text" class="form-control" placeholder="Achternaam speler" name="inAchternaam" aria-label="Achternaam-speler" aria-describedby="basic-addon2" required>
                                             <div class="input-group-append">
-                                                <button class="btn btn-dark" type="submit" id="button-addon2">Voeg speler toe!</button>
+                                                <button  id="button-addon2" class="btn btn-dark" type="submit" name="submit" value="AddSpeler">Voeg speler toe!</button>
                                             </div>
                                         </div>
                                     </form>
@@ -47,13 +77,19 @@
                                             <tr>
                                                 @foreach (var row in Functie.SpelersLive(EventNaam, x))
                                                 {
-                                                    <td>@row.Voornaam @row.Achternaam <button class=" btn DelBtn btn-dark float-right" ><i class="fas fa-trash-alt float-right"></i></button></td>
+                                                    <td>@row.Voornaam @row.Achternaam   
+                                                        <form method="post">
+                                                            <input type="hidden" name="Voornaam" value="@(row.Voornaam)" />
+                                                            <input type="hidden" name="Achternaam" value="@(row.Achternaam)" />
+                                                            <button class=" btn DelBtn btn-dark float-right" type="submit" name="submit" value="DeleteSpeler"><i class="fas fa-trash-alt float-right"></i></button>
+                                                        </form>
+                                                    </td>
                                                 }
-                                            </tr>
+                                            </tr> 
                                         }
                                     </tbody>
                                 </table>
-                                <a href="~/Pages/User/LiveEvent.cshtml" class="btn GoBtn btn-dark" >Pas aan</a>
+                                <a href="~/Pages/User/LiveEvent.cshtml" class="btn GoBtn btn-dark">Pas aan</a>
                             </div>
                         </div>
                     </div>
