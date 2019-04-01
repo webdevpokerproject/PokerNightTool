@@ -44,7 +44,7 @@ public class Functie
     /// <returns> true als output niet null is (en dus de record bestaat), false als dit niet het geval is </returns>
     public static bool Login(string naam, string wachtwoord)
     {
-        Database db = Database.OpenConnectionString(Functie.connectionString, Functie.provider);
+        Database db = Database.OpenConnectionString(connectionString,provider);
         string QR_GetLogin = "SELECT Gebruikersnaam, Wachtwoord FROM Beheerder WHERE Gebruikersnaam = @0 AND Wachtwoord = @1";
         dynamic Output = db.QuerySingle(QR_GetLogin, naam, wachtwoord);
         if (Output != null)
@@ -54,6 +54,7 @@ public class Functie
         return false;
     }
 
+
     /// <summary>
     /// Haalt fiches op op basis van de eventnaam
     /// </summary>
@@ -61,7 +62,7 @@ public class Functie
     /// <returns> De kleur en waarde van de gebruikte fiches, worden op pagina omgezet tot <img> </returns>
     public static IEnumerable<dynamic> FichesLive(string ReferencieCodeEvent)
     {
-        Database db = Database.OpenConnectionString(Functie.connectionString, Functie.provider);
+        Database db = Database.OpenConnectionString(connectionString, provider);
         string QR_GetFiches = "SELECT Fiche.Kleur, Fiche.Waarde FROM (Fiche INNER JOIN EventFiches ON EventFiches.FicheId = Fiche.FicheId) WHERE EventFiches.ReferencieCode = @0 ORDER BY Fiche.Waarde ASC";
         var result = db.Query(QR_GetFiches, ReferencieCodeEvent);
         return result;
@@ -274,11 +275,17 @@ public class Functie
         return FicheLijst;
     }
 
+    /// <summary>
+    /// Methode om een lijst met int's te schudden
+    /// </summary>
+    /// <param name="list"></param>
+    /// <returns></returns>
     private static List<int> ShuffleIntList(List<int> list)
     {
         var l = list;
         var rnd = new Random();
-        for (var i = l.Count; i > 1; i--) {
+        for (var i = l.Count; i > 1; i--)
+        {
             var pos = rnd.Next(i);
             var x = l[i - 1];
             l[i - 1] = l[pos];
@@ -288,7 +295,12 @@ public class Functie
         return list;
     }
 
-
+    /// <summary>
+    /// Genereerd een tafelindeling
+    /// </summary>
+    /// <param name="SpelerIds"></param>
+    /// <param name="maxAanTafel"></param>
+    /// <returns></returns>
     public static Dictionary<int, int> TafelNummers(List<int> SpelerIds, int maxAanTafel)
     {
         /// Uiteindelijke lijst met speler verbonden aan tafel
@@ -296,6 +308,7 @@ public class Functie
         /// berekening voor tafels 
         float aantalTafel = (float)SpelerIds.Count / (float)maxAanTafel;
         int aantalTafels = (int)Math.Ceiling(aantalTafel);
+
         for (int x = 1; x< aantalTafels; x++)
         {
             for(int y = 0; y<maxAanTafel; y++)
@@ -303,6 +316,7 @@ public class Functie
                 foreach(var s in ShuffleIntList(SpelerIds))
                 {
                     result.Add(s, x);
+                    SpelerIds.Remove(s);
                 }
             }
         }

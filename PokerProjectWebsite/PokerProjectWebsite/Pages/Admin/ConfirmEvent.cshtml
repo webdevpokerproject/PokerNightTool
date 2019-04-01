@@ -25,7 +25,7 @@
     {
         string refcode = Functie.MaakReferencieCode();
         Session["ReferentieCode"] = refcode;
-        //Functie.EventAanmaken(lijstMetSpelerIDs, lijstMetFicheIDs, lijstMetBlinds, refcode); 
+        Functie.EventAanmaken(lijstMetSpelerIDs, lijstMetFicheIDs, lijstMetBlinds, refcode);
         Response.Redirect("~/Pages/Admin/AanmakenEventSucces.cshtml");
     }
 

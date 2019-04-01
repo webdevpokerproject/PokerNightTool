@@ -4,14 +4,13 @@
     Page.Title = "PokerNight ~ Event aanmaken";
     #endregion
 
-    if (IsPost)
+    if (IsPost && Request.Form["submit"] == "continue")
     {
-        Session["json"] = Request.Form["data"];
+        Session["json"] = Request["data"];
         Response.Redirect("~/Pages/Admin/ConfirmEvent.cshtml");
     }
 
 }
-
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-lg-10">
@@ -27,38 +26,33 @@
                     <div id="SpelersToevoegen" aria-labelledby="headingOne">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-4">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <h2>Spelers</h2>
-                                        </div>
+                                <div class="col-6">
+                                    <div class="input-group-prepend">
+                                        <h2>Spelers</h2>
+                                    </div>
+                                    <div class="input-group-prepend">
+                                        <input type="text" class="form-control" id="voornaam" placeholder="Voornaam" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input type="text" class="form-control" id="achternaam" placeholder="Achternaam" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <button class="btn btn-dark" onclick="getpersondata('spelerstable');" style="width: 100%;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Persoon toevoegen</button>
+                                    </div>
 
-                                        <div class="input-group-prepend">
-                                            <input type="text" class="form-control" id="voornaam" placeholder="Voornaam" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                                        </div>
+                                    <p>Vul hier het aantal spelers in die aan 1 tafel passne</p>
 
-                                        <div class="input-group-prepend">
-                                            <input type="text" class="form-control" id="achternaam" placeholder="Achternaam" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                                        </div>
-
-                                        <div class="input-group-prepend">
-                                            <button class="btn btn-outline-secondary" onclick="getpersondata('spelerstable');" style="width: 100%;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Persoon toevoegen</button>
-                                        </div>
+                                    <div class="input-group-prepend">
+                                        <input type="text" class="form-control" id="maxAanTafel" placeholder="Aantal spelers aan 1 tafel" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <button class="btn btn-dark" onclick="getpersondata(//'spelerstable');" style="width: 100%;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Invoeren</button>
                                     </div>
                                 </div>
-
-                                <div class="col-8">
-                                    <table class="table table-bordered" id="mytable">
-                                        <thead>
-                                        <tr>
-                                            <th>Voornaam</th>
-                                            <th>Achternaam</th>
-                                            <th></th>
-                                        </tr>
+                                <div class="col-6">
+                                    <table class="table table-striped" id="mytable">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>Voornaam</th>
+                                                <th>Achternaam</th>
+                                                <th></th>
+                                            </tr>
                                         </thead>
-                                        <tbody id="spelerstable">
-
-                                        </tbody>
+                                        <tbody id="spelerstable"></tbody>
                                     </table>
                                 </div>
                             </div>
@@ -75,48 +69,42 @@
                     <!-- BODY VAN DE TWEEDE CARD-->
                     <div id="FichesToevoegen" aria-labelledby="headingTwo">
                         <div class="card-body">
-                            
                             <div class="row">
                                 <div class="col-4">
-                                    <div class="input-group mb-3">
+                                    <h2>Fiches toevoegen</h2>
+                                    <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <h2>Fiches toevoegen</h2>
-                                        </div>
-
-                                        <select id="kleurkeuze">
-                                            <option value="kleurkiezen">Kies een kleur</option>
-                                            <option value="black">Zwart</option>
-                                            <option value="blue">Blauw</option>
-                                            <option value="green">Groen</option>
-                                            <option value="orange">Oranje</option>
-                                            <option value="purple">Paars</option>
-                                            <option value="red">Rood</option>
-                                            <option value="white">Wit</option>
-                                            <option value="yellow">Geel</option>
-                                        </select>
-
-                                        <select id="waardekeuze">
-                                            <option value="waardekiezen">Kies een waarde</option>
-                                            <option value="10">10</option>
-                                            <option value="20">20</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                            <option value="200">200</option>
-                                            <option value="500">500</option>
-                                        </select>
-
-                                        <div class="input-group-prepend">
-                                            <button class="btn btn-outline-secondary" onclick="addfiche();" style="width: 20%;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Fiche toevoegen</button>
+                                            <select class="form-control" id="kleurkeuze">
+                                                <option value="kleurkiezen">Kies een kleur</option>
+                                                <option value="black">Zwart</option>
+                                                <option value="blue">Blauw</option>
+                                                <option value="green">Groen</option>
+                                                <option value="orange">Oranje</option>
+                                                <option value="purple">Paars</option>
+                                                <option value="red">Rood</option>
+                                                <option value="white">Wit</option>
+                                                <option value="yellow">Geel</option>
+                                            </select>
+                                            <select class="form-control" id="waardekeuze">
+                                                <option value="waardekiezen">Kies een waarde</option>
+                                                <option value="10">10</option>
+                                                <option value="20">20</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                                <option value="200">200</option>
+                                                <option value="500">500</option>
+                                            </select>
+                                            <button class="btn btn-dark" onclick="addfiche();" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Fiche toevoegen</button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-8">
-                                    <table class="table table-bordered" id="mytable">
-                                        <thead>
-                                        <tr>
-                                            <th>Fiches</th>
-                                            <th></th>
-                                        </tr>
+                                    <table class="table table-striped" id="mytable">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>Fiches</th>
+                                                <th></th>
+                                            </tr>
                                         </thead>
                                         <tbody id="fiches"></tbody>
                                     </table>
@@ -145,7 +133,7 @@
                                     <div class="input-group">
                                         <input type="number" class="form-control" id="BlindFactor" placeholder="Blind verhogingsfactor" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                                         <input type="number" class="form-control" id="BlindDuratie" placeholder="Blind duratie in minuten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                                        <button class="btn btn-dark" onclick="getlastrowdata('blindtable','Blind');"style="width:200px;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Add blind</button>
+                                        <button class="btn btn-dark" onclick="getlastrowdata('blindtable','Blind');" style="width:200px;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Add blind</button>
                                     </div>
                                     <div class="input-group">
                                         <input type="number" class="form-control" id="PauzeDuratie" placeholder="Pauze duratie in minuten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
@@ -176,17 +164,16 @@
                 <div class="card border-dark">
                     <!--HEADER VAN DE VIERDE CARD-->
                     <div class="card-header bg-dark" id="headingFour">
-                        <h5 style=" color:white;">                
-                        </h5>
+                        <h5 style=" color:white;"></h5>
                     </div>
                     <!-- BODY VAN DE VIERDE CARD-->
                     <div id="NextPage" aria-labelledby="headingFour">
                         <div class="card-body">
-                            <div id="CheatCheet"  aria-labelledby="headingFour">
+                            <div id="CheatCheet" aria-labelledby="headingFour">
                                 <div class="card-body">
                                     <form method="post" id="dataForm">
                                         <input id="dataInput" type="hidden" name="data" value="a">
-                                        <button class="btn btn-success btn-lg btn-block" onsubmit="_PostData()">Maak preview aan!</button>
+                                        <button name="submit" value="continue" class="btn btn-success btn-lg btn-block" onsubmit="_PostData()">Maak preview aan!</button>
                                     </form>
                                 </div>
                             </div>
