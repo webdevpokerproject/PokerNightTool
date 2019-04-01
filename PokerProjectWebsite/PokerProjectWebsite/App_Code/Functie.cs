@@ -255,22 +255,21 @@ public class Functie
         }
         return SpelerLijst;
     }
-
     /// <summary>
-    /// Haalt Fiches op vanuit JSON en haalt preview in 
+    /// Krijg de naam en waarde van alle fiches
     /// </summary>
     /// <param name="FicheIDs"></param>
-    /// <returns></returns>
-    public static Dictionary<string, int> FichesPreview(List<int> FicheIDs)
+    /// <returns>lijst met tuples waar naam en waarde van de fiches in zit</returns>
+    public static List<Tuple<string, int>> FichesPreview(List<int> FicheIDs)
     {
         Database db = Database.OpenConnectionString(connectionString, provider);
         string QR_GetFiches = "SELECT Kleur, Waarde FROM Fiche WHERE FicheId = @0";
-        Dictionary<string, int> FicheLijst = new Dictionary<string, int>();
+        var FicheLijst = new List<Tuple<string, int>>();
 
         foreach(int n in FicheIDs)
         {
             var result = db.QuerySingle(QR_GetFiches, n);
-            FicheLijst.Add(result[0],result[1]);
+            FicheLijst.Add(Tuple.Create(result[0].ToString(), (int)result[1]));
         }
         return FicheLijst;
     }
