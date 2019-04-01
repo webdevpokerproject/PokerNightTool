@@ -288,27 +288,33 @@ public class Functie
         return list;
     }
 
+    public static List<List<T>> ChunkBy<T>(List<T> source, int chunkSize) 
+    {
+        return source
+            .Select((x, i) => new { Index = i, Value = x })
+            .GroupBy(x => x.Index / chunkSize)
+            .Select(x => x.Select(v => v.Value).ToList())
+            .ToList();
+    }
 
     public static Dictionary<int, int> TafelNummers(List<int> SpelerIds, int maxAanTafel)
     {
-        /// Uiteindelijke lijst met speler verbonden aan tafel
+        // Uiteindelijke lijst met speler verbonden aan tafel
         Dictionary<int, int> result = new Dictionary<int, int>();
-        /// berekening voor tafels 
+        // berekening voor tafels 
         float aantalTafel = (float)SpelerIds.Count / (float)maxAanTafel;
         int aantalTafels = (int)Math.Ceiling(aantalTafel);
-        for (int x = 1; x< aantalTafels; x++)
+
+        var dividedLists = ChunkBy(ShuffleIntList(SpelerIds), aantalTafels);
+        
+        for (var i = 0; i < dividedLists.Count(); i++)
         {
-            for(int y = 0; y<maxAanTafel; y++)
+            foreach (var speler in dividedLists[i])
             {
-                foreach(var s in ShuffleIntList(SpelerIds))
-                {
-                    result.Add(s, x);
-                }
+                result[speler] = i;
             }
         }
-
-        return result; 
-
+        return result;
     }
 
     /// <summary>
