@@ -1,15 +1,16 @@
-﻿const _CollectSettings = function () {
+﻿const _CollectSettings = function (elements) {
     //Collect data from fields on the page that are of class 'stored'
     "use strict";
 
-    let dict = {};
-    let elements = document.querySelectorAll('.stored');
-    for (let e of elements) {
-        dict[e.id] = e.value
-    }
+    let array = [];
+    let i = 0;
 
-    console.log(dict);
-    console.log(JSON.stringify(dict));
+    for (let e of elements) {
+        console.log(e);
+        array[i] = {'Instelling': e.id, 'Waarde': e.value};
+        i++;
+    }
+    return array
 }
 
 const _CollectBlindData = function () {
@@ -106,6 +107,7 @@ const _Collect = function () {
     collected.Blinds = _CollectBlindData();
     collected.Spelers = _CollectPersonData();
     collected.Fiche = _CollectFicheData();
+    collected.Instellingen = _CollectSettings(document.querySelectorAll('.stored'));
     return collected;
 }
 
