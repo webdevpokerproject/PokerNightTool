@@ -256,20 +256,20 @@ public class Functie
     }
 
     /// <summary>
-    /// Haalt Fiches op vanuit JSON en haalt preview in 
+    /// Krijg de naam en waarde van alle fiches
     /// </summary>
     /// <param name="FicheIDs"></param>
-    /// <returns></returns>
-    public static Dictionary<string, int> FichesPreview(List<int> FicheIDs)
+    /// <returns>lijst met tuples waar naam en waarde van de fiches in zit</returns>
+    public static List<Tuple<string, int>> FichesPreview(List<int> FicheIDs)
     {
         Database db = Database.OpenConnectionString(connectionString, provider);
         string QR_GetFiches = "SELECT Kleur, Waarde FROM Fiche WHERE FicheId = @0";
-        Dictionary<string, int> FicheLijst = new Dictionary<string, int>();
+        var FicheLijst = new List<Tuple<string, int>>();
 
         foreach(int n in FicheIDs)
         {
             var result = db.QuerySingle(QR_GetFiches, n);
-            FicheLijst.Add(result[0],result[1]);
+            FicheLijst.Add(Tuple.Create(result[0].ToString(), (int)result[1]));
         }
         return FicheLijst;
     }
@@ -331,21 +331,21 @@ public class Functie
         //string QR_InsertRefcode = "INSERT INTO Event(ReferencieCode) VALUES(@0)";
         //db.Execute(QR_InsertRefcode, refcode); 
 
-        /// Voeg de spelers toe op basis van de IDLijst
+        // Voeg de spelers toe op basis van de IDLijst
         string QR_SpelersInvoeren = "INSERT INTO SpelerEvent(SpelerId,ReferencieCode) VALUES(@0,@1)";
         foreach (int n in Spelers)
         {
             db.Execute(QR_SpelersInvoeren, n, refcode); 
         }
         
-        /// Voeg de fiches toe op basis van de IDLijst
+        // Voeg de fiches toe op basis van de IDLijst
         string QR_FichesInvoeren = "INSERT INTO EventFiches(FicheId,ReferencieCode) VALUES(@0,@1)";
         foreach(int i in Fiches)
         {
             db.Execute(QR_FichesInvoeren, i, refcode); 
         }
 
-        /// Hier moet het blinds-schema ingevoerd worden. 
+        // Hier moet het blinds-schema ingevoerd worden. 
         string QR_BlindsInvoeren = "INSERT INTO Blinds(Ronde, Pauze, SmallBlind, BigBlind, Duratie) VALUES(@0,@1,@2,@3,@4)";
         for (int i = 0; i < Blinds.GetLength(1); i++)
         {
@@ -357,7 +357,7 @@ public class Functie
             db.Execute(QR_BlindsInvoeren, ronde, pauze, BigBlind, SmallBlind, Duratie); 
         }
         
-        /// Return de RefCode zodat de admin deze kan gebruiken.
+        // Return de RefCode zodat de admin deze kan gebruiken.
         return refcode; 
 
     }
