@@ -91,7 +91,7 @@
                         <div class="card-body">
                             @foreach(var entry in Functie.FichesPreview(lijstMetFicheIDs))
                                 {
-                                    <img height="140" width="140" src="~/Images/fiches/@(entry.Key)/@(entry.Value).png" alt="Alternate Text" />
+                                    <img height="140" width="140" src="~/Images/fiches/@(entry.Item1)/@(entry.Item2).png" alt="Alternate Text" />
                                 }
                         </div>
                     </div>
@@ -118,14 +118,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @for (int i = 0; i <= lijstMetBlinds.GetLength(1); i++)
-                                    {                                 
+                                    @for (int i = 0; i < lijstMetBlinds.GetLength(0); i++)
+                                    {
                                         <tr>
-                                            <td>@lijstMetBlinds[i,0]</td>
-                                            <td>@lijstMetBlinds[i,1]</td>
-                                            <td>@lijstMetBlinds[i,2]</td>
-                                            <td>@lijstMetBlinds[i,3]</td>
-                                            <td>@lijstMetBlinds[i,4]</td>
+                                            <td>@lijstMetBlinds[i, 0]</td>
+                                            <td>@lijstMetBlinds[i, 1]</td>
+                                            <td>@lijstMetBlinds[i, 2]</td>
+                                            <td>@lijstMetBlinds[i, 3]</td>
+                                            <td>@lijstMetBlinds[i, 4]</td>
                                         </tr>
                                     }
                                 </tbody>
