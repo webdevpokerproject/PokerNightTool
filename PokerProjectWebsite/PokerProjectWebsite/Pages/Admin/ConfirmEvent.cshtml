@@ -92,7 +92,7 @@
                         <div class="card-body">
                             @foreach (var entry in Functie.FichesPreview(lijstMetFicheIDs))
                             {
-                                <img height="140" width="140" src="~/Images/fiches/@(entry.Key)/@(entry.Value).png" alt="Alternate Text" />
+                                <img height="140" width="140" src="~/Images/fiches/@(entry.Item1)/@(entry.Item2).png" alt="Alternate Text" />
                             }
                         </div>
                     </div>
