@@ -21,6 +21,16 @@
         Functie.LiveEventDeleteSpeler(voornaam, achternaam);
     }
 
+    if(IsPost && Request.Form["submit"] == "StartEvent")
+    {
+        Functie.beginBlindTimer(EventNaam,true);
+    }
+
+    if (IsPost && Request.Form["submit"] == "StopEvent")
+    {
+        Functie.beginBlindTimer(EventNaam, false);
+    }
+
 }
 
 <div class="container-fluid">
@@ -38,8 +48,22 @@
                     <!-- BODY VAN DE EERSTE CARD-->
                     <div id="SpelersAanpassen" aria-labelledby="headingOne">
                         <div class="card-body">
-                            <button class="btn btn-success btn-lg" type="submit" name="submit" value="StartEvent">Start het evenement</button>
-                            <button class="btn btn-danger btn-lg" type="submit" name="submit" value="StopEvent">Stop het evenement</button>
+
+                            <div class=" row justify-content-center">
+                                <form method="post">
+                                    @if (Functie.EventStatus(EventNaam))
+                                    {
+                                        /// Als de event een begintijd heeft leet het de stop knop zien 
+                                        <button class="btn btn-danger xllg" type="submit" name="submit" value="StopEvent">Stop het evenement</button>
+                                    }
+                                    else
+                                    {
+                                        /// Anders moet er eerst op de begin knop gedrukt worden
+                                        <button class="btn btn-success xllg" type="submit" name="submit" value="StartEvent">Start het evenement</button>
+                                    }
+
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -66,31 +90,37 @@
                                         </div>
                                     </form>
                                 </div>
-                                <table class="table table-bordered">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th class="bg-dark text-light">Naam</th>
-                                            <th class="bg-dark text-light"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @for (int x = 1; Functie.HoeveelheidTafels(EventNaam) >= x; x++)
-                                        {
-                                            <tr>
+
+                            </div>
+                            <div class="row">
+
+                                @for (int x = 1; Functie.HoeveelheidTafels(EventNaam) >= x; x++)
+                                {
+                                    <div class="col-md-4">
+                                        <table class="table table-bordered">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th class="bg-dark text-light">Tafel @x</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
                                                 @foreach (var row in Functie.SpelersLive(EventNaam, x))
                                                 {
-                                                    <td>@row.Voornaam @row.Achternaam   
-                                                        <form method="post">
-                                                            <input type="hidden" name="Voornaam" value="@(row.Voornaam)" />
-                                                            <input type="hidden" name="Achternaam" value="@(row.Achternaam)" />
-                                                            <button class=" btn DelBtn btn-dark float-right" type="submit" name="submit" value="DeleteSpeler"><i class="fas fa-trash-alt float-right"></i></button>
-                                                        </form>
-                                                    </td>
+                                                    <tr>
+                                                        <td>
+                                                            @row.Voornaam @row.Achternaam
+                                                            <form method="post">
+                                                                <input type="hidden" name="Voornaam" value="@(row.Voornaam)" />
+                                                                <input type="hidden" name="Achternaam" value="@(row.Achternaam)" />
+                                                                <button class=" btn DelBtn btn-dark float-right" type="submit" name="submit" value="DeleteSpeler"><i class="fas fa-trash-alt float-right"></i></button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
                                                 }
-                                            </tr> 
-                                        }
-                                    </tbody>
-                                </table>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
