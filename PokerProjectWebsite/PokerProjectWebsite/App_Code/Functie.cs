@@ -388,8 +388,8 @@ public class Functie
     /// <param name="Spelers"></param>
     /// <param name="Fiches"></param>
     /// <returns></returns>
-    public static string EventAanmaken(List<int>Spelers,List<int> Fiches,string[,] Blinds,string refcode)
-    {   
+    public static string EventAanmaken(List<int>Spelers,List<int> Fiches, string[,] Blinds,string refcode)
+    {
         Database db = Database.OpenConnectionString(connectionString, provider);
         /////Maak referencieCode en zet hem in de Event tabel
         //string refcode = MaakReferencieCode();
@@ -414,17 +414,67 @@ public class Functie
         string QR_BlindsInvoeren = "INSERT INTO Blinds(Ronde, Pauze, SmallBlind, BigBlind, Duratie) VALUES(@0,@1,@2,@3,@4)";
         for (int i = 0; i < Blinds.GetLength(1); i++)
         {
-            string ronde = Blinds[i, 0];
-            string pauze = Blinds[i, 0];
-            string BigBlind = Blinds[i, 0];
-            string SmallBlind = Blinds[i, 0];
-            string Duratie = Blinds[i, 0];
+            int ronde = Convert.ToInt32(Blinds[i, 0]);
+            int pauze = Convert.ToInt32(Blinds[i, 0]);
+            int BigBlind = Convert.ToInt32(Blinds[i, 0]);
+            int SmallBlind = Convert.ToInt32(Blinds[i, 0]);
+            int Duratie = Convert.ToInt32(Blinds[i, 0]);
             db.Execute(QR_BlindsInvoeren, ronde, pauze, BigBlind, SmallBlind, Duratie); 
         }
         
         /// Return de RefCode zodat de admin deze kan gebruiken.
         return refcode; 
 
+    }
+
+
+    /// <summary>
+    /// Maakt tijden aan wanneer er op de start knop gedrukt word 
+    /// </summary>
+    /// <param name="refcode"></param>
+    public static void beginBlindTimer(string refcode,bool aanmakenOfverwijderen)
+    {
+        Database db = Database.OpenConnectionString(connectionString, provider);
+        if(aanmakenOfverwijderen)
+        {
+            var startTime = DateTime.Now;
+
+            string QR_GetDuratie = "SELECT Duratie, Begintijd FROM Blinds WHERE ReferencieCode = @0 ";
+            string QR_InputTime = "UPDATE Blinds SET Begintijd = @0, Eindtijd = @1 WHERE Ronde = @2";
+            int ronde = 1;
+            dynamic Duraties = db.Query(QR_GetDuratie, refcode);
+
+            foreach (var row in Duraties)
+            {
+                DateTime eindTijd = startTime.AddMinutes(row[0]);
+                db.Execute(QR_InputTime, startTime, eindTijd, ronde);
+                startTime = eindTijd;
+                ronde++;
+            }
+        }
+        else
+        {
+            string QR_DeleteBlinds = "DELETE FROM Blinds WHERE ReferencieCode = @0";
+            db.Execute(QR_DeleteBlinds, refcode); 
+        }
+
+    }
+
+    /// <summary>
+    /// Kijkt of de blind timer gebruikt word of niet
+    /// </summary>
+    /// <param name="refcode"></param>
+    /// <returns></returns>
+    public static bool EventStatus(string refcode)
+    {
+        Database db = Database.OpenConnectionString(connectionString, provider);
+        string QR_GetStatus = "SELECT Begintijd,Eindtijd FROM Blinds WHERE ReferencieCode = @0";
+        var result = db.QuerySingle(QR_GetStatus, refcode);
+        if(result == null)
+        {
+            return false;
+        }
+        return true; 
     }
 
 }
