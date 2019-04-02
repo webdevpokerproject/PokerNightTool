@@ -27,16 +27,16 @@
                 <h2 style="color:white">Inloggen</h2>
                 <!--FORM VOOR INLOGGEN BEHEERDER-->
                 <form method="post">
-                    <p style="color:white">Gebruikersnaam</p><input type="text" class="form-control" name="Login" placeholder="Voer uw gebruikersnaam in" />
+                    <p style="color:white">Gebruikersnaam</p><input type="text" class="form-control" name="Login" placeholder="Voer uw gebruikersnaam in"required />
                     <br />
-                    <p style="color:white">Wachtwoord</p><input type="password" class="form-control" name="Password" placeholder="Voer uw wachtwoord in" />
+                    <p style="color:white">Wachtwoord</p><input type="password" class="form-control" name="Password" placeholder="Voer uw wachtwoord in"required />
                     <br />
                     <div style="color:red"><b> @Html.ValidationSummary()</b></div>
                     <button class="btn btn-primary" type="submit" name="Submit" value="LoginButton">Inloggen!</button>
                 </form>
             </div>
             <div class="row logrow align-items-center">
-                <h2 style="color: white;  text-align: center">
+                <h2 style="color: white;text-align: center;height: 81px;width: 426px;">
                     If you can't beat them, <br />bluff them!
                 </h2>
             </div>

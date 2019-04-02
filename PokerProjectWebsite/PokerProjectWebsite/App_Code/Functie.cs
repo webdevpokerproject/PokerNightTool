@@ -79,7 +79,7 @@ public class Functie
     /// <param name="achternaam"></param>
     /// <param name="refcode"></param>
     /// <returns> true als output niet null is (en dus de record bestaat), false als dit niet het geval is </returns>
-    public static void LiveEventAddSpeler(string voornaam, string achternaam, string refcode)
+    public static void LiveEventAddSpeler(string voornaam, string achternaam, string tafelnummer, string refcode)
     {
         Database db = Database.OpenConnectionString(Functie.connectionString, Functie.provider);
         string QR_GetSpelersNaam = "SELECT SpelerId,Voornaam, Achternaam FROM Speler WHERE Voornaam = @0 AND Achternaam = @1;";
@@ -97,7 +97,7 @@ public class Functie
         }
 
         string QR_InsertEvent = "INSERT INTO SpelerEvent (SpelerId, ReferencieCode, TafelNummer) VALUES (@0, @1, @2)";
-        db.Execute(QR_InsertEvent, SpelerID, refcode);
+        db.Execute(QR_InsertEvent, SpelerID, refcode, tafelnummer);
 
     }
 

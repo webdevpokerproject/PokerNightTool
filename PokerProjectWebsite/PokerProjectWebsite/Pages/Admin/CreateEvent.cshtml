@@ -28,18 +28,17 @@
                             <div class="row">
                                 <div class="col-6">
                                     <h2>Spelers</h2>
-                                    <br />
-                                    <p>Voer hier de voor en achternaam in van de spelers die meedoen</p>
+                                    <p>Voer hier de voor- en achternaam in van de spelers die meedoen</p>
                                     <div class="input-group-prepend">
-                                        <input type="text" class="form-control" id="voornaam" placeholder="Voornaam" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                                        <input type="text" class="form-control" id="achternaam" placeholder="Achternaam" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input type="text" class="form-control" id="voornaam" placeholder="Voornaam" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
+                                        <input type="text" class="form-control" id="achternaam" placeholder="Achternaam" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"required>
                                         <button class="btn btn-dark" onclick="getpersondata('spelerstable');" style="width: 100%;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Persoon toevoegen</button>
                                     </div>
                                     <br />
-                                    <p>Vul hier het aantal spelers in die aan 1 tafel passen. Hierdoor kan er een tafelindeling gegenereerd worden</p>
+                                    <p>Vul hier het aantal spelers in die aan één tafel passen. Hierdoor kan er een tafelindeling gegenereerd worden</p>
 
                                     <div class="input-group-prepend">
-                                        <input type="text" class="form-control stored" id="maxAanTafel" placeholder="Aantal spelers aan 1 tafel" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input type="text" class="form-control stored" id="maxAanTafel" placeholder="Aantal spelers aan één tafel" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"required>
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -71,6 +70,7 @@
                             <div class="row">
                                 <div class="col-5">
                                     <h2>Fiches toevoegen</h2>
+                                    <p>Voeg hier de fiches (waarde en kleur) toe, die tijdens het spel gebruikt worden</p>
                                     <div class="input-group">
                                         <div class="input-group-prepend" style="width:inherit;">
                                             <select class="form-control" id="kleurkeuze">

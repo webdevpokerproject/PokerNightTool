@@ -273,6 +273,7 @@ function addRowSpelers(tableID, voornaam, achternaam) {
     var t4 = document.createElement("input");
     t4.type = "button";
     t4.value = "Delete";
+    t4.className = "btn-danger";
     t4.onclick = function () { SomeDeleteRowFunction(this); };
     newCell4.appendChild(t4);
 }
