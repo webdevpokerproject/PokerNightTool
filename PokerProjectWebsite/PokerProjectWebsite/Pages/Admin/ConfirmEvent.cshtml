@@ -9,13 +9,13 @@
     string json = Convert.ToString(Session["json"]);
 
     List<int> lijstMetFicheIDs = null;
-    List<int> lijstMetSpelerIDs = null;
+    Dictionary<int,int> lijstMetSpelerIDs = null;
     string[,] lijstMetBlinds = null;
 
     if (json != null)
     {
         lijstMetFicheIDs = Functie.GetFicheIDList(json);
-        lijstMetSpelerIDs = Functie.GetSpelerIDList(json);
+        lijstMetSpelerIDs = Functie.SpelersMetTafelNummer(json);
         lijstMetBlinds = Functie.GetBlinds(json);
     }
 
@@ -49,29 +49,20 @@
                     <div id="TafelIndeling" aria-labelledby="headingOne">
                         <div class="card-body">
                             <div class="row">
-
-                                <div>
-                                    @foreach (var key in Functie.TafelNummers(lijstMetSpelerIDs, 3))
-                                    {
-                                        <p>@(key.Key) @(key.Value)</p>
-                                        <p> </p>
-                                    }
-                                </div>
                                 <div class="col-md-4">
                                     <table class="table table-light table-bordered">
                                         <thead class="thead-dark">
                                             <!-- Kijk hoeveel tafels zijn-->
                                             <tr>
-                                                <th>Tafel x </th>
+                                                <th>Naam </th>
+                                                <th>Aan tafel</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (string Speler in Functie.SpelersPreview(lijstMetSpelerIDs))
+                                            @foreach (var key in lijstMetSpelerIDs)
                                             {
-                                                <tr>
-                                                    <td>@Speler</td>
-
-                                                </tr>
+                                                <tr>@(key.Key)</tr>
+                                                <tr>@(key.Value)</tr>
                                             }
                                         </tbody>
                                     </table>
