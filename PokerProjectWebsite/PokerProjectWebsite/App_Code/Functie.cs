@@ -403,9 +403,9 @@ public class Functie
                 result[speler] = i + 1;
             }
         }
-            return result; 
+        return result;
 
-
+    }
     /// <summary>
     /// WIP
     /// </summary>
