@@ -79,7 +79,7 @@ public class Functie
     /// <param name="achternaam"></param>
     /// <param name="refcode"></param>
     /// <returns> true als output niet null is (en dus de record bestaat), false als dit niet het geval is </returns>
-    public static void LiveEventAddSpeler(string voornaam, string achternaam, string refcode)
+    public static void LiveEventAddSpeler(string voornaam, string achternaam, string tafelnummer, string refcode)
     {
         Database db = Database.OpenConnectionString(Functie.connectionString, Functie.provider);
         string QR_GetSpelersNaam = "SELECT SpelerId,Voornaam, Achternaam FROM Speler WHERE Voornaam = @0 AND Achternaam = @1;";
@@ -97,7 +97,7 @@ public class Functie
         }
 
         string QR_InsertEvent = "INSERT INTO SpelerEvent (SpelerId, ReferencieCode, TafelNummer) VALUES (@0, @1, @2)";
-        db.Execute(QR_InsertEvent, SpelerID, refcode);
+        db.Execute(QR_InsertEvent, SpelerID, refcode, tafelnummer);
 
     }
 
@@ -155,7 +155,6 @@ public class Functie
     /// <returns></returns>
     public static int HoeveelheidTafels(string refcode)
     {
-
         return SpelersLive(refcode, 0).ElementAt(0).TafelNummer;
     }
 
@@ -341,8 +340,7 @@ public class Functie
     {
         var l = list;
         var rnd = new Random();
-        for (var i = l.Count; i > 1; i--)
-        {
+        for (var i = l.Count; i > 1; i--) {
             var pos = rnd.Next(i);
             var x = l[i - 1];
             l[i - 1] = l[pos];
@@ -391,7 +389,7 @@ public class Functie
         List<int> SpelerIds = GetSpelerIDList(json);
         /// Uiteindelijke lijst met speler verbonden aan tafel
         Dictionary<int, int> result = new Dictionary<int, int>();
-        /// berekening voor tafels 
+        // berekening voor tafels 
         float aantalTafel = (float)SpelerIds.Count / (float)maxAanTafel;
         int aantalTafels = (int)Math.Ceiling(aantalTafel);
 
@@ -407,7 +405,6 @@ public class Functie
         }
             return result; 
 
-    }
 
     /// <summary>
     /// WIP

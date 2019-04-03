@@ -10,7 +10,8 @@
     {
         var voornaam = Request.Form["inVoornaam"];
         var achternaam = Request.Form["inAchternaam"];
-        Functie.LiveEventAddSpeler(voornaam, achternaam, refcode);
+        var tafelnummer = Request.Form["inTafelnummer"];
+        Functie.LiveEventAddSpeler(voornaam, achternaam, tafelnummer, refcode);
     }
 
     if (IsPost && Request.Form["submit"] == "DeleteSpeler")
@@ -70,7 +71,7 @@
                     <!-- HEADER VAN DE TWEEDE CARD-->
                     <div class="card-header bg-dark" id="headingOne">
                         <h5 style=" color:white;">
-                            Aanpassen huidige sessie: @refcode
+                            Aanpassen huidige sessie
                         </h5>
                     </div>
                     <!-- BODY VAN DE TWEEDE CARD-->
@@ -79,9 +80,10 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <form method="post">
-                                        <div class="input-group mb-3">
+                                        <div class="input-group mb-4">
                                             <input type="text" class="form-control" placeholder="Voornaam speler" name="inVoornaam" aria-label="Voornaam-speler" aria-describedby="basic-addon2" required>
                                             <input type="text" class="form-control" placeholder="Achternaam speler" name="inAchternaam" aria-label="Achternaam-speler" aria-describedby="basic-addon2" required>
+                                            <input type="number" min="1" max="25" class="form-control" placeholder="Tafelnummer speler" name="inTafelnummer" aria-label="Tafelnummer-speler" aria-describedby="basic-addon2" required>
                                             <div class="input-group-append">
                                                 <button id="button-addon2" class="btn btn-dark" type="submit" name="submit" value="AddSpeler">Voeg speler toe!</button>
                                             </div>

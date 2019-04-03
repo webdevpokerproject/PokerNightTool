@@ -82,14 +82,13 @@ const _CollectFicheData = function () {
     "use strict";
     
     //Get table entries
-    let e = document.getElementById('fiches').firstChild;
+    let e = document.getElementById('ficheHolder');
     
     // Returned array
     let a = [];
     // Iterator
     let i = 0;
-    for (let z of e.children) {
-        let fiche = z.firstChild
+    for (let fiche of e.children) {
         let data = fiche.dataset;
         
         a[i] = {'Kleur': data.kleur, 'Waarde': data.waarde};
@@ -125,6 +124,40 @@ $('#dataForm').submit(function () {
     document.getElementById('dataInput').value = _CollectAsJson();
     return true;
 });
+
+const _GetFiche = function () {
+    "use strict";
+    const kleur = document.getElementById("kleurkeuze");
+    const selectedkleur = kleur.options[kleur.selectedIndex].value;
+
+    const waarde = document.getElementById("waardekeuze");
+    const selectedwaarde = waarde.options[waarde.selectedIndex].value;
+    return {'kleur' : selectedkleur, 'waarde' : selectedwaarde};
+}
+
+const _RemoveItem = function(element) {
+    "use strict";
+    element.parentNode.removeChild(element);
+}
+
+const _GenerateFicheImage = function (fiche) {
+    "use strict";
+    const source = "/Images/fiches/" + fiche.kleur + "/" + fiche.waarde + ".png";
+    let img = document.createElement('img');
+    img.width = 140;
+    img.height = 140;
+    img.src = source;
+    img.onclick = function () { _RemoveItem(this); };
+    img.setAttribute('data-kleur', fiche.kleur);
+    img.setAttribute('data-waarde', fiche.waarde);
+    return img;
+}
+
+const _AddFiche = function (fiche) {
+    "use strict";
+    const img = _GenerateFicheImage(fiche)
+    document.getElementById('ficheHolder').appendChild(img);
+}
 
 function getlastrowdata(tableID, pauzeblind) {
     let Duratie;
@@ -214,43 +247,7 @@ function SomeDeleteRowFunction(o) {
     p.parentNode.removeChild(p);
 }
 
-// Fiches
 
-function addfiche() {
-    var kleur = document.getElementById("kleurkeuze");
-    var selectedkleur = kleur.options[kleur.selectedIndex].value;
-
-    var waarde = document.getElementById("waardekeuze");
-    var selectedwaarde = waarde.options[waarde.selectedIndex].value;
-
-    displayFiche(selectedkleur, selectedwaarde);
-}
-
-function displayFiche(kleur, waarde) {
-    var rows = document.getElementById("fiches").getElementsByTagName("tr").length;
-
-    if (rows == 0) {
-        document.getElementById("fiches").insertRow(-1);
-    }
-
-    var firstRow = document.getElementById("fiches").rows[0];
-
-    var x = firstRow.insertCell(-1);
-
-    var source = "/Images/fiches/" + kleur + "/" + waarde + ".png";
-    var img = document.createElement('img');
-    img.width = 140;
-    img.height = 140;
-    img.src = source;
-    img.onclick = function () { DL1(this); };
-    img.setAttribute('data-kleur', kleur);
-    img.setAttribute('data-waarde', waarde);
-    x.appendChild(img);
-}
-
-function DL1(td) {
-    td.parentNode.removeChild(td);
-}
 
 //Spelers
 
@@ -273,6 +270,7 @@ function addRowSpelers(tableID, voornaam, achternaam) {
     var t4 = document.createElement("input");
     t4.type = "button";
     t4.value = "Delete";
+    t4.className = "btn-danger";
     t4.onclick = function () { SomeDeleteRowFunction(this); };
     newCell4.appendChild(t4);
 }
