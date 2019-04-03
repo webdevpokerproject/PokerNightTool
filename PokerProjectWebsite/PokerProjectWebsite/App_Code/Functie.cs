@@ -477,4 +477,63 @@ public class Functie
         return true; 
     }
 
+    /// <summary>
+    ///  WIP
+    /// </summary>
+    /// <param name="refcode"></param>
+    /// <returns></returns>
+    public static List<double> GetBlindData(string refcode)
+    {
+        DateTime nu =  DateTime.Now;
+
+        Database db = Database.OpenConnectionString(connectionString, provider);
+        string QR_Getblinddata = "SELECT * FROM Blinds WHERE (BeginTijd <= @0 AND EindTijd > @0) AND ReferencieCode = @1";
+        List<double> result = new List<double>();
+        var queryresult = db.Query(QR_Getblinddata, nu, refcode);
+
+        var rondeplaceholder = 0;
+
+        foreach (var row in queryresult)
+        {
+           rondeplaceholder = row.ronde + 1;
+           result.Add((double)row.Ronde);
+           result.Add((double)row.SmallBlind);
+           result.Add((double)row.BigBlind);
+           long t = row.eindtijd.Ticks;
+           DateTime dtEnd = new DateTime(t);
+           TimeSpan tmElapsed = dtEnd - nu;
+           result.Add(tmElapsed.TotalMilliseconds * 10000);
+           result.Add((double)row.Pauze);
+        }
+
+        string QR_Getnextrow = "SELECT * FROM Blinds WHERE Ronde = @0 AND ReferencieCode = @1";
+        var querynextrow = db.Query(QR_Getnextrow,rondeplaceholder,refcode);
+
+        foreach(var row in querynextrow)
+        {
+            result.Add((double)row.Ronde);
+            result.Add((double)row.SmallBlind);
+            result.Add((double)row.BigBlind);
+            result.Add((double)row.Pauze);
+            result.Add((double)row.Duratie);
+        }
+        
+        if(result.Count() == 0)
+        {
+            result.Add(2000);
+            result.Add(0);
+            result.Add(0);
+            result.Add(0);
+            result.Add(0);
+            result.Add(0);
+            result.Add(0);
+            result.Add(0);
+            result.Add(0);
+            result.Add(0);
+        }
+
+        return result; 
+
+    }
+
 }
