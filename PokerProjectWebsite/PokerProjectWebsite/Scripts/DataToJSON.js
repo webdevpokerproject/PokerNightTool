@@ -154,10 +154,29 @@ const _GenerateFicheImage = function (fiche) {
 }
 
 const _AddFiche = function (fiche) {
+    //Add fiche to ficheHolder. Sorts automagically.
     "use strict";
     const img = _GenerateFicheImage(fiche)
-    document.getElementById('ficheHolder').appendChild(img);
+    const holder = document.getElementById('ficheHolder')
+
+    // When there's a fiche that has a larger value then you have, go stand in front of it
+    for (const child of holder.children) {
+        if (child.dataset.waarde > img.dataset.waarde) {
+            holder.insertBefore(img, child);
+            return(true);
+        }
+    }
+    holder.appendChild(img);
 }
+
+const plus1speler = function () {
+    document.getElementById("aantalMensen").innerHTML = Number(document.getElementById("aantalMensen").innerHTML) + 1
+}
+
+const min1speler = function () {
+    document.getElementById("aantalMensen").innerHTML = Number(document.getElementById("aantalMensen").innerHTML) - 1
+}
+
 
 function getlastrowdata(tableID, pauzeblind) {
     let Duratie;
@@ -238,16 +257,14 @@ function addRow(tableID, pauzeblind, SBwaarde, BBwaarde, Duratie, teller) {
     t5.onclick = function () { SomeDeleteRowFunction(this); };
     newCell5.appendChild(t5);
 
-    document.getElementById("Rowcounter").value = Number(teller + 1)
+    document.getElementById("Rowcounter").value = Number(teller + 1);
 }
 
-function SomeDeleteRowFunction(o) {
-    //no clue what to put here?
+const HaalSpelerweg = function(o) {
     var p = o.parentNode.parentNode;
     p.parentNode.removeChild(p);
+    min1speler();
 }
-
-
 
 //Spelers
 
@@ -271,11 +288,8 @@ function addRowSpelers(tableID, voornaam, achternaam) {
     t4.type = "button";
     t4.value = "Delete";
     t4.className = "btn-danger";
-    t4.onclick = function () { SomeDeleteRowFunction(this); };
+    t4.onclick = function () { HaalSpelerweg(this); };
     newCell4.appendChild(t4);
-}
 
-function SomeDeleteRowFunction(o) {
-    var p = o.parentNode.parentNode;
-    p.parentNode.removeChild(p);
+    plus1speler();
 }
