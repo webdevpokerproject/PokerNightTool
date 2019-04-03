@@ -2,6 +2,7 @@
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "PokerNight ~ Event aanmaken";
 
+    string refcode = (string)Session["ReferentieCode"]; 
 }
 
 <div class="container-fluid">
@@ -22,7 +23,10 @@
                             <h1>
                                 Het event aanmaken is gelukt!                           
                             </h1>
-                            <p>De code om mensen uit te nodigen is: localhost:30349/Pages/User/LiveEvent.cshtml?refcode=<b>@Session["ReferentieCode"]</b></p>
+                            <p>De code om mensen uit te nodigen is: localhost:30349/Pages/User/LiveEvent.cshtml?refcode=<b>@refcode</b></p>
+                            
+                            <a href="~/Pages/Admin/LiveEventAanpassen.cshtml?refcode=@refcode">Klik hier om de sessie te starten of aan te passen</a>
+                            <a href="~/Pages/User/LiveEvent.cshtml?refcode=@refcode">Klik hier om naar het gebruikers overzicht te gaan van de live sessie</a>
                         </div>
                     </div>
                 </div>

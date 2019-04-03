@@ -2,9 +2,12 @@
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "PokerNight ~ Event aanpassen";
 
-    var refcode = Convert.ToString(Session["refcode"]);
+    var refcode = (string)Session["refcode"];
+    if (refcode == null)
+    {
+        refcode = (string)Request.QueryString["refcode"];
+    }
 
-    string EventNaam = refcode;
 
     if (IsPost && Request.Form["submit"] == "AddSpeler")
     {
@@ -23,13 +26,14 @@
 
     if(IsPost && Request.Form["submit"] == "StartEvent")
     {
-        Functie.beginBlindTimer(EventNaam);
+        Functie.BeginBlindTimer(refcode);
     }
 
     if (IsPost && Request.Form["submit"] == "StopEvent")
     {
-        Functie.beginBlindTimer(EventNaam);
+        Functie.DeleteEvent(refcode);
     }
+
 
 }
 
@@ -51,10 +55,10 @@
 
                             <div class=" row justify-content-center">
                                 <form method="post">
-                                    @if (Functie.EventStatus(EventNaam))
+                                    @if (Functie.EventStatus(refcode))
                                     {
                                         /// Als de event een begintijd heeft leet het de stop knop zien 
-                                        <button class="btn btn-danger xllg" type="submit" name="submit" value="StopEvent">Stop het evenement</button>
+                                        <button class="btn btn-warning xllg">Het evenement is Live!</button>
                                     }
                                     else
                                     {
@@ -94,7 +98,7 @@
                             </div>
                             <div class="row">
 
-                                @for (int x = 1; Functie.HoeveelheidTafels(EventNaam) >= x; x++)
+                                @for (int x = 1; Functie.HoeveelheidTafels(refcode) >= x; x++)
                                 {
                                     <div class="col-md-4">
                                         <table class="table table-bordered">
@@ -104,7 +108,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach (var row in Functie.SpelersLive(EventNaam, x))
+                                                @foreach (var row in Functie.SpelersLive(refcode, x))
                                                 {
                                                     <tr>
                                                         <td>
@@ -120,6 +124,28 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                </div>                
+                <div class="card border-dark">
+                    <!-- HEADER VAN DE DERDE CARD-->
+                    <div class="card-header bg-dark" id="headingOne">
+                        <h5 style=" color:white;">
+                            Event stopzetten en verwijderen
+                        </h5>
+                    </div>
+                    <!-- BODY VAN DE DERDE CARD-->
+                    <div id="Verwijder Event" aria-labelledby="headingOne">
+                        <div class="card-body">
+                            <div class="row">
+                                
+                                @if (!Functie.EventStatus(refcode))
+                                {
+
+                                    <button class="btn btn-danger btn-block" type="submit" name="submit" value="delete">Hiermee word het gehele event verwijderd!</button>
                                 }
                             </div>
                         </div>

@@ -111,8 +111,6 @@ public class Functie
         db.Execute(QR_DeleteSpelersNaam, GetSpelerID(voornaam, achternaam));
     }
 
-
-
     /// <summary>
     /// Haalt fiches op op basis van de eventnaam
     /// </summary>
@@ -249,12 +247,14 @@ public class Functie
     /// </summary>
     /// <param name="json"></param>
     /// <returns></returns>
-    public static string[,] GetBlinds(string json)
+    public static string[,] GetBlinds(string json,string presetnaam)
     {
-        DataTable dataTable = ConvertJSON(json, "Blinds");
         Database db = Database.OpenConnectionString(connectionString, provider);
-        int numberOfRows = dataTable.Rows.Count; 
-        string[,] arrayOfBlindTable = new string[numberOfRows, 5];
+        if (presetnaam == null)
+        {
+            DataTable dataTable = ConvertJSON(json, "Blinds");
+            int numberOfRows = dataTable.Rows.Count;
+            string[,] arrayOfBlindTable = new string[numberOfRows, 5];
 
             for (int i = 0; i < numberOfRows; i++)
             {
@@ -265,7 +265,18 @@ public class Functie
                 arrayOfBlindTable[i, 4] = dataTable.Rows[i]["Duratie"].ToString();
             }
 
-        return arrayOfBlindTable; 
+            return arrayOfBlindTable;
+        }
+        else
+        {
+            string QR_GetPreset = "SELECT * FROM Blinds WHERE Presetnaam = @0";
+            string QR_GetNumRows = "SELECT COUNT(Ronde) FROM Blinds WHERE Presetnaam = @0";
+            dynamic result = db.Query(QR_GetPreset, presetnaam);
+            int numberOfRows = (int)db.QuerySingle(QR_GetNumRows,presetnaam);
+            string[,] arrayOfBlindTable = new string[numberOfRows,5];
+            return arrayOfBlindTable; 
+        }
+
     }
 
     /// <summary>
@@ -293,25 +304,6 @@ public class Functie
         return result.ToString();
     }
 
-    /// <summary>
-    /// Haalt spelernamen op vanuit de JSON en haalt preview op 
-    /// </summary>
-    /// <param name="SpelerIDs"></param>
-    /// <returns>Lijst met namen van de spelers die eerder zijn ingevoerd</returns>
-    public static List<string> SpelersPreview(List<int> SpelerIDs)
-    {
-        Database db = Database.OpenConnectionString(connectionString, provider);
-        string QR_GetSpelerNamen = "SELECT Voornaam, Achternaam FROM Speler WHERE SpelerId = @0";
-        List<string> SpelerLijst = new List<string>();
-
-        foreach (int n in SpelerIDs)
-        {
-            var result = db.QuerySingle(QR_GetSpelerNamen, n);
-            string speler = result[0] + " " + result[1];
-            SpelerLijst.Add(speler);
-        }
-        return SpelerLijst;
-    }
     /// <summary>
     /// Krijg de naam en waarde van alle fiches
     /// </summary>
@@ -366,7 +358,6 @@ public class Functie
             .ToList();
     }
 
-
     /// <summary>
     /// Gets number of players at one table for next method
     /// </summary>
@@ -377,6 +368,7 @@ public class Functie
         DataTable dataTable = ConvertJSON(json, "Instellingen");
         return Convert.ToInt32(dataTable.Rows[0][1]); 
     }
+
     /// <summary>
     /// Genereerd een tafelindeling
     /// </summary>
@@ -407,7 +399,7 @@ public class Functie
 
     }
     /// <summary>
-    /// WIP
+    /// Voegd een tafelnummer toe aan spelerlijst
     /// </summary>
     /// <param name="Spelers"></param>
     /// <param name="Fiches"></param>
@@ -447,12 +439,11 @@ public class Functie
         }
     }
 
-
     /// <summary>
     /// Maakt tijden aan wanneer er op de start knop gedrukt word 
     /// </summary>
     /// <param name="refcode"></param>
-    public static void beginBlindTimer(string refcode)
+    public static void BeginBlindTimer(string refcode)
     {
         Database db = Database.OpenConnectionString(connectionString, provider);
 
@@ -473,6 +464,7 @@ public class Functie
 
         
     }
+
     /// <summary>
     /// Deletes whole event
     /// </summary>
@@ -499,11 +491,28 @@ public class Functie
         Database db = Database.OpenConnectionString(connectionString, provider);
         string QR_GetStatus = "SELECT EventLoopt FROM Event WHERE ReferencieCode = @0";
         var result = db.QuerySingle(QR_GetStatus, refcode);
-        if(result == null)
-        {
-            return false;
-        }
-        return true; 
+        return result[0]; 
     }
+
+    /// <summary>
+    /// Maakt een nieuw schema in de db met een presetnaam voor later gebruik
+    /// </summary>
+    /// <param name="blindschema"></param>
+    /// <param name="presetnaam"></param>
+    public static void PresetBlindsMaken(string[,] blindschema, string presetnaam)
+    {
+        Database db = Database.OpenConnectionString(connectionString, provider);
+        string QR_MaakPreset = "INSERT INTO Blinds(Ronde,Pauze,SmallBlind,BigBlind,Duratie,Presetnaam) VALUES(@0,@1,@2,@3,@4,@5)";
+        for (int i = 0; i < blindschema.GetLength(0); i++)
+        {
+            int ronde = Convert.ToInt32(blindschema[i, 0]);
+            string pauze = Convert.ToString(blindschema[i, 1]);
+            int BigBlind = Convert.ToInt32(blindschema[i, 2]);
+            int SmallBlind = Convert.ToInt32(blindschema[i, 3]);
+            int Duratie = Convert.ToInt32(blindschema[i, 4]);
+            db.Execute(QR_MaakPreset, ronde, pauze, SmallBlind, BigBlind, Duratie, presetnaam);
+        }
+    }
+
 
 }

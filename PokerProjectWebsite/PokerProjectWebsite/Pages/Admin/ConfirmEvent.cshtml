@@ -1,8 +1,5 @@
-﻿@using System.Data;
+﻿@{
 
-@{
-
-    #region MyRegion
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "PokerNight ~ Event aanmaken";
 
@@ -16,15 +13,19 @@
     {
         lijstMetFicheIDs = Functie.GetFicheIDList(json);
         lijstMetSpelerIDs = Functie.SpelersMetTafelNummer(json);
-        lijstMetBlinds = Functie.GetBlinds(json);
+        lijstMetBlinds = Functie.GetBlinds(json,null);
     }
 
-    #endregion
 
     if (IsPost)
     {
         string refcode = Functie.MaakReferencieCode();
         Session["ReferentieCode"] = refcode;
+        if(Request.Form["presetnaam"] != null)
+        {
+            string presetnaam = (string)Request.Form["presetnaam"];
+            Functie.PresetBlindsMaken(lijstMetBlinds, presetnaam);
+        }
         Functie.EventAanmaken(lijstMetSpelerIDs, lijstMetFicheIDs, lijstMetBlinds, refcode);
         Response.Redirect("~/Pages/Admin/AanmakenEventSucces.cshtml");
     }
@@ -125,21 +126,6 @@
                     </div>
                 </div>
                 <div class="card border-dark">
-                    <!--HEADER VAN DE VIERDE CARD-->
-                    <div class="card-header bg-dark" id="headingFour">
-                        <h5 style=" color:white;">
-                            Presets aanmaken
-                        </h5>
-                    </div>
-                    <!-- BODY VAN DE VIERDE CARD-->
-                    <div id="PresetsAanmaken" aria-labelledby="headingFour">
-                        <div class="card-body">
-                            
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card border-dark">
                     <!--HEADER VAN DE VIJFDE CARD-->
                     <div class="card-header bg-dark" id="headingFour">
                         <h5 style=" color:white;">
@@ -151,6 +137,7 @@
                         <div class="card-body">
                             <a class="btn btn-danger btn-lg btn-block" href="~/Pages/Admin/CreateEvent.cshtml" role="button">Ga terug om aan te passen</a>
                             <form method="post">
+                                <input type="text" class="form-control" name="presetnaam" placeholder="Naam voor het opslaan van het blindschema">
                                 <button type="submit" class="btn btn-success btn-lg btn-block">Maak event aan!</button>
                             </form>
                         </div>
