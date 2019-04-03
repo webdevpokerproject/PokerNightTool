@@ -95,20 +95,12 @@
                                                     <option value="500">500</option>
                                                 </optgroup>
                                             </select>
-                                            <button class="btn btn-dark" onclick="addfiche();" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Toevoegen</button>
+                                            <button class="btn btn-dark" onclick="_AddFiche(_GetFiche());" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Toevoegen</button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-7">
-                                    <table class="table table-striped" id="mytable">
-                                        <thead class="thead-dark">
-                                            <tr>
-                                                <th>Fiches</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="fiches"></tbody>
-                                    </table>
+                                <div class="col-7" id="ficheHolder">
+                                    
                                 </div>
                             </div>
                         </div>

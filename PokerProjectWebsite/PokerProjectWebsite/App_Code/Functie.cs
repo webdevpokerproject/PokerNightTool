@@ -332,17 +332,11 @@ public class Functie
         return FicheLijst;
     }
 
-    /// <summary>
-    /// Methode om een lijst met int's te schudden
-    /// </summary>
-    /// <param name="list"></param>
-    /// <returns></returns>
     private static List<int> ShuffleIntList(List<int> list)
     {
         var l = list;
         var rnd = new Random();
-        for (var i = l.Count; i > 1; i--)
-        {
+        for (var i = l.Count; i > 1; i--) {
             var pos = rnd.Next(i);
             var x = l[i - 1];
             l[i - 1] = l[pos];
@@ -352,35 +346,35 @@ public class Functie
         return list;
     }
 
-    /// <summary>
-    /// Genereerd een tafelindeling
-    /// </summary>
-    /// <param name="SpelerIds"></param>
-    /// <param name="maxAanTafel"></param>
-    /// <returns></returns>
+    public static List<List<T>> ChunkBy<T>(List<T> source, int chunkSize) 
+    {
+        return source
+            .Select((x, i) => new { Index = i, Value = x })
+            .GroupBy(x => x.Index / chunkSize)
+            .Select(x => x.Select(v => v.Value).ToList())
+            .ToList();
+    }
+
     public static Dictionary<int, int> TafelNummers(List<int> SpelerIds, int maxAanTafel)
     {
-        /// Uiteindelijke lijst met speler verbonden aan tafel
+        // Uiteindelijke lijst met speler verbonden aan tafel
         Dictionary<int, int> result = new Dictionary<int, int>();
-        /// berekening voor tafels 
+        // berekening voor tafels 
         float aantalTafel = (float)SpelerIds.Count / (float)maxAanTafel;
         int aantalTafels = (int)Math.Ceiling(aantalTafel);
 
-        for (int x = 1; x< aantalTafels; x++)
+        var dividedLists = ChunkBy(ShuffleIntList(SpelerIds), aantalTafels);
+        
+        for (var i = 0; i < dividedLists.Count(); i++)
         {
-            for(int y = 0; y<maxAanTafel; y++)
+            foreach (var speler in dividedLists[i])
             {
-                foreach(var s in ShuffleIntList(SpelerIds))
-                {
-                    result.Add(s, x);
-                    SpelerIds.Remove(s);
-                }
+                result[speler] = i;
             }
         }
-
-        return result; 
-
+        return result;
     }
+
 
     /// <summary>
     /// WIP

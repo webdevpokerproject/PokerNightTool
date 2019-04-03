@@ -82,14 +82,13 @@ const _CollectFicheData = function () {
     "use strict";
     
     //Get table entries
-    let e = document.getElementById('fiches').firstChild;
+    let e = document.getElementById('ficheHolder');
     
     // Returned array
     let a = [];
     // Iterator
     let i = 0;
-    for (let z of e.children) {
-        let fiche = z.firstChild
+    for (let fiche of e.children) {
         let data = fiche.dataset;
         
         a[i] = {'Kleur': data.kleur, 'Waarde': data.waarde};
@@ -125,6 +124,32 @@ $('#dataForm').submit(function () {
     document.getElementById('dataInput').value = _CollectAsJson();
     return true;
 });
+
+const _GetFiche = function () {
+    const kleur = document.getElementById("kleurkeuze");
+    const selectedkleur = kleur.options[kleur.selectedIndex].value;
+
+    const waarde = document.getElementById("waardekeuze");
+    const selectedwaarde = waarde.options[waarde.selectedIndex].value;
+    return {'kleur' : selectedkleur, 'waarde' : selectedwaarde};
+}
+
+const _GenerateFicheImage = function (fiche) {
+    const source = "/Images/fiches/" + fiche.kleur + "/" + fiche.waarde + ".png";
+    let img = document.createElement('img');
+    img.width = 140;
+    img.height = 140;
+    img.src = source;
+    img.onclick = function () { DL1(this); };
+    img.setAttribute('data-kleur', fiche.kleur);
+    img.setAttribute('data-waarde', fiche.waarde);
+    return img;
+}
+
+const _AddFiche = function (fiche) {
+    const img = _GenerateFicheImage(fiche)
+    document.getElementById('ficheHolder').appendChild(img);
+}
 
 function getlastrowdata(tableID, pauzeblind) {
     let Duratie;
