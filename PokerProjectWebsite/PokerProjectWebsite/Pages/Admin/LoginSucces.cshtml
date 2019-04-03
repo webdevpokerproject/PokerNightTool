@@ -54,15 +54,6 @@
 
 
                                     <form method="post">
-                                                                            
-                                        <select class="form-control" name="refcode" id="kleurkeuze">
-                                            <optgroup label="Kies een referentie code.">
-                                                @foreach (string e in Functie.RunningEvents())
-                                                {
-                                                    <option value="@e">@e</option>
-                                                }
-                                            </optgroup>
-                                        </select>
                                         <div style="color: red"><b> @Html.ValidationSummary()</b></div>
                                         <button id="btnEvent" class="btn btn-primary" type="submit" name="submit" value="LiveEvent">Pas een live event aan!</button>
                                     </form>

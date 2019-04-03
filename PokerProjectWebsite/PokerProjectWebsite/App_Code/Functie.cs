@@ -573,19 +573,4 @@ public class Functie
 
     }
     
-    public static list<string> runningevents()
-    {
-        database db = database.openconnectionstring(connectionstring, provider);
-        
-        var r = db.query("select referenciecode from event");
-
-        var l = new list<string>();
-        
-        foreach (var rij in r)
-        {
-            l.add(rij[0]);
-        }
-
-        return l;
-    }
 }
