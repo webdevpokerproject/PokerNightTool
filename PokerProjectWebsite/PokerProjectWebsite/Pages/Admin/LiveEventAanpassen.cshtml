@@ -22,12 +22,12 @@
 
     if(IsPost && Request.Form["submit"] == "StartEvent")
     {
-        Functie.beginBlindTimer(EventNaam,true);
+        Functie.beginBlindTimer(EventNaam);
     }
 
     if (IsPost && Request.Form["submit"] == "StopEvent")
     {
-        Functie.beginBlindTimer(EventNaam, false);
+        Functie.beginBlindTimer(EventNaam);
     }
 
 }
