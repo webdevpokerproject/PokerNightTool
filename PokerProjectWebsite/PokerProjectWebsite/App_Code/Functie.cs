@@ -153,9 +153,9 @@ public class Functie
     /// </summary>
     /// <param name="ReferencieCodeEvent"></param>
     /// <returns></returns>
-    public static int HoeveelheidTafels(string ReferencieCodeEvent)
+    public static int HoeveelheidTafels(string refcode)
     {
-        return SpelersLive(ReferencieCodeEvent, 0).ElementAt(0).TafelNummer;
+        return SpelersLive(refcode, 0).ElementAt(0).TafelNummer;
     }
 
     /// <summary>
@@ -220,8 +220,7 @@ public class Functie
         return SpelerIDs;
     }
 
-    /// <summary>
-    /// WIP
+    /// <summary>>
     /// Haalt de FicheIDs uit de json string 
     /// </summary>
     /// <param name="json"></param>
@@ -341,8 +340,7 @@ public class Functie
     {
         var l = list;
         var rnd = new Random();
-        for (var i = l.Count; i > 1; i--)
-        {
+        for (var i = l.Count; i > 1; i--) {
             var pos = rnd.Next(i);
             var x = l[i - 1];
             l[i - 1] = l[pos];
@@ -353,54 +351,80 @@ public class Functie
     }
 
     /// <summary>
+    /// Verdeeld spelers in 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="chunkSize"></param>
+    /// <returns></returns>
+    public static List<List<T>> ChunkBy<T>(List<T> source, int chunkSize)
+    {
+        return source
+            .Select((x, i) => new { Index = i, Value = x })
+            .GroupBy(x => x.Index / chunkSize)
+            .Select(x => x.Select(v => v.Value).ToList())
+            .ToList();
+    }
+
+
+    /// <summary>
+    /// Gets number of players at one table for next method
+    /// </summary>
+    /// <param name="json"></param>
+    /// <returns></returns>
+    private static int GetMaxAanTafel(string json)
+    {
+        DataTable dataTable = ConvertJSON(json, "Instellingen");
+        return Convert.ToInt32(dataTable.Rows[0][1]); 
+    }
+    /// <summary>
     /// Genereerd een tafelindeling
     /// </summary>
     /// <param name="SpelerIds"></param>
     /// <param name="maxAanTafel"></param>
     /// <returns></returns>
-    public static Dictionary<int, int> TafelNummers(List<int> SpelerIds, int maxAanTafel)
+    public static Dictionary<int, int> SpelersMetTafelNummer(string json)
     {
+        int maxAanTafel = GetMaxAanTafel(json);
+        List<int> SpelerIds = GetSpelerIDList(json);
         /// Uiteindelijke lijst met speler verbonden aan tafel
         Dictionary<int, int> result = new Dictionary<int, int>();
-        /// berekening voor tafels 
+        // berekening voor tafels 
         float aantalTafel = (float)SpelerIds.Count / (float)maxAanTafel;
         int aantalTafels = (int)Math.Ceiling(aantalTafel);
 
-        for (int x = 1; x< aantalTafels; x++)
+
+        var dividedLists = ChunkBy(ShuffleIntList(SpelerIds), aantalTafels);
+
+        for (var i = 0; i < dividedLists.Count(); i++)
         {
-            for(int y = 0; y<maxAanTafel; y++)
+            foreach (var speler in dividedLists[i])
             {
-                foreach(var s in ShuffleIntList(SpelerIds))
-                {
-                    result.Add(s, x);
-                    SpelerIds.Remove(s);
-                }
+                result[speler] = i + 1;
             }
         }
-
-        return result; 
+        return result;
 
     }
-
     /// <summary>
     /// WIP
     /// </summary>
     /// <param name="Spelers"></param>
     /// <param name="Fiches"></param>
     /// <returns></returns>
-    public static string EventAanmaken(List<int>Spelers,List<int> Fiches, string[,] Blinds,string refcode)
+    public static void EventAanmaken(Dictionary<int,int> Spelers,List<int> Fiches, string[,] Blinds,string refcode)
     {
         Database db = Database.OpenConnectionString(connectionString, provider);
-        /////Maak referencieCode en zet hem in de Event tabel
-        //string refcode = MaakReferencieCode();
-        //string QR_InsertRefcode = "INSERT INTO Event(ReferencieCode) VALUES(@0)";
-        //db.Execute(QR_InsertRefcode, refcode); 
+        /// Event aanmaken
+        string QR_EventAanmaken = "INSERT INTO Event(ReferencieCode,EventLoopt) VALUES (@0,@1)";
+        db.Execute(QR_EventAanmaken, refcode, false);
 
         /// Voeg de spelers toe op basis van de IDLijst
-        string QR_SpelersInvoeren = "INSERT INTO SpelerEvent(SpelerId,ReferencieCode) VALUES(@0,@1)";
-        foreach (int n in Spelers)
+        string QR_SpelersInvoeren = "INSERT INTO SpelerEvent(SpelerId,TafelNummer,ReferencieCode) VALUES(@0,@1,@2)";
+        foreach (KeyValuePair<int,int> pair in Spelers)
         {
-            db.Execute(QR_SpelersInvoeren, n, refcode); 
+
+            db.Execute(QR_SpelersInvoeren,pair.Key,pair.Value,refcode); 
         }
         
         /// Voeg de fiches toe op basis van de IDLijst
@@ -411,20 +435,16 @@ public class Functie
         }
 
         /// Hier moet het blinds-schema ingevoerd worden. 
-        string QR_BlindsInvoeren = "INSERT INTO Blinds(Ronde, Pauze, SmallBlind, BigBlind, Duratie) VALUES(@0,@1,@2,@3,@4)";
-        for (int i = 0; i < Blinds.GetLength(1); i++)
+        string QR_BlindsInvoeren = "INSERT INTO Blinds(Ronde, Pauze, SmallBlind, BigBlind, Duratie, ReferencieCode) VALUES(@0,@1,@2,@3,@4,@5)";
+        for (int i = 0; i < Blinds.GetLength(0); i++)
         {
             int ronde = Convert.ToInt32(Blinds[i, 0]);
-            int pauze = Convert.ToInt32(Blinds[i, 0]);
-            int BigBlind = Convert.ToInt32(Blinds[i, 0]);
-            int SmallBlind = Convert.ToInt32(Blinds[i, 0]);
-            int Duratie = Convert.ToInt32(Blinds[i, 0]);
-            db.Execute(QR_BlindsInvoeren, ronde, pauze, BigBlind, SmallBlind, Duratie); 
+            string pauze = Convert.ToString(Blinds[i, 1]);
+            int BigBlind = Convert.ToInt32(Blinds[i, 2]);
+            int SmallBlind = Convert.ToInt32(Blinds[i, 3]);
+            int Duratie = Convert.ToInt32(Blinds[i, 4]);
+            db.Execute(QR_BlindsInvoeren, ronde, pauze, BigBlind, SmallBlind, Duratie ,refcode); 
         }
-        
-        /// Return de RefCode zodat de admin deze kan gebruiken.
-        return refcode; 
-
     }
 
 
@@ -432,32 +452,41 @@ public class Functie
     /// Maakt tijden aan wanneer er op de start knop gedrukt word 
     /// </summary>
     /// <param name="refcode"></param>
-    public static void beginBlindTimer(string refcode,bool aanmakenOfverwijderen)
+    public static void beginBlindTimer(string refcode)
     {
         Database db = Database.OpenConnectionString(connectionString, provider);
-        if(aanmakenOfverwijderen)
-        {
-            var startTime = DateTime.Now;
 
-            string QR_GetDuratie = "SELECT Duratie, Begintijd FROM Blinds WHERE ReferencieCode = @0 ";
-            string QR_InputTime = "UPDATE Blinds SET Begintijd = @0, Eindtijd = @1 WHERE Ronde = @2";
-            int ronde = 1;
-            dynamic Duraties = db.Query(QR_GetDuratie, refcode);
+        var startTime = DateTime.Now;
 
-            foreach (var row in Duraties)
-            {
-                DateTime eindTijd = startTime.AddMinutes(row[0]);
-                db.Execute(QR_InputTime, startTime, eindTijd, ronde);
-                startTime = eindTijd;
-                ronde++;
-            }
-        }
-        else
+        string QR_GetDuratie = "SELECT Duratie, Begintijd FROM Blinds WHERE ReferencieCode = @0 ";
+        string QR_InputTime = "UPDATE Blinds SET Begintijd = @0, Eindtijd = @1 WHERE Ronde = @2";
+        int ronde = 1;
+        dynamic Duraties = db.Query(QR_GetDuratie, refcode);
+
+        foreach (var row in Duraties)
         {
-            string QR_DeleteBlinds = "DELETE FROM Blinds WHERE ReferencieCode = @0";
-            db.Execute(QR_DeleteBlinds, refcode); 
+            DateTime eindTijd = startTime.AddMinutes(row[0]);
+            db.Execute(QR_InputTime, startTime, eindTijd, ronde);
+            startTime = eindTijd;
+            ronde++;
         }
 
+        
+    }
+    /// <summary>
+    /// Deletes whole event
+    /// </summary>
+    /// <param name="refcode"></param>
+    public static void DeleteEvent(string refcode)
+    {
+        Database db = Database.OpenConnectionString(connectionString, provider);
+
+        string QR_DeleteBlinds = "DELETE FROM Blinds WHERE ReferencieCode = @0";
+        string QR_DeleteSpeler = "DELETE FROM SpelerEvent WHERE ReferencieCode = @0";
+        string QR_DeleteFiches = "DELETE FROM EventFiches WHERE ReferencieCode = @0"; 
+        db.Execute(QR_DeleteBlinds, refcode);
+        db.Execute(QR_DeleteSpeler, refcode);
+        db.Execute(QR_DeleteFiches, refcode);
     }
 
     /// <summary>
@@ -468,7 +497,7 @@ public class Functie
     public static bool EventStatus(string refcode)
     {
         Database db = Database.OpenConnectionString(connectionString, provider);
-        string QR_GetStatus = "SELECT Begintijd,Eindtijd FROM Blinds WHERE ReferencieCode = @0";
+        string QR_GetStatus = "SELECT EventLoopt FROM Event WHERE ReferencieCode = @0";
         var result = db.QuerySingle(QR_GetStatus, refcode);
         if(result == null)
         {
@@ -535,5 +564,20 @@ public class Functie
         return result; 
 
     }
+    
+    public static list<string> runningevents()
+    {
+        database db = database.openconnectionstring(connectionstring, provider);
+        
+        var r = db.query("select referenciecode from event");
 
+        var l = new list<string>();
+        
+        foreach (var rij in r)
+        {
+            l.add(rij[0]);
+        }
+
+        return l;
+    }
 }
