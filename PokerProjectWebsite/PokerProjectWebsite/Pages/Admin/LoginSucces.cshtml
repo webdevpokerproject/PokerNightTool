@@ -52,9 +52,15 @@
                                     </form>
                                 </div>
                                 <div class="col-md-6">
+                                    
+                                    @foreach (string e in Functie.RunningEvents())
+                                    {
+                                        <p>@e</p>
+                                    }
+
                                     <form method="post">
-                                        <input type="text" class="form-control" name="refcode" placeholder="Vul hier de referentiecode in" />
-                                        <div style="color:red"><b> @Html.ValidationSummary()</b></div>
+                                        <input type="text" class="form-control" name="refcode" placeholder="Vul hier de referentiecode in"/>
+                                        <div style="color: red"><b> @Html.ValidationSummary()</b></div>
                                         <button id="btnEvent" class="btn btn-primary" type="submit" name="submit" value="LiveEvent">Pas een live event aan!</button>
                                     </form>
                                 </div>

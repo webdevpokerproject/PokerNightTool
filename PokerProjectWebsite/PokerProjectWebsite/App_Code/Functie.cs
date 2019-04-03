@@ -471,4 +471,19 @@ public class Functie
         return true; 
     }
 
+    public static List<string> RunningEvents()
+    {
+        Database db = Database.OpenConnectionString(connectionString, provider);
+        
+        var r = db.Query("SELECT ReferencieCode FROM Event");
+
+        var l = new List<string>();
+        
+        foreach (var rij in r)
+        {
+            l.Add(rij[0]);
+        }
+
+        return l;
+    }
 }
