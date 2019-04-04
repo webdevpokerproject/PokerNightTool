@@ -1,16 +1,29 @@
-﻿const _CollectSettings = function (elements) {
+﻿const _CollectSettings = function () {
     //Collect data from fields on the page that are of class 'stored'
     "use strict";
 
     let array = [];
     let i = 0;
 
-    for (let e of elements) {
+    for (let e of document.querySelectorAll('.stored')) {
         console.log(e);
         array[i] = {'Instelling': e.id, 'Waarde': e.value};
         i++;
     }
     return array
+}
+
+const _CheckIfSettingsFilled = function () {
+    "use strict";
+    for (let e of document.querySelectorAll('.stored')) {
+        console.log(e);
+        console.log("Checking...")
+        if (!e || !e.value || e.value == null || e.value == "") {
+            alert("Een instelling is niet ingevuld: " + e.placeholder)
+            return false;
+        }
+    }
+    return true;
 }
 
 const _CollectBlindData = function () {
@@ -101,14 +114,19 @@ const _CollectFicheData = function () {
 const _Collect = function () {
     //Collect data from child functions, returns as dictionary
     "use strict";
-
     let collected = {}
-    collected.Blinds = _CollectBlindData();
-    collected.Spelers = _CollectPersonData();
-    collected.Fiche = _CollectFicheData();
-    collected.Instellingen = _CollectSettings(document.querySelectorAll('.stored'));
+    if (_CheckIfSettingsFilled()) {
+        
+        collected.Blinds = _CollectBlindData();
+        collected.Spelers = _CollectPersonData();
+        collected.Fiche = _CollectFicheData();
+        collected.Instellingen = _CollectSettings();
+        
+    }
     return collected;
 }
+
+
 
 const _CollectAsJson = function () {
     "use strict";
@@ -121,8 +139,11 @@ const _CollectAsJson = function () {
 $('#dataForm').submit(function () {
     //Set form data to return value of '_CollectAsJson'
     "use strict";
-    document.getElementById('dataInput').value = _CollectAsJson();
-    return true;
+    if (_CheckIfSettingsFilled()) {
+        document.getElementById('dataInput').value = _CollectAsJson();
+        return true;
+    }
+    return false;
 });
 
 const _GetFiche = function () {
@@ -161,7 +182,7 @@ const _AddFiche = function (fiche) {
 
     // When there's a fiche that has a larger value then you have, go stand in front of it
     for (const child of holder.children) {
-        if (child.dataset.waarde > img.dataset.waarde) {
+        if (Number(child.dataset.waarde) > Number(img.dataset.waarde)) {
             holder.insertBefore(img, child);
             return(true);
         }
