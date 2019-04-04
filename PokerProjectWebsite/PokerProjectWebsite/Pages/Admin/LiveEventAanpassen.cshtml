@@ -32,6 +32,7 @@
     if (IsPost && Request.Form["submit"] == "StopEvent")
     {
         Functie.DeleteEvent(refcode);
+        Response.Redirect("~/Pages/Admin/LoginSucces.cshtml");
     }
 
 
