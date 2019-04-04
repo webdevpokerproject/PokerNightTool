@@ -18,8 +18,7 @@
         lijstMetBlinds = Functie.GetBlinds(json,presetnaam);
     }
 
-
-    if (IsPost)
+    if (IsPost && Request.Form["submit"] == "spelaanmaken")
     {
         string refcode = Functie.MaakReferencieCode();
         Session["ReferentieCode"] = refcode;
@@ -32,9 +31,18 @@
         Response.Redirect("~/Pages/Admin/AanmakenEventSucces.cshtml");
     }
 
+    if (IsPost && Request.Form["submit"] == "back")
+    {
+        Response.Redirect(Request.UrlReferrer.ToString());
+    }
+
 }
 
-
+<script>
+    function goBack() {
+        window.history.back(-1);
+    }
+</script>
 
 <div class="container-fluid">
     <div class="row">
@@ -138,10 +146,14 @@
                     <!-- BODY VAN DE VIJFDE CARD-->
                     <div id="Confirm" aria-labelledby="headingFour">
                         <div class="card-body">
-                            <a class="btn btn-danger btn-lg btn-block" href="~/Pages/Admin/CreateEvent.cshtml" role="button">Ga terug om aan te passen</a>
+                            <button onclick="goBack()">Go Back</button>
+                            <form method="post">
+                                <button class="btn-danger" type="submit" name="submit" value="back">Ga terug om aan te passen</button>
+                            </form>
+                            @*<a class="btn btn-danger btn-lg btn-block" href="~/Pages/Admin/CreateEvent.cshtml" role="button">Ga terug om aan te passen</a>*@
                             <form method="post">
                                 <input type="text" class="form-control" name="presetnaam" placeholder="Naam voor het opslaan van het blindschema">
-                                <button type="submit" class="btn btn-success btn-lg btn-block">Maak event aan!</button>
+                                <button type="submit" name="submit" value="spelaanmaken" class="btn btn-success btn-lg btn-block">Maak event aan!</button>
                             </form>
                         </div>
                     </div>
