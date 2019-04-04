@@ -9,11 +9,13 @@
     Dictionary<int,int> lijstMetSpelerIDs = null;
     string[,] lijstMetBlinds = null;
 
+    string presetnaam = (string)Session["presetnaam"]; 
+
     if (json != null)
     {
         lijstMetFicheIDs = Functie.GetFicheIDList(json);
         lijstMetSpelerIDs = Functie.SpelersMetTafelNummer(json);
-        lijstMetBlinds = Functie.GetBlinds(json,null);
+        lijstMetBlinds = Functie.GetBlinds(json,presetnaam);
     }
 
 
@@ -23,8 +25,8 @@
         Session["ReferentieCode"] = refcode;
         if(Request.Form["presetnaam"] != null)
         {
-            string presetnaam = (string)Request.Form["presetnaam"];
-            Functie.PresetBlindsMaken(lijstMetBlinds, presetnaam);
+            string invoerPreset = (string)Request.Form["presetnaam"];
+            Functie.PresetBlindsMaken(lijstMetBlinds, invoerPreset);
         }
         Functie.EventAanmaken(lijstMetSpelerIDs, lijstMetFicheIDs, lijstMetBlinds, refcode);
         Response.Redirect("~/Pages/Admin/AanmakenEventSucces.cshtml");

@@ -304,6 +304,10 @@ public class Functie
         return result.ToString();
     }
 
+    /// <summary>
+    /// Haalt alle aangemaakte refcodes op en zet ze in een lijst voor een dropdown
+    /// </summary>
+    /// <returns></returns>
     public static IEnumerable<dynamic> GetAangemaakteRefcodes()
     {
         Database db = Database.OpenConnectionString(connectionString, provider);
@@ -311,6 +315,25 @@ public class Functie
         dynamic queryresult = db.Query(QR_GetRefcodes);
 
         return queryresult; 
+
+    }
+
+    /// <summary>
+    /// Haalt alle aangemaakte Presetnamen van de blinds op en zet ze in een lisjt voor een dorpdown
+    /// </summary>
+    /// <returns></returns>
+    public static List<string> GetAangemaakteBlindPresets()
+    {
+        Database db = Database.OpenConnectionString(connectionString, provider);
+        string QR_GetRefcodes = "Select Presetnaam FROM Blinds";
+        dynamic queryresult = db.Query(QR_GetRefcodes);
+        List<string> result = new List<string>();
+
+        foreach(var row in queryresult)
+        {
+            result.Add(row[0]);
+        }
+        return result;
 
     }
     /// <summary>
