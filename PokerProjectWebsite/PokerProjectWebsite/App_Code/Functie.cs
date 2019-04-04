@@ -304,17 +304,17 @@ public class Functie
         return result.ToString();
     }
 
-    /// <summary>
-    /// Haalt alle aangemaakte refcodes op en zet ze in een lijst voor een dropdown
-    /// </summary>
-    /// <returns></returns>
-    public static IEnumerable<dynamic> GetAangemaakteRefcodes()
+    public static List<string> GetAangemaakteRefcodes()
     {
         Database db = Database.OpenConnectionString(connectionString, provider);
         string QR_GetRefcodes = "Select ReferencieCode FROM Event";
         dynamic queryresult = db.Query(QR_GetRefcodes);
-
-        return queryresult; 
+        List<string> result = new List<string>();
+        foreach(var row in queryresult)
+        {
+            result.Add(row[0]);
+        }
+        return result; 
 
     }
 
@@ -483,7 +483,7 @@ public class Functie
 
         string QR_GetDuratie = "SELECT Duratie, Begintijd FROM Blinds WHERE ReferencieCode = @0 ";
         string QR_InputTime = "UPDATE Blinds SET Begintijd = @0, Eindtijd = @1 WHERE Ronde = @2";
-        string QR_UpdateEvent = "UPDATE Event SET EvenementLoopt = @0";
+        string QR_UpdateEvent = "UPDATE Event SET EventLoopt = @0";
         int ronde = 1;
         dynamic Duraties = db.Query(QR_GetDuratie, refcode);
         db.Execute(QR_UpdateEvent, true);
@@ -539,7 +539,7 @@ public class Functie
         for (int i = 0; i < blindschema.GetLength(0); i++)
         {
             int ronde = Convert.ToInt32(blindschema[i, 0]);
-            string pauze = Convert.ToString(blindschema[i, 1]);
+            int pauze = Convert.ToInt32(blindschema[i, 1]);
             int BigBlind = Convert.ToInt32(blindschema[i, 2]);
             int SmallBlind = Convert.ToInt32(blindschema[i, 3]);
             int Duratie = Convert.ToInt32(blindschema[i, 4]);
