@@ -51,9 +51,13 @@
                                     </form>
                                 </div>
                                 <div class="col-md-6">
-
-
                                     <form method="post">
+                                        <select>
+                                            @foreach (string refcode in Functie.GetAangemaakteRefcodes())
+                                            {
+                                                <option name="refcode" value="@refcode">@refcode</option>
+                                            }
+                                        </select>
                                         <div style="color: red"><b> @Html.ValidationSummary()</b></div>
                                         <button id="btnEvent" class="btn btn-primary" type="submit" name="submit" value="LiveEvent">Pas een live event aan!</button>
                                     </form>

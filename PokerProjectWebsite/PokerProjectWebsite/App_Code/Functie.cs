@@ -260,8 +260,8 @@ public class Functie
             {
                 arrayOfBlindTable[i, 0] = dataTable.Rows[i]["Ronde"].ToString();
                 arrayOfBlindTable[i, 1] = dataTable.Rows[i]["Pauze"].ToString();
-                arrayOfBlindTable[i, 2] = dataTable.Rows[i]["BigBlind"].ToString();
-                arrayOfBlindTable[i, 3] = dataTable.Rows[i]["SmallBlind"].ToString();
+                arrayOfBlindTable[i, 2] = dataTable.Rows[i]["SmallBlind"].ToString();
+                arrayOfBlindTable[i, 3] = dataTable.Rows[i]["BigBlind"].ToString();
                 arrayOfBlindTable[i, 4] = dataTable.Rows[i]["Duratie"].ToString();
             }
 
@@ -304,6 +304,15 @@ public class Functie
         return result.ToString();
     }
 
+    public static IEnumerable<dynamic> GetAangemaakteRefcodes()
+    {
+        Database db = Database.OpenConnectionString(connectionString, provider);
+        string QR_GetRefcodes = "Select ReferencieCode FROM Event";
+        dynamic queryresult = db.Query(QR_GetRefcodes);
+
+        return queryresult; 
+
+    }
     /// <summary>
     /// Krijg de naam en waarde van alle fiches
     /// </summary>
@@ -451,9 +460,10 @@ public class Functie
 
         string QR_GetDuratie = "SELECT Duratie, Begintijd FROM Blinds WHERE ReferencieCode = @0 ";
         string QR_InputTime = "UPDATE Blinds SET Begintijd = @0, Eindtijd = @1 WHERE Ronde = @2";
+        string QR_UpdateEvent = "UPDATE Event SET EvenementLoopt = @0";
         int ronde = 1;
         dynamic Duraties = db.Query(QR_GetDuratie, refcode);
-
+        db.Execute(QR_UpdateEvent, true);
         foreach (var row in Duraties)
         {
             DateTime eindTijd = startTime.AddMinutes(row[0]);
