@@ -41,6 +41,13 @@
     }
 
 }
+<script>
+    function Selecteerpreset() {
+        var e = document.getElementById("presetkeuze");
+        var keuze = e.options[e.selectedIndex].text;
+        document.getElementById("verstoptekeuze").value = keuze;
+    }
+</script>
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-lg-10">
@@ -147,12 +154,14 @@
                     <div id="BlindSchema" aria-labelledby="headingThree">
                         <div class="card-body">
                             <div class="row">
-                                <select>
+                                <input type="hidden" id="verstoptekeuze" value=""/>
+                                <select id="presetkeuze">
                                     @foreach (string presetnaam in Functie.GetAangemaakteBlindPresets())
                                     {
                                         <option name="">@presetnaam</option>
                                     }
                                 </select>
+                                <button class="btn btn-dark" onclick="Selecteerpreset()" style="width:200px;" type="button">Kies preset</button>
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-11">

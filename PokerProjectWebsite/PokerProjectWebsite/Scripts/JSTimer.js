@@ -62,6 +62,7 @@
             // If the count down is over, write some text
             if (distance <= 0) {
                 clearInterval(x);
+
                 location.reload();
             }
         }, 1000);

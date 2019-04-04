@@ -63,17 +63,18 @@
                                 <div class="col-md-4">
                                     <table class="table table-light table-bordered">
                                         <thead class="thead-dark">
-                                            <!-- Kijk hoeveel tafels zijn-->
                                             <tr>
                                                 <th>Naam </th>
-                                                <th>Aan tafel</th>
+                                                <th>Tafelnummer</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var key in lijstMetSpelerIDs)
+                                            @foreach(var key in Functie.GetSpelerNaam(lijstMetSpelerIDs))
                                             {
-                                                <tr>@(key.Key)</tr>
-                                                <tr>@(key.Value)</tr>
+                                                <tr>
+                                                    <td>@key.Key</td>
+                                                    <td>@key.Value</td>
+                                                </tr>
                                             }
                                         </tbody>
                                     </table>
