@@ -212,8 +212,8 @@ function getlastrowdata(tableID, pauzeblind) {
                 blindfactor = document.getElementById("BlindFactor").value;
             }
 
-            waarde2 = (rijcel2 * blindfactor);
-            waarde3 = (rijcel3 * blindfactor);
+            waarde2 = Math.ceil(((rijcel2 * blindfactor)+1)/10)*10;
+            waarde3 = 2 * waarde2
             Duratie = document.getElementById("BlindDuratie").value;
         }
 

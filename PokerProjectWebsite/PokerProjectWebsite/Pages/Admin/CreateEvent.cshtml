@@ -146,6 +146,14 @@
                     <!-- BODY VAN DE DERDE CARD-->
                     <div id="BlindSchema" aria-labelledby="headingThree">
                         <div class="card-body">
+                            <div class="row">
+                                <select>
+                                    @foreach (string presetnaam in Functie.GetAangemaakteBlindPresets())
+                                    {
+                                        <option name="">@presetnaam</option>
+                                    }
+                                </select>
+                            </div>
                             <div class="row justify-content-center">
                                 <div class="col-11">
                                     <div class="input-group">
