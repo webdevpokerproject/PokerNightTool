@@ -16,6 +16,32 @@
         <div class="col-lg-10">
             <div class="accordion" id="accordionExample">
                 <div class="card border-dark">
+                    <!-- HEADER VAN DE 0ste CARD-->
+                    <div class="card-header bg-dark" id="headingOne">
+                        <h5>
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#WaardeFiches" aria-expanded="true" aria-controls="WaardeFiches">
+                                Timer
+                            </button>
+                        </h5>
+                    </div>
+                    <!-- BODY VAN DE 0ste CARD-->
+                    <div id="Timer" class="collapse show" aria-labelledby="headingOne">
+                        <div class="card-body">
+                            <div class="row">
+                                <div id="ronde"></div>
+                                <div id="timer"></div>
+                                <div id="smallblind"></div>
+                                <div id="bigblind"></div>
+                            </div>
+                            <div class="row">
+                                <div id="ronde2"></div>
+                                <div id="smallblind2"></div>
+                                <div id="bigblind2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-dark">
                     <!-- HEADER VAN DE EERSTE CARD-->
                     <div class="card-header bg-dark" id="headingOne">
                         <h5>
@@ -116,12 +142,12 @@
                             <a href="~/Pages/User/PokerRules.cshtml">Naar het volledige overzicht van regels</a>
                             <div class="row">
                                 <div class="col-sm">
-                                   <h2>Royal Flush</h2>
-                                   <h5>649.739:1</h5>
-                                   <p>Aas, koning, koningin, boer en 10 van dezelfde kleur. </p>
+                                    <h2>Royal Flush</h2>
+                                    <h5>649.739:1</h5>
+                                    <p>Aas, koning, koningin, boer en 10 van dezelfde kleur. </p>
                                 </div>
                                 <div class="col-sm">
-                                   <img src="~/Images/Cheatsheet/Combies/Royal Flush.jpg" width="500" height="250" class="img-fluid" />
+                                    <img src="~/Images/Cheatsheet/Combies/Royal Flush.jpg" width="500" height="250" class="img-fluid" />
                                 </div>
                             </div>
 
@@ -130,7 +156,7 @@
                                     <h2>Straight Flush</h2>
                                     <h5>72.192:1</h5>
                                     <p>Vijf achtereenvolgende kaarten van dezelfde kleur.</p>
-                                    
+
                                 </div>
                                 <div class="col-sm">
                                     <img src="~/Images/Cheatsheet/Combies/Straight Flush.jpg" width="500" height="250" class="img-fluid" />
@@ -230,3 +256,16 @@
         </div>
     </div>
 </div>
+<script>
+    var ronde = @Functie.GetBlindData(EventNaam)[0];
+    var sb = @Functie.GetBlindData(EventNaam)[1];
+    var bb = @Functie.GetBlindData(EventNaam)[2];
+    var eindtijd = @Functie.GetBlindData(EventNaam)[3];
+    var pauzeofblind = @Functie.GetBlindData(EventNaam)[4];
+    var rondenext = @Functie.GetBlindData(EventNaam)[5];
+    var sbnext = @Functie.GetBlindData(EventNaam)[6];
+    var bbnext = @Functie.GetBlindData(EventNaam)[7];
+    var pauzeofblindnext = @Functie.GetBlindData(EventNaam)[8];
+    var duratiepauze = @Functie.GetBlindData(EventNaam)[9];
+</script>
+<script src="~/Scripts/JSTimer.js" defer></script>
