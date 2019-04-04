@@ -385,7 +385,6 @@ public class Functie
         float aantalTafel = (float)SpelerIds.Count / (float)maxAanTafel;
         int aantalTafels = (int)Math.Ceiling(aantalTafel);
 
-
         var dividedLists = ChunkBy(ShuffleIntList(SpelerIds), aantalTafels);
 
         for (var i = 0; i < dividedLists.Count(); i++)
@@ -461,8 +460,6 @@ public class Functie
             startTime = eindTijd;
             ronde++;
         }
-
-        
     }
 
     /// <summary>
