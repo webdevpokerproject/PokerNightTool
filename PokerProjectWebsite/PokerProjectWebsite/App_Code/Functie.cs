@@ -185,6 +185,26 @@ public class Functie
     }
 
     /// <summary>
+    /// Haalt de spelernamen op op basis van een lijst aan IDs
+    /// </summary>
+    /// <param name="SpelerIDs"></param>
+    /// <returns></returns>
+    public static Dictionary<string, int> GetSpelerNaam(Dictionary<int,int> SpelerIDs)
+    {
+        Database db = Database.OpenConnectionString(connectionString, provider);
+        string QR_GetID = "SELECT Voornaam, Achternaam FROM Speler WHERE SpelerId =@0";
+        Dictionary<string, int> results = new Dictionary<string, int>();
+        foreach (var key in SpelerIDs)
+        {
+            var query = db.QuerySingle(QR_GetID, key.Key);
+            string spelernaam = (string)query[0] + " " + (string)query[1];
+            results.Add(spelernaam, key.Value);
+        }
+       
+        return results;
+    }
+
+    /// <summary>
     /// Haalt de SpelerIDs uit de json string 
     /// </summary>
     /// <param name="json"></param>
@@ -304,6 +324,10 @@ public class Functie
         return result.ToString();
     }
 
+    /// <summary>
+    /// Haalt alle aangemaakte refcodes op en zet de in een lijst voor een dropdown
+    /// </summary>
+    /// <returns></returns>
     public static List<string> GetAangemaakteRefcodes()
     {
         Database db = Database.OpenConnectionString(connectionString, provider);
@@ -319,13 +343,13 @@ public class Functie
     }
 
     /// <summary>
-    /// Haalt alle aangemaakte Presetnamen van de blinds op en zet ze in een lisjt voor een dorpdown
+    /// Haalt alle aangemaakte Presetnamen van de blinds op en zet ze in een lijst voor een dorpdown
     /// </summary>
     /// <returns></returns>
     public static List<string> GetAangemaakteBlindPresets()
     {
         Database db = Database.OpenConnectionString(connectionString, provider);
-        string QR_GetRefcodes = "Select Presetnaam FROM Blinds";
+        string QR_GetRefcodes = "Select Presetnaam FROM Blinds GROUP BY Presetnaam ";
         dynamic queryresult = db.Query(QR_GetRefcodes);
         List<string> result = new List<string>();
 
