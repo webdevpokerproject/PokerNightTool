@@ -6,11 +6,48 @@
 
     if (IsPost && Request.Form["submit"] == "continue")
     {
-        Session["json"] = Request["data"];
-        Response.Redirect("~/Pages/Admin/ConfirmEvent.cshtml");
+        var test = Request.Form["data"];
+
+        var rawBlinds = test;
+        var IsBlindsEmpty = test.Contains("Blinds\":[]");
+
+        var rawSpelers = test;
+        var IsSpelersEmpty = test.Contains("Spelers\":[],");
+
+        var rawFiches = test;
+        var IsFichesEmpty = test.Contains("Fiche\":[]");
+
+        if (IsBlindsEmpty || IsSpelersEmpty || IsFichesEmpty)
+        {
+            Validation.AddFormError("Eén of meerdere waardes zijn helaas onjuist ingevuld, probeer het opnieuw!");
+        }
+
+
+        else if (IsSpelersEmpty)
+        {
+            Validation.AddFormError("Controleer de spelers");
+        }
+
+        else if (IsFichesEmpty)
+        {
+            Validation.AddFormError("Controleer de ingevulde fiches");
+        }
+
+        else
+        {
+            Session["json"] = Request["data"];
+            Response.Redirect("~/Pages/Admin/ConfirmEvent.cshtml");
+        }
     }
 
 }
+<script>
+    function Selecteerpreset() {
+        var e = document.getElementById("presetkeuze");
+        var keuze = e.options[e.selectedIndex].text;
+        document.getElementById("verstoptekeuze").value = keuze;
+    }
+</script>
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-lg-10">
@@ -71,7 +108,7 @@
                                     <p>Voeg hier de fiches (waarde en kleur) toe, die tijdens het spel gebruikt worden</p>
                                     <div class="input-group">
                                         <div class="input-group-prepend" style="width:inherit;">
-                                            <select class="form-control" id="kleurkeuze">
+                                            <select class="form-control" id="kleurkeuze"required>
                                                 <optgroup label="Kies een kleur">
                                                     <option value="black">Zwart</option>
                                                     <option value="blue">Blauw</option>
@@ -83,7 +120,7 @@
                                                     <option value="yellow">Geel</option>
                                                 </optgroup>
                                             </select>
-                                            <select class="form-control" id="waardekeuze">
+                                            <select class="form-control" id="waardekeuze"required>
                                                 <optgroup label="Kies een waarde">
                                                     <option value="10">10</option>
                                                     <option value="20">20</option>
@@ -116,13 +153,23 @@
                     <!-- BODY VAN DE DERDE CARD-->
                     <div id="BlindSchema" aria-labelledby="headingThree">
                         <div class="card-body">
+                            <div class="row">
+                                <input type="hidden" id="verstoptekeuze" value=""/>
+                                <select id="presetkeuze">
+                                    @foreach (string presetnaam in Functie.GetAangemaakteBlindPresets())
+                                    {
+                                        <option name="">@presetnaam</option>
+                                    }
+                                </select>
+                                <button class="btn btn-dark" onclick="Selecteerpreset()" style="width:200px;" type="button">Kies preset</button>
+                            </div>
                             <div class="row justify-content-center">
                                 <div class="col-11">
                                     <p class="info">Vul hier de waardes van de small en big blinds in. Vul hier ook in met welke factor de blinds worden verhoogd voor de volgende ronde en hoe lang de waardes van de blinds blijven staan. Voeg daarna de blind toe aan het schema.</p>
                                     <div class="input-group">
-                                        <input type="hidden" id="Rowcounter" value="0" />
-                                        <input type="number" class="form-control" id="SmallBlind" placeholder="Small blind start waarde" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                                        <input type="number" class="form-control" id="BigBlind" placeholder="Big blind start waarde" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input type="hidden" id="Rowcounter" value="0" required/>
+                                        <input type="number" class="form-control" id="SmallBlind" placeholder="Small blind start waarde" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"required>
+                                        <input type="number" class="form-control" id="BigBlind" placeholder="Big blind start waarde" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"required>
                                     </div>
 
                                     <div class="input-group">
@@ -133,7 +180,7 @@
 
                                     <p class="info">Vul hier de lengte van pauzes in en voeg pauzes toe.</p>
                                     <div class="input-group">
-                                        <input type="number" class="form-control" id="PauzeDuratie" placeholder="Pauze duratie in minuten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input type="number" class="form-control" id="PauzeDuratie" placeholder="Pauze duratie in minuten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"required>
                                         <button class="btn btn-dark" onclick="getlastrowdata('blindtable','Pauze');" style="width:200px;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Add pauze</button>
                                     </div>
                                 </div>
@@ -168,6 +215,7 @@
                                         <input id="dataInput" type="hidden" name="data" value="a">
                                         <button name="submit" value="continue" class="btn btn-success btn-lg btn-block" onsubmit="_PostData()">Maak preview aan!</button>
                                     </form>
+                                    <div style="color:red"><b> @Html.ValidationSummary()</b></div>
                                 </div>
                             </div>
                         </div>

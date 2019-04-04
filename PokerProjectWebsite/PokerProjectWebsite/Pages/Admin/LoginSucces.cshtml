@@ -3,7 +3,7 @@
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "PokerNight ~ Admin login succes";
     #endregion
-
+    
     if (IsPost && Request.Form["submit"] == "LiveEvent")
     {
         var refcode = Request.Form["refcode"];
@@ -18,9 +18,16 @@
             Validation.AddFormError("De opgegeven referentie bestaat niet");
         }
     }
-
-
+    
 }
+
+<script>
+    function Wat() {
+        var e = document.getElementById("eventkeuze");
+        var keuze = e.options[e.selectedIndex].text;
+        window.location.href = "LiveEventAanpassen.cshtml?Refcode=" + keuze;
+    }
+</script>
 
 <div class="container-fluid">
     <div class="row justify-content-center">
@@ -51,12 +58,17 @@
                                     </form>
                                 </div>
                                 <div class="col-md-6">
-
-
                                     <form method="post">
+                                        <select id="eventkeuze">
+                                            @foreach (var refcode in Functie.GetAangemaakteRefcodes())
+                                            {
+                                                <option name="refcode" value="keuze">@refcode</option>
+                                            }
+                                        </select>
                                         <div style="color: red"><b> @Html.ValidationSummary()</b></div>
-                                        <button id="btnEvent" class="btn btn-primary" type="submit" name="submit" value="LiveEvent">Pas een live event aan!</button>
+
                                     </form>
+                                    <button id="btnEvent" class="btn btn-primary" onclick="Wat()" value="LiveEvent">Pas een live event aan!</button>
                                 </div>
                             </div>
                         </div>
@@ -66,5 +78,8 @@
         </div>
     </div>
 </div>
+
+
+
 
 

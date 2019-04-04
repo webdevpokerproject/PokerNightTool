@@ -185,6 +185,26 @@ public class Functie
     }
 
     /// <summary>
+    /// Haalt de spelernamen op op basis van een lijst aan IDs
+    /// </summary>
+    /// <param name="SpelerIDs"></param>
+    /// <returns></returns>
+    public static Dictionary<string, int> GetSpelerNaam(Dictionary<int,int> SpelerIDs)
+    {
+        Database db = Database.OpenConnectionString(connectionString, provider);
+        string QR_GetID = "SELECT Voornaam, Achternaam FROM Speler WHERE SpelerId =@0";
+        Dictionary<string, int> results = new Dictionary<string, int>();
+        foreach (var key in SpelerIDs)
+        {
+            var query = db.QuerySingle(QR_GetID, key.Key);
+            string spelernaam = (string)query[0] + " " + (string)query[1];
+            results.Add(spelernaam, key.Value);
+        }
+       
+        return results;
+    }
+
+    /// <summary>
     /// Haalt de SpelerIDs uit de json string 
     /// </summary>
     /// <param name="json"></param>
@@ -260,8 +280,8 @@ public class Functie
             {
                 arrayOfBlindTable[i, 0] = dataTable.Rows[i]["Ronde"].ToString();
                 arrayOfBlindTable[i, 1] = dataTable.Rows[i]["Pauze"].ToString();
-                arrayOfBlindTable[i, 2] = dataTable.Rows[i]["BigBlind"].ToString();
-                arrayOfBlindTable[i, 3] = dataTable.Rows[i]["SmallBlind"].ToString();
+                arrayOfBlindTable[i, 2] = dataTable.Rows[i]["SmallBlind"].ToString();
+                arrayOfBlindTable[i, 3] = dataTable.Rows[i]["BigBlind"].ToString();
                 arrayOfBlindTable[i, 4] = dataTable.Rows[i]["Duratie"].ToString();
             }
 
@@ -304,6 +324,42 @@ public class Functie
         return result.ToString();
     }
 
+    /// <summary>
+    /// Haalt alle aangemaakte refcodes op en zet de in een lijst voor een dropdown
+    /// </summary>
+    /// <returns></returns>
+    public static List<string> GetAangemaakteRefcodes()
+    {
+        Database db = Database.OpenConnectionString(connectionString, provider);
+        string QR_GetRefcodes = "Select ReferencieCode FROM Event";
+        dynamic queryresult = db.Query(QR_GetRefcodes);
+        List<string> result = new List<string>();
+        foreach(var row in queryresult)
+        {
+            result.Add(row[0]);
+        }
+        return result; 
+
+    }
+
+    /// <summary>
+    /// Haalt alle aangemaakte Presetnamen van de blinds op en zet ze in een lijst voor een dorpdown
+    /// </summary>
+    /// <returns></returns>
+    public static List<string> GetAangemaakteBlindPresets()
+    {
+        Database db = Database.OpenConnectionString(connectionString, provider);
+        string QR_GetRefcodes = "Select Presetnaam FROM Blinds GROUP BY Presetnaam ";
+        dynamic queryresult = db.Query(QR_GetRefcodes);
+        List<string> result = new List<string>();
+
+        foreach(var row in queryresult)
+        {
+            result.Add(row[0]);
+        }
+        return result;
+
+    }
     /// <summary>
     /// Krijg de naam en waarde van alle fiches
     /// </summary>
@@ -385,7 +441,6 @@ public class Functie
         float aantalTafel = (float)SpelerIds.Count / (float)maxAanTafel;
         int aantalTafels = (int)Math.Ceiling(aantalTafel);
 
-
         var dividedLists = ChunkBy(ShuffleIntList(SpelerIds), aantalTafels);
 
         for (var i = 0; i < dividedLists.Count(); i++)
@@ -451,9 +506,10 @@ public class Functie
 
         string QR_GetDuratie = "SELECT Duratie, Begintijd FROM Blinds WHERE ReferencieCode = @0 ";
         string QR_InputTime = "UPDATE Blinds SET Begintijd = @0, Eindtijd = @1 WHERE Ronde = @2";
+        string QR_UpdateEvent = "UPDATE Event SET EventLoopt = @0";
         int ronde = 1;
         dynamic Duraties = db.Query(QR_GetDuratie, refcode);
-
+        db.Execute(QR_UpdateEvent, true);
         foreach (var row in Duraties)
         {
             DateTime eindTijd = startTime.AddMinutes(row[0]);
@@ -461,8 +517,6 @@ public class Functie
             startTime = eindTijd;
             ronde++;
         }
-
-        
     }
 
     /// <summary>
@@ -506,7 +560,7 @@ public class Functie
         for (int i = 0; i < blindschema.GetLength(0); i++)
         {
             int ronde = Convert.ToInt32(blindschema[i, 0]);
-            string pauze = Convert.ToString(blindschema[i, 1]);
+            int pauze = Convert.ToInt32(blindschema[i, 1]);
             int BigBlind = Convert.ToInt32(blindschema[i, 2]);
             int SmallBlind = Convert.ToInt32(blindschema[i, 3]);
             int Duratie = Convert.ToInt32(blindschema[i, 4]);
