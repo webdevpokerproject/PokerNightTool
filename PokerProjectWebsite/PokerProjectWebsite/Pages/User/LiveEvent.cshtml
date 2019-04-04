@@ -16,7 +16,7 @@
         <div class="col-lg-10">
             <div class="accordion" id="accordionExample">
                 <div class="card border-dark">
-                    <!-- HEADER VAN DE 0ste CARD-->
+                    <!-- HEADER VAN DE EERSTE CARD-->
                     <div class="card-header bg-dark" id="headingOne">
                         <h5>
                             <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#Timer" aria-expanded="true" aria-controls="WaardeFiches">
@@ -24,7 +24,7 @@
                             </button>
                         </h5>
                     </div>
-                    <!-- BODY VAN DE 0ste CARD-->
+                    <!-- BODY VAN DE EERSTE CARD-->
                     <div id="Timer" class="collapse show" aria-labelledby="headingOne">
                         <div class="card-body">
                             <div class="row">
@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="card border-dark">
-                    <!-- HEADER VAN DE EERSTE CARD-->
+                    <!-- HEADER VAN DE TWEEDE CARD-->
                     <div class="card-header bg-dark" id="headingOne">
                         <h5>
                             <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#WaardeFiches" aria-expanded="true" aria-controls="WaardeFiches">
@@ -50,14 +50,16 @@
                             </button>
                         </h5>
                     </div>
-                    <!-- BODY VAN DE EERSTE CARD-->
+                    <!-- BODY VAN DE TWEEDE CARD-->
                     <div id="WaardeFiches" class="collapse show" aria-labelledby="headingOne">
                         <div class="card-body">
-                            <div>
-                                @foreach (var row in Functie.FichesLive(EventNaam))
-                                {
-                                    <img height="140" width="140" src="~/Images/fiches/@(row.Kleur)/@(row.Waarde).png" alt="Alternate Text" />
-                                }
+                            <div class="row justify-content-center">
+                                <div>
+                                    @foreach (var row in Functie.FichesLive(EventNaam))
+                                    {
+                                        <img height="140" width="140" src="~/Images/fiches/@(row.Kleur)/@(row.Waarde).png" alt="Alternate Text" />
+                                    }
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
@@ -74,7 +76,7 @@
                     </div>
                 </div>
                 <div class="card border-dark">
-                    <!--HEADER VAN DE TWEEDE CARD-->
+                    <!--HEADER VAN DE DERDE CARD-->
                     <div class="card-header bg-dark" id="headingTwo">
                         <h2 class="mb-0">
                             <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#TafelIndeling" aria-expanded="false" aria-controls="TafelIndeling">
@@ -82,7 +84,7 @@
                             </button>
                         </h2>
                     </div>
-                    <!-- BODY VAN DE TWEEDE CARD-->
+                    <!-- BODY VAN DE DERDE CARD-->
                     <div id="TafelIndeling" class="collapse show" aria-labelledby="headingTwo">
                         <div class="card-body">
                             <div class="row">
