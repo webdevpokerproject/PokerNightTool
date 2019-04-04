@@ -270,7 +270,7 @@ public class Functie
     public static string[,] GetBlinds(string json,string presetnaam)
     {
         Database db = Database.OpenConnectionString(connectionString, provider);
-        if (presetnaam == null)
+        if (presetnaam == "")
         {
             DataTable dataTable = ConvertJSON(json, "Blinds");
             int numberOfRows = dataTable.Rows.Count;

@@ -8,8 +8,14 @@
     List<int> lijstMetFicheIDs = null;
     Dictionary<int,int> lijstMetSpelerIDs = null;
     string[,] lijstMetBlinds = null;
+    string presetnaam = null;
 
-    string presetnaam = (string)Session["presetnaam"]; 
+    if((string)Session["presetnaam"] != null)
+    {
+         presetnaam = (string)Session["presetnaam"];
+    }
+
+
 
     if (json != null)
     {

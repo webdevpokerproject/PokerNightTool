@@ -31,8 +31,11 @@
         //}
         //else
         //{
+        if((string)Request.Form["verstoptekeuze"] != null)
+        {
+            Session["presetnaam"] = (string)Request.Form["verstoptekeuze"];
+        }
 
-        Session["presetnaam"] = (string)Request.Form["verstoptekeuze"];
         Session["json"] = Request["data"];
         Response.Redirect("~/Pages/Admin/ConfirmEvent.cshtml");
         //}
