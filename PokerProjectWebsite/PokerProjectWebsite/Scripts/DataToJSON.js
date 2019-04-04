@@ -46,9 +46,9 @@ const _CollectBlindData = function () {
             switch (j) {
                 case 0:
                     if (z.firstChild.value == "Pauze") {
-                        l[i]["Pauze"] = 'True'
+                        l[i]["Pauze"] = 1
                     }
-                    else { l[i]["Pauze"] = 'False' }
+                    else { l[i]["Pauze"] = 0 }
 
                     break;
                 case 1:
