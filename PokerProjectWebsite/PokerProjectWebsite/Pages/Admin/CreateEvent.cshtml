@@ -6,38 +6,36 @@
 
     if (IsPost && Request.Form["submit"] == "continue")
     {
-        var test = Request.Form["data"];
+        //var test = Request.Form["data"];
 
-        var rawBlinds = test;
-        var IsBlindsEmpty = test.Contains("Blinds\":[]");
+        //var rawBlinds = test;
+        //var IsBlindsEmpty = test.Contains("Blinds\":[]");
 
-        var rawSpelers = test;
-        var IsSpelersEmpty = test.Contains("Spelers\":[],");
+        //var rawSpelers = test;
+        //var IsSpelersEmpty = test.Contains("Spelers\":[],");
 
-        var rawFiches = test;
-        var IsFichesEmpty = test.Contains("Fiche\":[]");
+        //var rawFiches = test;
+        //var IsFichesEmpty = test.Contains("Fiche\":[]");
 
-        if (IsBlindsEmpty || IsSpelersEmpty || IsFichesEmpty)
-        {
-            Validation.AddFormError("Eén of meerdere waardes zijn helaas onjuist ingevuld, probeer het opnieuw!");
-        }
+        //if (IsBlindsEmpty || IsSpelersEmpty || IsFichesEmpty)
+        //{
+        //    Validation.AddFormError("Eén of meerdere waardes zijn helaas onjuist ingevuld, probeer het opnieuw!");
+        //}
+        //else if (IsSpelersEmpty)
+        //{
+        //    Validation.AddFormError("Controleer de spelers");
+        //}
+        //else if (IsFichesEmpty)
+        //{
+        //    Validation.AddFormError("Controleer de ingevulde fiches");
+        //}
+        //else
+        //{
 
-
-        else if (IsSpelersEmpty)
-        {
-            Validation.AddFormError("Controleer de spelers");
-        }
-
-        else if (IsFichesEmpty)
-        {
-            Validation.AddFormError("Controleer de ingevulde fiches");
-        }
-
-        else
-        {
-            Session["json"] = Request["data"];
-            Response.Redirect("~/Pages/Admin/ConfirmEvent.cshtml");
-        }
+        Session["presetnaam"] = (string)Request.Form["verstoptekeuze"];
+        Session["json"] = Request["data"];
+        Response.Redirect("~/Pages/Admin/ConfirmEvent.cshtml");
+        //}
     }
 
 }
@@ -154,14 +152,12 @@
                     <div id="BlindSchema" aria-labelledby="headingThree">
                         <div class="card-body">
                             <div class="row">
-                                <input type="hidden" id="verstoptekeuze" value=""/>
-                                <select id="presetkeuze">
+                                <select id="presetkeuze" onchange="Selecteerpreset()">
                                     @foreach (string presetnaam in Functie.GetAangemaakteBlindPresets())
                                     {
                                         <option name="">@presetnaam</option>
                                     }
                                 </select>
-                                <button class="btn btn-dark" onclick="Selecteerpreset()" style="width:200px;" type="button">Kies preset</button>
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-11">
@@ -212,6 +208,7 @@
                             <div id="CheatCheet" aria-labelledby="headingFour">
                                 <div class="card-body">
                                     <form method="post" id="dataForm">
+                                        <input type="hidden" id="verstoptekeuze" name="verstoptekeuze" value="" />
                                         <input id="dataInput" type="hidden" name="data" value="a">
                                         <button name="submit" value="continue" class="btn btn-success btn-lg btn-block" onsubmit="_PostData()">Maak preview aan!</button>
                                     </form>
