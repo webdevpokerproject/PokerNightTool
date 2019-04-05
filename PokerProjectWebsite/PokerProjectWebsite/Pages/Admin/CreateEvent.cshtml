@@ -65,12 +65,11 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-6">
-                                    <h2>Spelers</h2>
                                     <p>Voer hier de voor- en achternaam in van de spelers die meedoen</p>
                                     <div class="input-group-prepend">
                                         <input type="text" class="form-control" id="voornaam" placeholder="Voornaam" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
-                                        <input type="text" class="form-control" id="achternaam" placeholder="Achternaam" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"required>
-                                        <button class="btn btn-dark" value="test" onclick="getpersondata('spelerstable');" style="width: 100%;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Persoon toevoegen</button>
+                                        <input type="text" class="form-control" id="achternaam" placeholder="Achternaam" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
+                                        <button class="btn btn-dark" onclick="getpersondata('spelerstable');" style="width: 100%;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Persoon toevoegen</button>
                                     </div>
                                     <br />
                                     <p>Vul hier het aantal spelers in die aan één tafel passen. Hierdoor kan er een tafelindeling gegenereerd worden</p>
@@ -107,7 +106,6 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-5">
-                                    <h2>Fiches toevoegen</h2>
                                     <p>Voeg hier de fiches (waarde en kleur) toe, die tijdens het spel gebruikt worden</p>
                                     <div class="input-group">
                                         <div class="input-group-prepend" style="width:inherit;">
@@ -146,10 +144,12 @@
                 </div>
                 <div class="card border-dark">
                     <!--HEADER VAN DE DERDE CARD-->
-                    <div class="card-header bg-dark" id="headingThree">
-                        <h5 style=" color:white;">
+                    <div class="card-header bg-dark blindhead" id="headingThree">
+                        <h5 class ="blindstitle"style=" color:white;">
                             Een blinds schema
                         </h5>
+                        <h5 class="tooltipp" style="color:white"><i class="fas fa-question-circle"></i>
+                        <span class="tooltiptext">De aanbevolen instellingen zijn:</span></h5>
                     </div>
                     <!-- BODY VAN DE DERDE CARD-->
                     <div id="BlindSchema" aria-labelledby="headingThree">
@@ -171,18 +171,20 @@
                                 <div class="col-11">
                                     <h5>Of maak een nieuwe aan:</h5>
                                     <p>Hier kan een blind ronde toegevoegd worden:</p>
+                                    <p class="info">Vul hier de waardes van de small en big blinds in. Vul hier ook in met welke factor de blinds worden verhoogd voor de volgende ronde en hoe lang de waardes van de blinds blijven staan. Voeg daarna de blind toe aan het schema.</p>
                                     <div class="input-group">
                                         <input type="hidden" id="Rowcounter" value="0" required />
                                         <input type="number" class="form-control" id="SmallBlind" placeholder="Small blind start waarde" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
                                         <input type="number" class="form-control" id="BigBlind" placeholder="Big blind start waarde" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
                                     </div>
+
                                     <div class="input-group">
-                                        <input type="number" step="0.1" class="form-control" id="BlindFactor" placeholder="Blind verhogingsfactor" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
-                                        <input type="number" class="form-control" id="BlindDuratie" placeholder="Blind duratie in minuten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
-                                        <button class="btn btn-dark" onclick="getlastrowdata('blindtable','Blind');" style="width:200px;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Add blind</button>
+                                        <input type="number" step="0.1" class="form-control" id="BlindFactor" placeholder="Blind verhogingsfactor" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <input type="number" class="form-control" id="BlindDuratie" placeholder="Blind duratie in minuten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <button class="btn btn-dark blindbtn" onclick="getlastrowdata('blindtable','Blind');" style="width:200px;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Add blind <span class="tooltiptext">Blijf klikken om blinds toe te voegen.</span></button>
                                     </div>
-                                    <br />
-                                    <p>Hier kan een pauze regel toegevoegd worden</p>
+
+                                    <p class="info">Vul hier de lengte van pauzes in en voeg pauzes toe.</p>
                                     <div class="input-group">
                                         <input type="number" class="form-control" id="PauzeDuratie" placeholder="Pauze duratie in minuten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
                                         <button class="btn btn-dark" onclick="getlastrowdata('blindtable','Pauze');" style="width:200px;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Add pauze</button>
@@ -212,10 +214,6 @@
                     </div>
                 </div>
                 <div class="card border-dark">
-                    <!--HEADER VAN DE VIERDE CARD-->
-                    <div class="card-header bg-dark" id="headingFour">
-                        <h5 style=" color:white;"></h5>
-                    </div>
                     <!-- BODY VAN DE VIERDE CARD-->
                     <div id="NextPage" aria-labelledby="headingFour">
                         <div class="card-body">
