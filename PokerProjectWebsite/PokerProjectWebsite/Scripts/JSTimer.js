@@ -43,6 +43,9 @@
             }
         }
 
+        var audio = new Audio('/SoundEffects/Elevator-ding-dong-sound-effect.mp3');
+        audio.play();
+
         var x = setInterval(function () {
 
             // Get todays date and time
@@ -56,7 +59,7 @@
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // Output the result in an element with id="demo"
+            // Output the result in an element with id="timer"
             if (seconds < 10) {
                 seconds = "0" + seconds;
             }
