@@ -44,11 +44,7 @@
 
 }
 
-<script>
-    function goBack() {
-        window.history.back(-1);
-    }
-</script>
+
 
 <div class="container-fluid">
     <div class="row">
@@ -66,25 +62,26 @@
                     <div id="TafelIndeling" aria-labelledby="headingOne">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-4">
-                                    <table class="table table-light table-bordered">
-                                        <thead class="thead-dark">
-                                            <tr>
-                                                <th>Naam </th>
-                                                <th>Tafelnummer</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach(var key in Functie.GetSpelerNaam(lijstMetSpelerIDs))
-                                            {
+                                @for (int x = 1; Functie.GetTableNumberPreview(lijstMetSpelerIDs) >= x; x++)
+                                {
+                                    <div class="col-md-4">
+                                        <table class="table table-light table-bordered">
+                                            <thead class="thead-dark">
                                                 <tr>
-                                                    <td>@key.Key</td>
-                                                    <td>@key.Value</td>
+                                                    <th>Tafel @x</th>
                                                 </tr>
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var key in Functie.GetSpelerNaam(lijstMetSpelerIDs))
+                                                {
+                                                    <tr>
+                                                        <td>@key.Key</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
@@ -131,7 +128,10 @@
                                     {
                                         <tr>
                                             <td>@lijstMetBlinds[i, 0]</td>
-                                            <td>@lijstMetBlinds[i, 1]</td>
+                                            @if(@lijstMetBlinds[i, 1] == "0")
+                                                {<td>Blind</td>}
+                                            else
+                                                {<td>Pauze</td>}
                                             <td>@lijstMetBlinds[i, 2]</td>
                                             <td>@lijstMetBlinds[i, 3]</td>
                                             <td>@lijstMetBlinds[i, 4]</td>

@@ -477,6 +477,23 @@ public class Functie
         return result;
 
     }
+
+    /// <summary>
+    /// Haalt het grootste tafelnummer op om de preview te maken 
+    /// </summary>
+    /// <param name="spelers"></param>
+    /// <returns></returns>
+    public static int GetTableNumberPreview(Dictionary<int,int> spelers)
+    {
+        int result = 0;
+        List<int> tafelnummers = new List<int>(); 
+        foreach(KeyValuePair<int,int> pair in spelers)
+        {
+            tafelnummers.Add(pair.Value);
+        }
+        result = tafelnummers.Max();
+        return result; 
+    }
     /// <summary>
     /// Voegd een tafelnummer toe aan spelerlijst
     /// </summary>
@@ -545,7 +562,7 @@ public class Functie
     }
 
     /// <summary>
-    /// Deletes whole event
+    /// Verwijderd het hele event
     /// </summary>
     /// <param name="refcode"></param>
     public static void DeleteEvent(string refcode)
@@ -599,7 +616,7 @@ public class Functie
     }
 
     /// <summary>
-    ///  WIP
+    ///  Haalt de blinddata op voor de timer op createEvent 
     /// </summary>
     /// <param name="refcode"></param>
     /// <returns></returns>
