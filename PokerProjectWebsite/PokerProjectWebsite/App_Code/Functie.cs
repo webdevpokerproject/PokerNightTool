@@ -281,7 +281,7 @@ public class Functie
     public static string[,] GetBlinds(string json,string presetnaam)
     {
         Database db = Database.OpenConnectionString(connectionString, provider);
-        if (presetnaam == null)
+        if (presetnaam == "")
         {
             DataTable dataTable = ConvertJSON(json, "Blinds");
             int numberOfRows = dataTable.Rows.Count;
@@ -303,9 +303,18 @@ public class Functie
             string QR_GetPreset = "SELECT * FROM Blinds WHERE Presetnaam = @0";
             string QR_GetNumRows = "SELECT COUNT(Ronde) FROM Blinds WHERE Presetnaam = @0";
             dynamic result = db.Query(QR_GetPreset, presetnaam);
-            int numberOfRows = (int)db.QuerySingle(QR_GetNumRows,presetnaam);
-            string[,] arrayOfBlindTable = new string[numberOfRows,5];
-            db.Close();
+            var numberOfRows = db.QuerySingle(QR_GetNumRows,presetnaam);
+            string[,] arrayOfBlindTable = new string[numberOfRows[0],5];
+            int i = 0; 
+            foreach(var row in result)
+            {
+                arrayOfBlindTable[i, 0] = Convert.ToString(row[1]); 
+                arrayOfBlindTable[i, 1] = Convert.ToString(row[2]); 
+                arrayOfBlindTable[i, 2] = Convert.ToString(row[3]); 
+                arrayOfBlindTable[i, 3] = Convert.ToString(row[4]);
+                arrayOfBlindTable[i, 4] = Convert.ToString(row[5]);
+                i++;
+            }
             return arrayOfBlindTable; 
         }
 
@@ -521,15 +530,15 @@ public class Functie
         var startTime = DateTime.Now;
 
         string QR_GetDuratie = "SELECT Duratie, Begintijd FROM Blinds WHERE ReferencieCode = @0 ";
-        string QR_InputTime = "UPDATE Blinds SET Begintijd = @0, Eindtijd = @1 WHERE Ronde = @2";
-        string QR_UpdateEvent = "UPDATE Event SET EventLoopt = @0";
+        string QR_InputTime = "UPDATE Blinds SET Begintijd = @0, Eindtijd = @1 WHERE Ronde = @2 AND ReferencieCode = @3";
+        string QR_UpdateEvent = "UPDATE Event SET EventLoopt = @0 WHERE ReferencieCode = @1";
         int ronde = 1;
         dynamic Duraties = db.Query(QR_GetDuratie, refcode);
-        db.Execute(QR_UpdateEvent, true);
+        db.Execute(QR_UpdateEvent, true, refcode);
         foreach (var row in Duraties)
         {
             DateTime eindTijd = startTime.AddMinutes(row[0]);
-            db.Execute(QR_InputTime, startTime, eindTijd, ronde);
+            db.Execute(QR_InputTime, startTime, eindTijd, ronde, refcode);
             startTime = eindTijd;
             ronde++;
         }
@@ -545,10 +554,12 @@ public class Functie
 
         string QR_DeleteBlinds = "DELETE FROM Blinds WHERE ReferencieCode = @0";
         string QR_DeleteSpeler = "DELETE FROM SpelerEvent WHERE ReferencieCode = @0";
-        string QR_DeleteFiches = "DELETE FROM EventFiches WHERE ReferencieCode = @0"; 
+        string QR_DeleteFiches = "DELETE FROM EventFiches WHERE ReferencieCode = @0";
+        string QR_DeleteEvent  = "DELETE FROM Event WHERE ReferencieCode = @0";
         db.Execute(QR_DeleteBlinds, refcode);
         db.Execute(QR_DeleteSpeler, refcode);
         db.Execute(QR_DeleteFiches, refcode);
+        db.Execute(QR_DeleteEvent, refcode);
     }
 
     /// <summary>

@@ -6,38 +6,39 @@
 
     if (IsPost && Request.Form["submit"] == "continue")
     {
-        var test = Request.Form["data"];
+        //var test = Request.Form["data"];
 
-        var rawBlinds = test;
-        var IsBlindsEmpty = test.Contains("Blinds\":[]");
+        //var rawBlinds = test;
+        //var IsBlindsEmpty = test.Contains("Blinds\":[]");
 
-        var rawSpelers = test;
-        var IsSpelersEmpty = test.Contains("Spelers\":[],");
+        //var rawSpelers = test;
+        //var IsSpelersEmpty = test.Contains("Spelers\":[],");
 
-        var rawFiches = test;
-        var IsFichesEmpty = test.Contains("Fiche\":[]");
+        //var rawFiches = test;
+        //var IsFichesEmpty = test.Contains("Fiche\":[]");
 
-        if (IsBlindsEmpty || IsSpelersEmpty || IsFichesEmpty)
+        //if (IsBlindsEmpty || IsSpelersEmpty || IsFichesEmpty)
+        //{
+        //    Validation.AddFormError("Eén of meerdere waardes zijn helaas onjuist ingevuld, probeer het opnieuw!");
+        //}
+        //else if (IsSpelersEmpty)
+        //{
+        //    Validation.AddFormError("Controleer de spelers");
+        //}
+        //else if (IsFichesEmpty)
+        //{
+        //    Validation.AddFormError("Controleer de ingevulde fiches");
+        //}
+        //else
+        //{
+        if((string)Request.Form["verstoptekeuze"] != null)
         {
-            Validation.AddFormError("Eén of meerdere waardes zijn helaas onjuist ingevuld, probeer het opnieuw!");
+            Session["presetnaam"] = (string)Request.Form["verstoptekeuze"];
         }
 
-
-        else if (IsSpelersEmpty)
-        {
-            Validation.AddFormError("Controleer de spelers");
-        }
-
-        else if (IsFichesEmpty)
-        {
-            Validation.AddFormError("Controleer de ingevulde fiches");
-        }
-
-        else
-        {
-            Session["json"] = Request["data"];
-            Response.Redirect("~/Pages/Admin/ConfirmEvent.cshtml");
-        }
+        Session["json"] = Request["data"];
+        Response.Redirect("~/Pages/Admin/ConfirmEvent.cshtml");
+        //}
     }
 
 }
@@ -154,29 +155,28 @@
                     <div id="BlindSchema" aria-labelledby="headingThree">
                         <div class="card-body">
                             <div class="row">
-                                <input type="hidden" id="verstoptekeuze" value=""/>
-                                <select id="presetkeuze" onchange="Selecteerpreset()">
+                                <select id="presetkeuze">
                                     @foreach (string presetnaam in Functie.GetAangemaakteBlindPresets())
                                     {
                                         <option name="">@presetnaam</option>
                                     }
                                 </select>
-                                <button class="btn btn-dark" onclick="Selecteerpreset()" style="width:200px;" type="button">Kies preset</button>
+                                <button class="btn btn-dark" onchange="Selecteerpreset()" style="width:200px;" type="button">Kies preset</button>
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-11">
                                     <div class="input-group">
-                                        <input type="hidden" id="Rowcounter" value="0" required/>
-                                        <input type="number" class="form-control" id="SmallBlind" placeholder="Small blind start waarde" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"required>
-                                        <input type="number" class="form-control" id="BigBlind" placeholder="Big blind start waarde" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"required>
+                                        <input type="hidden" id="Rowcounter" value="0" required />
+                                        <input type="number" class="form-control" id="SmallBlind" placeholder="Small blind start waarde" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
+                                        <input type="number" class="form-control" id="BigBlind" placeholder="Big blind start waarde" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
                                     </div>
                                     <div class="input-group">
-                                        <input type="number" step="0.1" class="form-control" id="BlindFactor" placeholder="Blind verhogingsfactor" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"required>
-                                        <input type="number" class="form-control" id="BlindDuratie" placeholder="Blind duratie in minuten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"required>
+                                        <input type="number" step="0.1" class="form-control" id="BlindFactor" placeholder="Blind verhogingsfactor" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
+                                        <input type="number" class="form-control" id="BlindDuratie" placeholder="Blind duratie in minuten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
                                         <button class="btn btn-dark" onclick="getlastrowdata('blindtable','Blind');" style="width:200px;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Add blind</button>
                                     </div>
                                     <div class="input-group">
-                                        <input type="number" class="form-control" id="PauzeDuratie" placeholder="Pauze duratie in minuten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"required>
+                                        <input type="number" class="form-control" id="PauzeDuratie" placeholder="Pauze duratie in minuten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
                                         <button class="btn btn-dark" onclick="getlastrowdata('blindtable','Pauze');" style="width:200px;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Add pauze</button>
                                     </div>
                                 </div>
@@ -212,6 +212,7 @@
                             <div id="CheatCheet" aria-labelledby="headingFour">
                                 <div class="card-body">
                                     <form method="post" id="dataForm">
+                                        <input type="hidden" id="verstoptekeuze" name="verstoptekeuze" value="" />
                                         <input id="dataInput" type="hidden" name="data" value="a">
                                         <button name="submit" value="continue" class="btn btn-success btn-lg btn-block" onsubmit="_PostData()">Maak preview aan!</button>
                                     </form>
