@@ -504,7 +504,15 @@ public class Functie
         {
             tafelnummers.Add(pair.Value);
         }
-        result = tafelnummers.Max();
+
+        if(tafelnummers.Count == 0)
+        {
+            result = 0;
+        }
+        else
+        {
+            result = tafelnummers.Max();
+        }
         return result; 
     }
     /// <summary>
