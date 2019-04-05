@@ -155,7 +155,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <input type="hidden" id="verstoptekeuze" value=""/>
-                                <select id="presetkeuze">
+                                <select id="presetkeuze" onchange="Selecteerpreset()">
                                     @foreach (string presetnaam in Functie.GetAangemaakteBlindPresets())
                                     {
                                         <option name="">@presetnaam</option>
