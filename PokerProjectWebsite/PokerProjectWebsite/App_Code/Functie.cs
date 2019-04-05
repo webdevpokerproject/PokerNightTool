@@ -5,7 +5,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using WebMatrix.Data;
 
 /// <summary>
@@ -202,8 +201,10 @@ public class Functie
     {
         Database db = Database.OpenConnectionString(connectionString, provider);
         string QR_GetID = "SELECT Voornaam, Achternaam FROM Speler WHERE SpelerId =@0";
+
         Dictionary<string, int> results = new Dictionary<string, int>();
-        foreach (var key in SpelerIDs)
+
+        foreach(var key in SpelerIDs)
         {
             var query = db.QuerySingle(QR_GetID, key.Key);
             string spelernaam = (string)query[0] + " " + (string)query[1];
@@ -602,7 +603,11 @@ public class Functie
         string QR_GetStatus = "SELECT EventLoopt FROM Event WHERE ReferencieCode = @0";
         var result = db.QuerySingle(QR_GetStatus, refcode);
         db.Close();
-        return result[0];
+        if(result != null)
+        {
+            return result[0]; 
+        }
+        return false;
         
     }
 
@@ -619,8 +624,8 @@ public class Functie
         {
             int ronde = Convert.ToInt32(blindschema[i, 0]);
             int pauze = Convert.ToInt32(blindschema[i, 1]);
-            int BigBlind = Convert.ToInt32(blindschema[i, 2]);
-            int SmallBlind = Convert.ToInt32(blindschema[i, 3]);
+            int SmallBlind  = Convert.ToInt32(blindschema[i, 2]);
+            int BigBlind = Convert.ToInt32(blindschema[i, 3]);
             int Duratie = Convert.ToInt32(blindschema[i, 4]);
             db.Execute(QR_MaakPreset, ronde, pauze, SmallBlind, BigBlind, Duratie, presetnaam);
         }

@@ -2,7 +2,16 @@
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "PokerNight ~ Event aanmaken";
 
-    string refcode = (string)Session["ReferentieCode"]; 
+    var refcode = Request.QueryString["refcode"];
+    if(IsPost && Request.Form["submit"] == "aanpassen")
+    {
+        Response.Redirect("~/Pages/Admin/LiveEventAanpassen.cshtml?refcode=" + refcode);
+    }
+    if (IsPost && Request.Form["submit"] == "live")
+    {
+        Response.Redirect("~/Pages/User/LiveEvent.cshtml?recode=" + refcode);
+    }
+
 }
 
 <div class="container-fluid">
@@ -24,12 +33,9 @@
                                 Het event aanmaken is gelukt!                           
                             </h1>
                             <p>De code om mensen uit te nodigen is: localhost:30349/Pages/User/LiveEvent.cshtml?refcode=<b>@refcode</b></p>
-
-                            <form action="~/Pages/Admin/LiveEventAanpassen.cshtml">
-                            <input type="submit" class="btn SucBtn btn-dark" value="Klik hier om de sessie te starten of aan te passen" />
-                            </form>
-                            <form action="~/Pages/User/LiveEvent.cshtml">
-                                <input type="submit" class="btn SucBtn btn-dark" value="Klik hier om naar het gebruikers overzicht te gaan van de live sessie" />
+                            <form method="post">
+                                <button type="submit" class="btn SucBtn btn-dark" name="submit" value="aanpassen">Klik hier om de sessie te starten of aan te passen</button>
+                                <button type="submit" class="btn SucBtn btn-dark" name="submit" value="livesessie"> Klik hier om naar het gebruikers overzicht te gaan van de live sessie</button>
                             </form>
                         </div>
                     </div>

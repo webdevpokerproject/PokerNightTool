@@ -2,13 +2,8 @@
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "PokerNight ~ Event aanpassen";
 
-    var refcode = (string)Session["refcode"];
-    if (refcode == null)
-    {
-        refcode = (string)Request.QueryString["refcode"];
-    }
-
-
+    var refcode = (string)Request.QueryString["refcode"];
+   
     if (IsPost && Request.Form["submit"] == "AddSpeler")
     {
         var voornaam = Request.Form["inVoornaam"];
@@ -29,7 +24,7 @@
         Functie.BeginBlindTimer(refcode);
     }
 
-    if (IsPost && Request.Form["submit"] == "StopEvent")
+    if (IsPost && Request.Form["submit"] == "delete")
     {
         Functie.DeleteEvent(refcode);
         Response.Redirect("~/Pages/Admin/LoginSucces.cshtml");
@@ -141,13 +136,10 @@
                     <!-- BODY VAN DE DERDE CARD-->
                     <div id="Verwijder Event" aria-labelledby="headingOne">
                         <div class="card-body">
-                            <div class="row">
-                                
-                                @if (!Functie.EventStatus(refcode))
-                                {
-
+                            <div class="row">                           
+                                <form method="post">
                                     <button class="btn btn-danger btn-block" type="submit" name="submit" value="delete">Hiermee wordt het gehele event verwijderd!</button>
-                                }
+                                </form>
                             </div>
                         </div>
                     </div>

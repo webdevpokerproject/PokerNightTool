@@ -27,14 +27,13 @@
     if (IsPost && Request.Form["submit"] == "spelaanmaken")
     {
         string refcode = Functie.MaakReferencieCode();
-        Session["ReferentieCode"] = refcode;
         if(Request.Form["presetnaam"] != null)
         {
             string invoerPreset = (string)Request.Form["presetnaam"];
             Functie.PresetBlindsMaken(lijstMetBlinds, invoerPreset);
         }
         Functie.EventAanmaken(lijstMetSpelerIDs, lijstMetFicheIDs, lijstMetBlinds, refcode);
-        Response.Redirect("~/Pages/Admin/AanmakenEventSucces.cshtml");
+        Response.Redirect("~/Pages/Admin/AanmakenEventSucces.cshtml?refcode=" + refcode);
     }
 
     if (IsPost && Request.Form["submit"] == "back")
@@ -74,9 +73,13 @@
                                             <tbody>
                                                 @foreach (var key in Functie.GetSpelerNaam(lijstMetSpelerIDs))
                                                 {
-                                                    <tr>
-                                                        <td>@key.Key</td>
-                                                    </tr>
+                                                    if (key.Value == x)
+                                                    {
+                                                        <tr>
+                                                            <td>@key.Key</td>
+                                                        </tr>
+                                                    }
+
                                                 }
                                             </tbody>
                                         </table>
@@ -164,8 +167,11 @@
                                 <button type="submit" name="submit" value="spelaanmaken" class="btn btn-success btn-lg btn-block">Maak event aan!</button>
 
                                 <hr />
+
+                            </form>
+                            <form action="~/Pages/Admin/CreateEvent.cshtml" method="post">
                                 <p style="color: red; font-style: italic;">PAS OP! Als u terug gaat om het event aan te passen, zullen alle gegevens opnieuw ingevuld moeten worden!</p>
-                                <button onclick="goBack()" class="btn btn-danger btn-lg btn-block">Ga terug om het event aan te passen</button>
+                                <button  class="btn btn-danger btn-lg btn-block">Ga terug om het event aan te passen</button>
                             </form>
                         </div>
                     </div>
