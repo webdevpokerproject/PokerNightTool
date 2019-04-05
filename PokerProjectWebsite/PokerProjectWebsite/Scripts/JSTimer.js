@@ -11,33 +11,33 @@
         document.getElementById("bigblind2").innerHTML = "";
     } else {
         if (pauzeofblind == 0) {
-            document.getElementById("ronde").innerHTML = "Ronde: " + ronde + " blind";
-            document.getElementById("smallblind").innerHTML = "Smallblind: " + sb;
-            document.getElementById("bigblind").innerHTML = "Bigblind: " + bb;
+            document.getElementById("ronde").innerHTML = "Ronde " + ronde + ": Blind";
+            document.getElementById("smallblind").innerHTML = "SmallBlind: " + sb;
+            document.getElementById("bigblind").innerHTML = "BigBlind: " + bb;
 
 
             if (pauzeofblindnext == 0) {
-                document.getElementById("ronde2").innerHTML = "Ronde: " + rondenext + " blind";
-                document.getElementById("smallblind2").innerHTML = "Smallblind: " + sbnext;
-                document.getElementById("bigblind2").innerHTML = "Bigblind: " + bbnext;
+                document.getElementById("ronde2").innerHTML = "Ronde: " + rondenext + " Blind";
+                document.getElementById("smallblind2").innerHTML = "SmallBlind: " + sbnext;
+                document.getElementById("bigblind2").innerHTML = "BigBlind: " + bbnext;
             } else {
-                document.getElementById("ronde2").innerHTML = "Ronde: " + rondenext + " Pauze";
+                document.getElementById("ronde2").innerHTML = "Ronde " + rondenext + ": Pauze";
                 document.getElementById("smallblind2").innerHTML = "Pauzeertijd: " + duratiepauze;
                 document.getElementById("bigblind2").innerHTML = "";
             }
 
         }
         else {
-            document.getElementById("ronde").innerHTML = "Ronde: " + ronde + " pauze";
+            document.getElementById("ronde").innerHTML = "Ronde " + ronde + ": Pauze";
             document.getElementById("smallblind").innerHTML = "";
             document.getElementById("bigblind").innerHTML = "";
 
             if (pauzeofblindnext == 0) {
-                document.getElementById("ronde2").innerHTML = "Ronde: " + rondenext + " blind";
-                document.getElementById("smallblind2").innerHTML = "Smallblind: " + sbnext;
-                document.getElementById("bigblind2").innerHTML = "Bigblind: " + bbnext;
+                document.getElementById("ronde2").innerHTML = "Ronde: " + rondenext + " Blind";
+                document.getElementById("smallblind2").innerHTML = "SmallBlind: " + sbnext;
+                document.getElementById("bigblind2").innerHTML = "BigBlind: " + bbnext;
             } else {
-                document.getElementById("ronde2").innerHTML = "Ronde: " + rondenext + " pauze";
+                document.getElementById("ronde2").innerHTML = "Ronde: " + rondenext + " Pauze";
                 document.getElementById("smallblind2").innerHTML = "Pauzeertijd: " + duratiepauze + " minuten";
                 document.getElementById("bigblind2").innerHTML = "";
             }
@@ -57,7 +57,7 @@
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
             // Output the result in an element with id="demo"
-            document.getElementById("timer").innerHTML = minutes + ":" + seconds;
+            document.getElementById("timer").innerHTML ="Timer " + minutes + ":" + seconds;
 
             // If the count down is over, write some text
             if (distance <= 0) {

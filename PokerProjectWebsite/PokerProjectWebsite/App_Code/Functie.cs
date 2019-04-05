@@ -49,8 +49,10 @@ public class Functie
         dynamic Output = db.QuerySingle(QR_GetLogin, naam, wachtwoord);
         if (Output != null)
         {
+            db.Close();
             return true;
         }
+        db.Close();
         return false;
     }
 
@@ -67,8 +69,10 @@ public class Functie
         dynamic Output = db.QuerySingle(QR_GetRefcode, refcode);
         if (Output != null)
         {
+            db.Close();
             return true;
         }
+        db.Close();
         return false;
     }
 
@@ -98,7 +102,7 @@ public class Functie
 
         string QR_InsertEvent = "INSERT INTO SpelerEvent (SpelerId, ReferencieCode, TafelNummer) VALUES (@0, @1, @2)";
         db.Execute(QR_InsertEvent, SpelerID, refcode, tafelnummer);
-
+        db.Close();
     }
 
     /// <summary>
@@ -109,6 +113,7 @@ public class Functie
         Database db = Database.OpenConnectionString(Functie.connectionString, Functie.provider);
         string QR_DeleteSpelersNaam = "DELETE FROM SpelerEvent WHERE SpelerId = @0";
         db.Execute(QR_DeleteSpelersNaam, GetSpelerID(voornaam, achternaam));
+        db.Close();
     }
 
     /// <summary>
@@ -121,7 +126,9 @@ public class Functie
         Database db = Database.OpenConnectionString(connectionString, provider);
         string QR_GetFiches = "SELECT Fiche.Kleur, Fiche.Waarde FROM (Fiche INNER JOIN EventFiches ON EventFiches.FicheId = Fiche.FicheId) WHERE EventFiches.ReferencieCode = @0 ORDER BY Fiche.Waarde ASC";
         var result = db.Query(QR_GetFiches, ReferencieCodeEvent);
+        db.Close();
         return result;
+        
     }
 
     /// <summary>
@@ -143,6 +150,7 @@ public class Functie
 
         QR_GetSpelers = "SELECT Speler.Voornaam, Speler.Achternaam, SpelerEvent.TafelNummer FROM (Speler INNER JOIN SpelerEvent ON Speler.SpelerId = SpelerEvent.SpelerId) WHERE SpelerEvent.ReferencieCode = @0 AND TafelNummer = @1 ORDER BY TafelNummer DESC";
         var result2 = db.Query(QR_GetSpelers, ReferencieCodeEvent, TafelNummer);
+        db.Close();
         return result2;
     }
 
@@ -181,6 +189,7 @@ public class Functie
         Database db = Database.OpenConnectionString(connectionString, provider);
         string QR_GetID = "SELECT SpelerId FROM Speler WHERE Voornaam = @0 AND Achternaam = @1";
         var result = db.QuerySingle(QR_GetID, voornaam, achternaam);
+        db.Close();
         return result[0];
     }
 
@@ -200,7 +209,7 @@ public class Functie
             string spelernaam = (string)query[0] + " " + (string)query[1];
             results.Add(spelernaam, key.Value);
         }
-       
+        db.Close();
         return results;
     }
 
@@ -235,6 +244,7 @@ public class Functie
             }
             
         }
+        db.Close();
         return SpelerIDs;
     }
 
@@ -258,6 +268,7 @@ public class Functie
             var result = db.QuerySingle(QR_GetFicheID, waarde, kleur) ;
             FicheIDs.Add(result[0]);
         }
+        db.Close();
         return FicheIDs;
     }
 
@@ -270,7 +281,7 @@ public class Functie
     public static string[,] GetBlinds(string json,string presetnaam)
     {
         Database db = Database.OpenConnectionString(connectionString, provider);
-        if (presetnaam == null)
+        if (presetnaam == "")
         {
             DataTable dataTable = ConvertJSON(json, "Blinds");
             int numberOfRows = dataTable.Rows.Count;
@@ -284,7 +295,7 @@ public class Functie
                 arrayOfBlindTable[i, 3] = dataTable.Rows[i]["BigBlind"].ToString();
                 arrayOfBlindTable[i, 4] = dataTable.Rows[i]["Duratie"].ToString();
             }
-
+            db.Close();
             return arrayOfBlindTable;
         }
         else
@@ -292,8 +303,18 @@ public class Functie
             string QR_GetPreset = "SELECT * FROM Blinds WHERE Presetnaam = @0";
             string QR_GetNumRows = "SELECT COUNT(Ronde) FROM Blinds WHERE Presetnaam = @0";
             dynamic result = db.Query(QR_GetPreset, presetnaam);
-            int numberOfRows = (int)db.QuerySingle(QR_GetNumRows,presetnaam);
-            string[,] arrayOfBlindTable = new string[numberOfRows,5];
+            var numberOfRows = db.QuerySingle(QR_GetNumRows,presetnaam);
+            string[,] arrayOfBlindTable = new string[numberOfRows[0],5];
+            int i = 0; 
+            foreach(var row in result)
+            {
+                arrayOfBlindTable[i, 0] = Convert.ToString(row[1]); 
+                arrayOfBlindTable[i, 1] = Convert.ToString(row[2]); 
+                arrayOfBlindTable[i, 2] = Convert.ToString(row[3]); 
+                arrayOfBlindTable[i, 3] = Convert.ToString(row[4]);
+                arrayOfBlindTable[i, 4] = Convert.ToString(row[5]);
+                i++;
+            }
             return arrayOfBlindTable; 
         }
 
@@ -338,6 +359,7 @@ public class Functie
         {
             result.Add(row[0]);
         }
+        db.Close();
         return result; 
 
     }
@@ -357,6 +379,7 @@ public class Functie
         {
             result.Add(row[0]);
         }
+        db.Close();
         return result;
 
     }
@@ -376,6 +399,7 @@ public class Functie
             var result = db.QuerySingle(QR_GetFiches, n);
             FicheLijst.Add(Tuple.Create(result[0].ToString(), (int)result[1]));
         }
+        db.Close();
         return FicheLijst;
     }
 
@@ -492,6 +516,7 @@ public class Functie
             int Duratie = Convert.ToInt32(Blinds[i, 4]);
             db.Execute(QR_BlindsInvoeren, ronde, pauze, BigBlind, SmallBlind, Duratie ,refcode); 
         }
+        db.Close();
     }
 
     /// <summary>
@@ -505,15 +530,15 @@ public class Functie
         var startTime = DateTime.Now;
 
         string QR_GetDuratie = "SELECT Duratie, Begintijd FROM Blinds WHERE ReferencieCode = @0 ";
-        string QR_InputTime = "UPDATE Blinds SET Begintijd = @0, Eindtijd = @1 WHERE Ronde = @2";
-        string QR_UpdateEvent = "UPDATE Event SET EventLoopt = @0";
+        string QR_InputTime = "UPDATE Blinds SET Begintijd = @0, Eindtijd = @1 WHERE Ronde = @2 AND ReferencieCode = @3";
+        string QR_UpdateEvent = "UPDATE Event SET EventLoopt = @0 WHERE ReferencieCode = @1";
         int ronde = 1;
         dynamic Duraties = db.Query(QR_GetDuratie, refcode);
-        db.Execute(QR_UpdateEvent, true);
+        db.Execute(QR_UpdateEvent, true, refcode);
         foreach (var row in Duraties)
         {
             DateTime eindTijd = startTime.AddMinutes(row[0]);
-            db.Execute(QR_InputTime, startTime, eindTijd, ronde);
+            db.Execute(QR_InputTime, startTime, eindTijd, ronde, refcode);
             startTime = eindTijd;
             ronde++;
         }
@@ -529,10 +554,12 @@ public class Functie
 
         string QR_DeleteBlinds = "DELETE FROM Blinds WHERE ReferencieCode = @0";
         string QR_DeleteSpeler = "DELETE FROM SpelerEvent WHERE ReferencieCode = @0";
-        string QR_DeleteFiches = "DELETE FROM EventFiches WHERE ReferencieCode = @0"; 
+        string QR_DeleteFiches = "DELETE FROM EventFiches WHERE ReferencieCode = @0";
+        string QR_DeleteEvent  = "DELETE FROM Event WHERE ReferencieCode = @0";
         db.Execute(QR_DeleteBlinds, refcode);
         db.Execute(QR_DeleteSpeler, refcode);
         db.Execute(QR_DeleteFiches, refcode);
+        db.Execute(QR_DeleteEvent, refcode);
     }
 
     /// <summary>
@@ -545,7 +572,9 @@ public class Functie
         Database db = Database.OpenConnectionString(connectionString, provider);
         string QR_GetStatus = "SELECT EventLoopt FROM Event WHERE ReferencieCode = @0";
         var result = db.QuerySingle(QR_GetStatus, refcode);
-        return result[0]; 
+        db.Close();
+        return result[0];
+        
     }
 
     /// <summary>
@@ -566,6 +595,7 @@ public class Functie
             int Duratie = Convert.ToInt32(blindschema[i, 4]);
             db.Execute(QR_MaakPreset, ronde, pauze, SmallBlind, BigBlind, Duratie, presetnaam);
         }
+        db.Close();
     }
 
     /// <summary>
@@ -622,7 +652,7 @@ public class Functie
             result.Add(0);
             result.Add(0);
         }
-
+        db.Close();
         return result; 
 
     }
