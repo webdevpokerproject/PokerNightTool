@@ -281,6 +281,11 @@ function addRow(tableID, pauzeblind, SBwaarde, BBwaarde, Duratie, teller) {
     document.getElementById("Rowcounter").value = Number(teller + 1);
 }
 
+function SomeDeleteRowFunction() {
+    td.parentNode.removeChild(td);
+}
+
+
 const HaalSpelerweg = function(o) {
     var p = o.parentNode.parentNode;
     p.parentNode.removeChild(p);

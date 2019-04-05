@@ -155,13 +155,12 @@
                     <div id="BlindSchema" aria-labelledby="headingThree">
                         <div class="card-body">
                             <div class="row">
-                                <select id="presetkeuze">
+                                <select id="presetkeuze" onchange="Selecteerpreset()">
                                     @foreach (string presetnaam in Functie.GetAangemaakteBlindPresets())
                                     {
                                         <option name="">@presetnaam</option>
                                     }
                                 </select>
-                                <button class="btn btn-dark" onchange="Selecteerpreset()" style="width:200px;" type="button">Kies preset</button>
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-11">
