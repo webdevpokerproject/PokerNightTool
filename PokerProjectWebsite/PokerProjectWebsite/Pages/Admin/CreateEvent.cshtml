@@ -149,7 +149,7 @@
                             Een blinds schema
                         </h5>
                         <h5 class="tooltipp" style="color:white"><i class="fas fa-question-circle"></i>
-                        <span class="tooltiptext">De aanbevolen instellingen zijn:</span></h5>
+                        <span class="tooltiptext">Hier kan de keuze gemaakt worden om een voorgedefineerd blindschema te gebruiken of een nieuwe aan te maken.</span></h5>
                     </div>
                     <!-- BODY VAN DE DERDE CARD-->
                     <div id="BlindSchema" aria-labelledby="headingThree">
@@ -169,9 +169,8 @@
                             
                             <div class="row">
                                 <div class="col-11">
-                                    <h5>Of maak een nieuwe aan:</h5>
-                                    <p>Hier kan een blind ronde toegevoegd worden:</p>
-                                    <p class="info">Vul hier de waardes van de small en big blinds in. Vul hier ook in met welke factor de blinds worden verhoogd voor de volgende ronde en hoe lang de waardes van de blinds blijven staan. Voeg daarna de blind toe aan het schema.</p>
+                                    <h5>Hier kan een blind ronde toegevoegd worden:</h5>
+                                    
                                     <div class="input-group">
                                         <input type="hidden" id="Rowcounter" value="0" required />
                                         <input type="number" class="form-control" id="SmallBlind" placeholder="Small blind start waarde" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
@@ -183,7 +182,7 @@
                                         <input type="number" class="form-control" id="BlindDuratie" placeholder="Blind duratie in minuten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                                         <button class="btn btn-dark blindbtn" onclick="getlastrowdata('blindtable','Blind');" style="width:200px;" type="button" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">Add blind <span class="tooltiptext">Blijf klikken om blinds toe te voegen.</span></button>
                                     </div>
-
+                                    <br />
                                     <p class="info">Vul hier de lengte van pauzes in en voeg pauzes toe.</p>
                                     <div class="input-group">
                                         <input type="number" class="form-control" id="PauzeDuratie" placeholder="Pauze duratie in minuten" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
@@ -191,9 +190,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <br />
                             <hr />
-                            <br />
                             <div class="row justify-content-center">
                                 <div class="col-11">
                                     <table class="table table-striped" id="mytable">
@@ -214,6 +211,9 @@
                     </div>
                 </div>
                 <div class="card border-dark">
+                    <!--HEADER VAN DE VIERDE CARD-->
+                    <div class="card-header bg-dark blindhead" id="headingThree">
+                    </div>
                     <!-- BODY VAN DE VIERDE CARD-->
                     <div id="NextPage" aria-labelledby="headingFour">
                         <div class="card-body">
