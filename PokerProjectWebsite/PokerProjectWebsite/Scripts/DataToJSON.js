@@ -275,11 +275,18 @@ function addRow(tableID, pauzeblind, SBwaarde, BBwaarde, Duratie, teller) {
     var t5 = document.createElement("input");
     t5.type = "button";
     t5.value = "Delete";
+    t5.className = "btn-danger";
     t5.onclick = function () { SomeDeleteRowFunction(this); };
     newCell5.appendChild(t5);
 
     document.getElementById("Rowcounter").value = Number(teller + 1);
 }
+
+function SomeDeleteRowFunction(td) {
+    var p = td.parentNode.parentNode;
+    p.parentNode.removeChild(p);
+}
+
 
 const HaalSpelerweg = function(o) {
     var p = o.parentNode.parentNode;

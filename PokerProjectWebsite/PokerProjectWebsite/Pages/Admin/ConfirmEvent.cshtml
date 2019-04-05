@@ -152,14 +152,20 @@
                     <!-- BODY VAN DE VIJFDE CARD-->
                     <div id="Confirm" aria-labelledby="headingFour">
                         <div class="card-body">
-                            <button onclick="goBack()">Go Back</button>
+                            
                             <form method="post">
-                                <button class="btn-danger" type="submit" name="submit" value="back">Ga terug om aan te passen</button>
+                                @*<button class="btn-danger" type="submit" name="submit" value="back">Ga terug om aan te passen</button>*@
                             </form>
                             @*<a class="btn btn-danger btn-lg btn-block" href="~/Pages/Admin/CreateEvent.cshtml" role="button">Ga terug om aan te passen</a>*@
                             <form method="post">
+                                <p>Door hier een naam in te vullen, kunt u in de toekomst deze preset gebruiken om met dezelfde waardes te spelen</p>
                                 <input type="text" class="form-control" name="presetnaam" placeholder="Naam voor het opslaan van het blindschema">
+                                <br />
                                 <button type="submit" name="submit" value="spelaanmaken" class="btn btn-success btn-lg btn-block">Maak event aan!</button>
+
+                                <hr />
+                                <p style="color: red; font-style: italic;">PAS OP! Als u terug gaat om het event aan te passen, zullen alle gegevens opnieuw ingevuld moeten worden!</p>
+                                <button onclick="goBack()" class="btn btn-danger btn-lg btn-block">Ga terug om het event aan te passen</button>
                             </form>
                         </div>
                     </div>
