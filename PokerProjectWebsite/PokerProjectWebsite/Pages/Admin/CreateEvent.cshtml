@@ -168,9 +168,17 @@
                             <hr />
                             
                             <div class="row">
+                            </div>
+                            <div class="row justify-content-center">
                                 <div class="col-11">
-                                    <h5>Hier kan een blind ronde toegevoegd worden:</h5>
-                                    
+                                    <p class="info">Selecteer hier eerder gekozen instellingen.</p>
+                                    <select id="presetkeuze" onchange="Selecteerpreset()">
+                                        @foreach (string presetnaam in Functie.GetAangemaakteBlindPresets())
+                                        {
+                                            <option name="">@presetnaam</option>
+                                        }
+                                    </select>
+                                    <p class="info">Vul hier de waardes van de small en big blinds in. Vul hier ook in met welke factor de blinds worden verhoogd voor de volgende ronde en hoe lang de waardes van de blinds blijven staan. Voeg daarna de blind toe aan het schema.</p>
                                     <div class="input-group">
                                         <input type="hidden" id="Rowcounter" value="0" required />
                                         <input type="number" class="form-control" id="SmallBlind" min="10" placeholder="Small blind start waarde" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
