@@ -423,19 +423,31 @@ public class Functie
     }
 
     /// <summary>
-    /// Verdeeld spelers in 
+    /// Verdeeld spelers in evenredige lijsten 
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
     /// <param name="chunkSize"></param>
-    /// <returns></returns>
-    public static List<List<T>> ChunkBy<T>(List<T> source, int chunkSize)
+    /// <returns>lijst met verdeelde lijsten</returns>
+    public static List<List<T>> ChunkEvenly<T>(List<T> source, int chunkSize)
     {
-        return source
-            .Select((x, i) => new { Index = i, Value = x })
-            .GroupBy(x => x.Index / chunkSize)
-            .Select(x => x.Select(v => v.Value).ToList())
-            .ToList();
+        var l = new List<List<T>>();
+
+        for (int i = 0; i < chunkSize; i++)
+        {
+            var c = new List<T>();
+            l.Add(c);
+        }
+
+        var j = 0;
+        foreach (var speler in source)
+        {
+            l[j].Add(speler);
+            if (j < (chunkSize - 1)) j++;
+            else j = 0;
+        }
+
+        return l;
     }
 
     /// <summary>
@@ -457,15 +469,16 @@ public class Functie
     /// <returns></returns>
     public static Dictionary<int, int> SpelersMetTafelNummer(string json)
     {
-        int maxAanTafel = GetMaxAanTafel(json);
+        float maxAanTafel = GetMaxAanTafel(json);
         List<int> SpelerIds = GetSpelerIDList(json);
-        /// Uiteindelijke lijst met speler verbonden aan tafel
+        // Uiteindelijke lijst met speler verbonden aan tafel
         Dictionary<int, int> result = new Dictionary<int, int>();
-        // berekening voor tafels 
-        float aantalTafel = (float)SpelerIds.Count / (float)maxAanTafel;
+        // berekening voor tafels
+        
+        float aantalTafel = SpelerIds.Count / maxAanTafel;
         int aantalTafels = (int)Math.Ceiling(aantalTafel);
 
-        var dividedLists = ChunkBy(ShuffleIntList(SpelerIds), aantalTafels);
+        var dividedLists = ChunkEvenly(ShuffleIntList(SpelerIds), aantalTafels);
 
         for (var i = 0; i < dividedLists.Count(); i++)
         {
@@ -475,7 +488,6 @@ public class Functie
             }
         }
         return result;
-
     }
 
     /// <summary>

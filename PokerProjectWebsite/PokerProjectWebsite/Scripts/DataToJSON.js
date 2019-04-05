@@ -275,6 +275,7 @@ function addRow(tableID, pauzeblind, SBwaarde, BBwaarde, Duratie, teller) {
     var t5 = document.createElement("input");
     t5.type = "button";
     t5.value = "Delete";
+    t5.className = "btn-danger";
     t5.onclick = function () { SomeDeleteRowFunction(this); };
     newCell5.appendChild(t5);
 
