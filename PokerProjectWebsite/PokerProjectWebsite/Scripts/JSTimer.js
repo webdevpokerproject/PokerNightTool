@@ -57,6 +57,9 @@
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
             // Output the result in an element with id="demo"
+            if (seconds < 10) {
+                seconds = "0" + seconds;
+            }
             document.getElementById("timer").innerHTML ="Timer " + minutes + ":" + seconds;
 
             // If the count down is over, write some text
