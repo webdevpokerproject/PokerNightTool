@@ -65,7 +65,7 @@
                                 @for (int x = 1; Functie.GetTableNumberPreview(lijstMetSpelerIDs) >= x; x++)
                                 {
                                     <div class="col-md-4">
-                                        <table class="table table-light table-bordered">
+                                        <table class="table table-light table-bordered table-striped">
                                             <thead class="thead-dark">
                                                 <tr>
                                                     <th>Tafel @x</th>
@@ -95,7 +95,7 @@
                     </div>
                     <!-- BODY VAN DE TWEEDE CARD-->
                     <div id="Fiches" aria-labelledby="headingTwo">
-                        <div class="card-body">
+                        <div class="card-body table table-striped">
                             @foreach (var entry in Functie.FichesPreview(lijstMetFicheIDs))
                             {
                                 <img height="140" width="140" src="~/Images/fiches/@(entry.Item1)/@(entry.Item2).png" alt="Alternate Text" />
@@ -113,7 +113,7 @@
                     <!-- BODY VAN DE DERDE CARD-->
                     <div id="BlindSchema" aria-labelledby="headingThree">
                         <div class="card-body">
-                            <table class="table table-light table-bordered">
+                            <table class="table table-light table-bordered table-striped">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>Ronde</th>
@@ -123,7 +123,7 @@
                                         <th>Duratie</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="table table-striped">
                                     @for (int i = 0; i < lijstMetBlinds.GetLength(0); i++)
                                     {
                                         <tr>

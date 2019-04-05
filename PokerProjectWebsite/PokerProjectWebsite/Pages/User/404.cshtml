@@ -2,6 +2,14 @@
     Layout = "~/Shared/_Layout.cshtml";
 }
 
+<script>
+    function ganaarevent() {
+        var e = document.getElementById("eventkeuze");
+        var keuze = e.options[e.selectedIndex].text;
+        window.location.href = "LiveEvent.cshtml?Refcode=" + keuze;
+    }
+</script>
+
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-lg-10">
@@ -20,6 +28,18 @@
                                     <div class="col-md-10">
                                         <p>Controleer of de ingevulde referentie juist is en probeer opnieuw</p>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="" aria-labelledby="headingOne">
+                            <div class="card-body">
+                                <div class="row">
+                                        <select id="eventkeuze" onchange="ganaarevent()">
+                                            @foreach (var refcode in Functie.GetAangemaakteRefcodes())
+                                            {
+                                                <option name="refcode" value="keuze">@refcode</option>
+                                            }
+                                        </select>
                                 </div>
                             </div>
                         </div>
