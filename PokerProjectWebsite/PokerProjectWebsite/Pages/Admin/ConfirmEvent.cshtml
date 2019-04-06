@@ -1,8 +1,23 @@
 ﻿@{
-
+    #region Nodige layout
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "PokerNight ~ Event aanmaken";
+    #endregion
 
+    #region Authenticatie
+    if ((string)Session["login"] != "true")
+    {
+        Response.Redirect($"~/Pages/Admin/Login.cshtml");
+    }
+
+    if (Request.Form["submit"] == "logout")
+    {
+        Session.Abandon();
+        Response.Redirect($"~/Pages/Admin/Login.cshtml");
+    }
+    #endregion
+
+    #region Pagina functionaliteit
     string json = Convert.ToString(Session["json"]);
 
     List<int> lijstMetFicheIDs = null;
@@ -12,10 +27,8 @@
 
     if((string)Session["presetnaam"] != null)
     {
-         presetnaam = (string)Session["presetnaam"];
+        presetnaam = (string)Session["presetnaam"];
     }
-
-
 
     if (json != null)
     {
@@ -26,24 +39,38 @@
 
     if (IsPost && Request.Form["submit"] == "spelaanmaken")
     {
-        string refcode = Functie.MaakReferencieCode();
-        if(Request.Form["presetnaam"] != null)
+        if(lijstMetSpelerIDs.Count != 0 && lijstMetFicheIDs.Count != 0 && lijstMetBlinds.Length != 0)
         {
-            string invoerPreset = (string)Request.Form["presetnaam"];
-            Functie.PresetBlindsMaken(lijstMetBlinds, invoerPreset);
+            string refcode = Functie.MaakReferencieCode();
+            if (Request.Form["presetnaam"] != null)
+            {
+                string invoerPreset = (string)Request.Form["presetnaam"];
+                Functie.PresetBlindsMaken(lijstMetBlinds, invoerPreset);
+            }
+            Functie.EventAanmaken(lijstMetSpelerIDs, lijstMetFicheIDs, lijstMetBlinds, refcode);
+            Response.Redirect("~/Pages/Admin/AanmakenEventSucces.cshtml?refcode=" + refcode);
         }
-        Functie.EventAanmaken(lijstMetSpelerIDs, lijstMetFicheIDs, lijstMetBlinds, refcode);
-        Response.Redirect("~/Pages/Admin/AanmakenEventSucces.cshtml?refcode=" + refcode);
+
+        if(lijstMetSpelerIDs.Count == 0)
+        {
+            Validation.AddFormError("Er zijn geen spelers ingevoerd!");
+        }
+        if (lijstMetFicheIDs.Count == 0)
+        {
+            Validation.AddFormError("Er zijn geen fiches ingevoerd!");
+        }
+        if (lijstMetBlinds.Length == 0)
+        {
+            Validation.AddFormError("Er is geen blindschema ingevoerd!");
+        }
     }
 
     if (IsPost && Request.Form["submit"] == "back")
     {
         Response.Redirect(Request.UrlReferrer.ToString());
     }
-
+    #endregion
 }
-
-
 
 <div class="container-fluid">
     <div class="row">
@@ -60,10 +87,10 @@
                     <!-- BODY VAN DE EERSTE CARD-->
                     <div id="TafelIndeling" aria-labelledby="headingOne">
                         <div class="card-body">
-                            <div class="row">
+                            <div class="row justify-content-center">
                                 @for (int x = 1; Functie.GetTableNumberPreview(lijstMetSpelerIDs) >= x; x++)
                                 {
-                                    <div class="col-md-4">
+                                    <div class="col-lg-2">
                                         <table class="table table-light table-bordered table-striped">
                                             <thead class="thead-dark">
                                                 <tr>
@@ -99,10 +126,12 @@
                     <!-- BODY VAN DE TWEEDE CARD-->
                     <div id="Fiches" aria-labelledby="headingTwo">
                         <div class="card-body table table-striped">
-                            @foreach (var entry in Functie.FichesPreview(lijstMetFicheIDs))
-                            {
-                                <img height="140" width="140" src="~/Images/fiches/@(entry.Item1)/@(entry.Item2).png" alt="Alternate Text" />
-                            }
+                            <div class="row justify-content-center">
+                                @foreach (var entry in Functie.FichesPreview(lijstMetFicheIDs))
+                                {
+                                    <img height="140" width="140" src="~/Images/fiches/@(entry.Item1)/@(entry.Item2).png" alt="Alternate Text" />
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -165,7 +194,7 @@
                                 <input type="text" class="form-control" name="presetnaam" placeholder="Naam voor het opslaan van het blindschema">
                                 <br />
                                 <button type="submit" name="submit" value="spelaanmaken" class="btn btn-success btn-lg btn-block">Maak event aan!</button>
-
+                                <div style="color:red"><b> @Html.ValidationSummary()</b></div>
                                 <hr />
 
                             </form>

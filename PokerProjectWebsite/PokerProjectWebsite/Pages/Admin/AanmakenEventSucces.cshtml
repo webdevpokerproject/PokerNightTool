@@ -1,7 +1,23 @@
 ﻿@{
+    #region Nodige layout
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "PokerNight ~ Event aanmaken";
+    #endregion
 
+    #region Authenticatie
+    if ((string)Session["login"] != "true")
+    {
+        Response.Redirect($"~/Pages/Admin/Login.cshtml");
+    }
+
+    if (Request.Form["submit"] == "logout")
+    {
+        Session.Abandon();
+        Response.Redirect($"~/Pages/Admin/Login.cshtml");
+    }
+    #endregion
+
+    #region Pagina functionaliteit
     var refcode = Request.QueryString["refcode"];
     if(IsPost && Request.Form["submit"] == "aanpassen")
     {
@@ -9,9 +25,10 @@
     }
     if (IsPost && Request.Form["submit"] == "live")
     {
-        Response.Redirect("~/Pages/User/LiveEvent.cshtml?recode=" + refcode);
+        Session.Abandon();
+        Response.Redirect("~/Pages/User/LiveEvent.cshtml?refcode=" + refcode);
     }
-
+    #endregion
 }
 
 <div class="container-fluid">
@@ -35,6 +52,7 @@
                             <p>De code om mensen uit te nodigen is: localhost:30349/Pages/User/LiveEvent.cshtml?refcode=<b>@refcode</b></p>
                             <form method="post">
                                 <button type="submit" class="btn SucBtn btn-dark" name="submit" value="aanpassen">Klik hier om de sessie te starten of aan te passen</button>
+                                <hr />
                                 <button type="submit" class="btn SucBtn btn-dark" name="submit" value="livesessie"> Klik hier om naar het gebruikers overzicht te gaan van de live sessie</button>
                             </form>
                         </div>

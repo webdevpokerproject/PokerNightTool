@@ -4,21 +4,25 @@
     Page.Title = "PokerNight ~ Admin login";
     #endregion
 
-    if (IsPost)
+    #region Pagina functionaliteit
+    if (IsPost && Request.Form["submit"] == "login")
     {
         var naam = Request.Form["Login"];
         var wachtwoord = Request.Form["Password"];
 
         if (Functie.Login(naam, wachtwoord))
         {
+
+            Session["login"] = "true";
+            Session.Timeout = 45;
             Response.Redirect($"~/Pages/Admin/LoginSucces.cshtml");
         }
         else
         {
             Validation.AddFormError("Gebruikersnaam of wachtwoord is onjuist");
         }
-
     }
+    #endregion
 }
     <div class="container-fluid">
         <div class="row logrow is-flex">
@@ -32,7 +36,7 @@
                     <p style="color:white">Wachtwoord</p><input type="password" class="form-control" name="Password" placeholder="Voer uw wachtwoord in"required />
                     <br />
                     <div style="color:red"><b> @Html.ValidationSummary()</b></div>
-                    <button class="btn btn-primary" type="submit" name="Submit" value="LoginButton">Inloggen!</button>
+                    <button class="btn btn-primary" type="submit" name="submit" value="login">Inloggen!</button>
                 </form>
             </div>
             <div class="row logrow align-items-center">

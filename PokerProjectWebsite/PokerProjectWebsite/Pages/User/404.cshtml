@@ -34,7 +34,7 @@
                         <div id="" aria-labelledby="headingOne">
                             <div class="card-body">
                                 <div class="row">
-                                        <select id="eventkeuze" onchange="ganaarevent()">
+                                        <select class="form-control" id="eventkeuze" onchange="ganaarevent()">
                                             @foreach (var refcode in Functie.GetAangemaakteRefcodes())
                                             {
                                                 <option name="refcode" value="keuze">@refcode</option>

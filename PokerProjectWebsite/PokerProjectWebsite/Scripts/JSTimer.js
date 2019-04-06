@@ -11,7 +11,7 @@
         document.getElementById("bigblind2").innerHTML = "";
     } else {
         if (pauzeofblind == 0) {
-            document.getElementById("ronde").innerHTML = "Ronde " + ronde + ": Blind";
+            document.getElementById("ronde").innerHTML = "Ronde " + ronde ;
             document.getElementById("smallblind").innerHTML = "SmallBlind: " + sb;
             document.getElementById("bigblind").innerHTML = "BigBlind: " + bb;
 

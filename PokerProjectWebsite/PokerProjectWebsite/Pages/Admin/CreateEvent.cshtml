@@ -4,33 +4,23 @@
     Page.Title = "PokerNight ~ Event aanmaken";
     #endregion
 
+    #region Authenticatie
+    if ((string)Session["login"] != "true")
+    {
+        Response.Redirect($"~/Pages/Admin/Login.cshtml");
+    }
+
+    if (Request.Form["submit"] == "logout")
+    {
+        Session.Abandon();
+        Response.Redirect($"~/Pages/Admin/Login.cshtml");
+    }
+    #endregion
+
+    #region Pagina functionaliteit
     if (IsPost && Request.Form["submit"] == "continue")
     {
-        //var test = Request.Form["data"];
 
-        //var rawBlinds = test;
-        //var IsBlindsEmpty = test.Contains("Blinds\":[]");
-
-        //var rawSpelers = test;
-        //var IsSpelersEmpty = test.Contains("Spelers\":[],");
-
-        //var rawFiches = test;
-        //var IsFichesEmpty = test.Contains("Fiche\":[]");
-
-        //if (IsBlindsEmpty || IsSpelersEmpty || IsFichesEmpty)
-        //{
-        //    Validation.AddFormError("Eén of meerdere waardes zijn helaas onjuist ingevuld, probeer het opnieuw!");
-        //}
-        //else if (IsSpelersEmpty)
-        //{
-        //    Validation.AddFormError("Controleer de spelers");
-        //}
-        //else if (IsFichesEmpty)
-        //{
-        //    Validation.AddFormError("Controleer de ingevulde fiches");
-        //}
-        //else
-        //{
         if((string)Request.Form["verstoptekeuze"] != null)
         {
             Session["presetnaam"] = (string)Request.Form["verstoptekeuze"];
@@ -38,9 +28,9 @@
 
         Session["json"] = Request["data"];
         Response.Redirect("~/Pages/Admin/ConfirmEvent.cshtml");
-        //}
-    }
 
+    }
+    #endregion
 }
 <script>
     function Selecteerpreset() {

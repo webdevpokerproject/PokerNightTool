@@ -5,15 +5,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
+    <!-- Custom Links -->
     <link href="~/Styles/MainStyle.css" rel="stylesheet" type="text/css" />
+    <link href="~/Images/favicon2.png" rel="shortcut icon" type="image/png" />
+
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="~/Images/favicon2.png" rel="shortcut icon" type="image/png" />
     <script defer src="~/Scripts/jquery-3.3.1.js"></script>
     <script defer src="~/Scripts/umd/popper.js"></script>
     <script defer src="~/Scripts/bootstrap.js"></script>
-
 
     <!-- Font Awesome Icons-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
@@ -33,26 +34,37 @@
             </a>
         </nav>
     </div>
-    <!-- Niet aan zitten -->
+    <!-- Content-->
     @RenderBody()
     <!--Footer-->
     <div class="modal-footer fixed-bottom bg-dark text-white">
-
-        <!-- Temporary links to admin and back-->
-        <a href="~/Pages/Admin/Login.cshtml">Admin login</a>
-        <a href="~/Pages/Admin/CreateEvent.cshtml">Spel aanmaken</a>
-        <a href="~/Pages/Admin/ConfirmEvent.cshtml">Preview spel aanmaken</a>
-        <a href="~/Pages/Admin/AanmakenEventSucces.cshtml">Event aanmaken succes</a>
-        <a href="~/Pages/Admin/LiveEventAanpassen.cshtml">Live event aanpassen</a>
-        <a href="~/Pages/User/LiveEvent.cshtml?refcode=5oKCSVv">Live event</a>
-        <a href="~/Pages/User/PokerRules.cshtml"></a>
-
+        @if ((string)Session["login"] == "true")
+        {
+            <form method="post">
+                <button class="btn" type="submit" name="submit" value="logout">
+                    <p style="color:white;">
+                        Uitloggen<i class="fas fa-sign-in-alt"></i>
+                    </p>
+                </button>
+            </form>
+        }
+        else
+        {
+            <form method="post" target="_blank" action="~/Pages/Admin/Login.cshtml">
+                <button class="btn" type="submit" name="submit" value="logout">
+                    <p style="color:white;">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </p>
+                </button>
+            </form>
+        }
         <a target="_blank" rel="noopener noreferrer" href="https://tres.nl/">
-            <img class="rounded float-right" src="~/Images/logos/TRES.png" alt="Tres Logo">
+            <img class="img-fluid" src="~/Images/logos/TRES.png" alt="Tres Logo">
         </a>
         <a target="_blank" rel="noopener noreferrer" href="https://www.nhlstenden.com/">
-            <img class="rounded float-right" height="80" width="120" src="~/Images/logos/nhl_stenden.png" alt="Tres Logo">
+            <img class="img-fluid" height="80" width="120" src="~/Images/logos/nhl_stenden.png" alt="Tres Logo">
         </a>
     </div>
+
 </body>
 </html>
