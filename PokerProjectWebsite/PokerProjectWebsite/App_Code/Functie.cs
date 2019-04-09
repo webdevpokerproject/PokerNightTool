@@ -144,11 +144,26 @@ public class Functie
         {
             QR_GetSpelers = "SELECT Speler.Voornaam, Speler.Achternaam, SpelerEvent.TafelNummer FROM (Speler INNER JOIN SpelerEvent ON Speler.SpelerId = SpelerEvent.SpelerId) WHERE SpelerEvent.ReferencieCode = @0 ORDER BY TafelNummer DESC";
             var result = db.Query(QR_GetSpelers, ReferencieCodeEvent);
+            if (result.Count() == 0)
+            {
+                string QR_GetSeed = "SELECT Voornaam, Achternaam, COUNT(Voornaam) AS TafelNummer FROM Speler WHERE SpelerId = @0 GROUP BY Voornaam, Achternaam";
+                result = db.Query(QR_GetSeed, 63);
+                db.Close();
+                return result;
+            }
+            db.Close();
             return result;
         }
 
         QR_GetSpelers = "SELECT Speler.Voornaam, Speler.Achternaam, SpelerEvent.TafelNummer FROM (Speler INNER JOIN SpelerEvent ON Speler.SpelerId = SpelerEvent.SpelerId) WHERE SpelerEvent.ReferencieCode = @0 AND TafelNummer = @1 ORDER BY TafelNummer DESC";
         var result2 = db.Query(QR_GetSpelers, ReferencieCodeEvent, TafelNummer);
+        if (result2.Count() == 0)
+        {
+            string QR_GetSeed = "SELECT Voornaam, Achternaam FROM Speler WHERE SpelerId = @0";
+            result2 = db.Query(QR_GetSeed, 63);
+            db.Close();
+            return result2;
+        }
         db.Close();
         return result2;
     }
@@ -160,6 +175,11 @@ public class Functie
     /// <returns></returns>
     public static int HoeveelheidTafels(string refcode)
     {
+        int aantalTafels = SpelersLive(refcode, 0).ElementAt(0).TafelNummer;
+        if(aantalTafels == 0)
+        {
+            return 1; 
+        }
         return SpelersLive(refcode, 0).ElementAt(0).TafelNummer;
     }
 
@@ -698,5 +718,46 @@ public class Functie
         return result; 
 
     }
-    
+
+    /// <summary>
+    /// Functie om spelers te shudden als spel bezig is
+    /// </summary>
+    /// <param name="refcode"></param>
+    public static void ShuffleSpelers(string refcode, float maxAanTafel)
+    {
+        Database db = Database.OpenConnectionString(connectionString, provider);
+        List<int> SpelerIds = new List<int>();
+        Dictionary<int, int> result = new Dictionary<int, int>();
+
+        // Haalt deelnemende spelers op 
+        dynamic liveSpelers = SpelersLive(refcode, 0);
+        foreach (var row in liveSpelers)
+        {
+            SpelerIds.Add(GetSpelerID((string)row[0], (string)row[1]));
+        }
+
+        // Berekening voor tafels
+        float aantalTafel = SpelerIds.Count / maxAanTafel;
+        int aantalTafels = (int)Math.Ceiling(aantalTafel);
+
+        var dividedLists = ChunkEvenly(ShuffleIntList(SpelerIds), aantalTafels);
+
+        for (var i = 0; i < dividedLists.Count(); i++)
+        {
+            foreach (var speler in dividedLists[i])
+            {
+                result[speler] = i + 1;
+            }
+        }
+
+        // Update het event met nieuwe indeling 
+        string QR_Update = "UPDATE SpelerEvent SET Tafelnummer = @0 WHERE SpelerId = @1";
+
+        foreach(KeyValuePair<int,int> pair in result)
+        {
+            db.Execute(QR_Update, pair.Value, pair.Key);
+        }
+
+        db.Close(); 
+    }
 }

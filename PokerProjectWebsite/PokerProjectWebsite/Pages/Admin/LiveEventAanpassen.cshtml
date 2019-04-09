@@ -37,6 +37,7 @@
     if(IsPost && Request.Form["submit"] == "StartEvent")
     {
         Functie.BeginBlindTimer(refcode);
+
     }
 
     if(IsPost && Request.Form["submit"] == "LiveEvent")
@@ -49,6 +50,12 @@
     {
         Functie.DeleteEvent(refcode);
         Response.Redirect("~/Pages/Admin/LoginSucces.cshtml");
+    }
+
+    if (IsPost && Request.Form["submit"] == "shuffle")
+    {
+        float nummer = (float)Convert.ToDouble(Request.Form["maxAantafel"]);
+        Functie.ShuffleSpelers(refcode, nummer);
     }
     #endregion
 
@@ -141,8 +148,21 @@
                                         </table>
                                     </div>
                                 }
-                            </div>
+                                <br />
 
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-8">
+                                    <form method="post">
+                                        <div class="input-group mb-3">
+                                            <input type="number" class="form-control" name="maxAantafel" placeholder="Het max aantal spelers per tafel" required>
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary btn-block" name="submit" value="shuffle"> Shuffle alle spelers en maak nieuwe tafel indeling </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>                
